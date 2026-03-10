@@ -41,13 +41,23 @@ const userSchema = new mongoose.Schema(
 );
 
 // Encrypt password before saving | you can use mongoose hooks
-userSchema.pre("save", async function (next) {
+// userSchema.pre("save", async function (next) {
+//   try {
+//     if (!this.isModified("password")) {
+//       return next();
+//     }
+//     this.password = await bcrypt.hash(this.password, 10);
+//     next();
+//   } catch (error) {
+//     console.log("from schema", error);
+//   }
+// });
+
+userSchema.pre("save", async function () {
   try {
-    if (!this.isModified("password")) {
-      return next();
-    }
+    if (!this.isModified("password")) return;
+
     this.password = await bcrypt.hash(this.password, 10);
-    next();
   } catch (error) {
     console.log("from schema", error);
   }
