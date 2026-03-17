@@ -20,4 +20,4 @@ import mongoose from "mongoose";
 })();
 
 // Imediately Invoked Functional Expression
-//JSON : JavaScript Object Notation (will be in key  value pairs)
+//JSON : JavaScript Object Notation (will be in key value pairs)
