@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import AuthContext from "../context/AuthContext";
 
 const Home = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   return (
     <>
       <Helmet>

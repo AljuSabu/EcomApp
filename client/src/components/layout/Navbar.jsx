@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,6 +7,9 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "motion/react";
+import { toast } from "sonner";
+import axios from "axios";
+import AuthContext from "../../context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +19,28 @@ const Navbar = () => {
     { name: "Products", path: "products" },
     { name: "About", path: "about" },
   ];
+  const { auth, setAuth } = useContext(AuthContext);
+
+  //logout
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/api/v1/auth/logout",
+      );
+      if (data.success) {
+        toast.success(data.message);
+        setAuth({
+          ...auth,
+          user: null,
+          token: "",
+        });
+        localStorage.removeItem("auth");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while logging out");
+    }
+  };
 
   return (
     <>
@@ -62,6 +87,7 @@ const Navbar = () => {
               >
                 <PersonAddAltIcon />
               </Link>
+              <NavLink onClick={handleLogout}>logout</NavLink>
             </div>
 
             {/* Mobile menu button */}
