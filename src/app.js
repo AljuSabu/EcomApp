@@ -4,6 +4,7 @@ import morgan from "morgan";
 import cookieParcer from "cookie-parser";
 import crypto from "crypto";
 import authRoutes from "./routes/authRoutes.js";
+import collectionRoutes from "./routes/collectionRoutes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cookieParcer()); // It allows the server to acces the cookies
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/collection", collectionRoutes);
 
 //Crypto key
 /*
