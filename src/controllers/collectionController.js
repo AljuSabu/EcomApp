@@ -1,5 +1,7 @@
 import Collection from "../models/collectionSchema.js";
+import slugify from "slugify";
 
+// Create Collection
 export const createCollection = async (req, res) => {
   try {
     // Get info from frontend
@@ -13,8 +15,11 @@ export const createCollection = async (req, res) => {
       });
     }
 
+    // Slugify name
+    const slug = slugify(name, { lower: true });
+
     // Check if the name is already exist in the database
-    const existingCollection = await Collection.findOne({ name });
+    const existingCollection = await Collection.findOne({ slug });
 
     // If exist send response
     if (existingCollection) {
@@ -24,9 +29,9 @@ export const createCollection = async (req, res) => {
       });
     }
     // Else create new collection
-    const collection = await Collection.create({ name });
+    const collection = await Collection.create({ name, slug });
     // Send success response
-    res.status(200).json({
+    res.status(201).json({
       status: true,
       message: "New collection has been created successfully",
       collection,
@@ -36,6 +41,80 @@ export const createCollection = async (req, res) => {
     res.status(500).json({
       success: false,
       message: `Error in create collection ${error}`,
+      error,
+    });
+  }
+};
+
+// Get all Collection
+export const getAllCollection = async (req, res) => {
+  try {
+    const collection = await Collection.find();
+    if (!collection) {
+      return res.status(404).json({
+        success: false,
+        message: "Collection not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched all collections",
+      count: collection.length,
+      collection,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: `Error in getting all collection`,
+      error,
+    });
+  }
+};
+
+// Delete Collection
+export const deleteCollection = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const collectionToDelete = await Collection.findByIdAndDelete(id);
+
+    if (!collectionToDelete) {
+      return res.status(404).json({
+        success: false,
+        message: "Collection not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Collection has been successfully deleted",
+      collectionToDelete,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in delete collection",
+      error,
+    });
+  }
+};
+
+// Get Single Collection
+export const singleColletion = async (req, res) => {
+  try {
+    const singleColletion = await Collection.findOne({ id: req.params._id });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched single collection",
+      singleColletion,
+    });
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500)({
+      success: false,
+      message: "Error in getting single collection",
       error,
     });
   }

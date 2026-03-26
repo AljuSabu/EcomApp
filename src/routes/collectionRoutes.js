@@ -1,10 +1,25 @@
 import express from "express";
-import { createCollection } from "../controllers/collectionController.js";
+import {
+  createCollection,
+  deleteCollection,
+  getAllCollection,
+  singleColletion,
+} from "../controllers/collectionController.js";
+import { isAdmin, isLoggedIn } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
 // routes
 // createCollection |method:Post
-router.post("/create-collection", createCollection);
+router.post("/create-collection", isLoggedIn, isAdmin, createCollection);
+
+// get all collection
+router.get("/get-all-collection", getAllCollection);
+
+// Delete Collection
+router.delete("/delete-collection/:id", isLoggedIn, isAdmin, deleteCollection);
+
+// Get Single Collection
+router.get("/single-collection/:id", isLoggedIn, singleColletion);
 
 export default router;
