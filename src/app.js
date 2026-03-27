@@ -26,7 +26,7 @@ console.log(key);
 */
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello</h1>");
+  res.send("<h1>Hello !</h1>");
 });
 
 export default app;

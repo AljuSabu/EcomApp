@@ -109,12 +109,36 @@ export const singleColletion = async (req, res) => {
       message: "Successfully fetched single collection",
       singleColletion,
     });
-    
   } catch (error) {
     console.log(error);
     res.status(500)({
       success: false,
       message: "Error in getting single collection",
+      error,
+    });
+  }
+};
+
+// Update Collection
+export const UpdateCollection = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  try {
+    const collection = await Collection.findByIdAndUpdate(
+      id,
+      { name, slug: slugify(name) },
+      { new: true },
+    );
+    res.status(200).json({
+      success: true,
+      message: "Collection name has been updated successfully",
+      collection,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: `Error in Updating the Collection ${error}`,
       error,
     });
   }

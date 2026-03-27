@@ -4,6 +4,7 @@ import {
   deleteCollection,
   getAllCollection,
   singleColletion,
+  UpdateCollection,
 } from "../controllers/collectionController.js";
 import { isAdmin, isLoggedIn } from "../middlewares/authMiddlewares.js";
 
@@ -21,5 +22,8 @@ router.delete("/delete-collection/:id", isLoggedIn, isAdmin, deleteCollection);
 
 // Get Single Collection
 router.get("/single-collection/:id", isLoggedIn, singleColletion);
+
+// Update Collection
+router.put("/update-collection/:id", UpdateCollection);
 
 export default router;
