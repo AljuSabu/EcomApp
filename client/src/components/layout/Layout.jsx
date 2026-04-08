@@ -18,7 +18,7 @@ const Layout = ({ description, keywords, author, title }) => {
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
 
-      <div className="min-h-screen pt-16 overflow-hidden">
+      <div className="min-h-screen py-16 overflow-hidden">
         <Navbar />
 
         <main className="flex grow">

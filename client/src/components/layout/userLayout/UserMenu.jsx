@@ -4,9 +4,9 @@ import AuthContext from "../../../context/AuthContext";
 import axios from "axios";
 import { toast } from "sonner";
 import {
-  Box,
   DoorOpen,
   Heart,
+  LayoutDashboard,
   Scale,
   Search,
   Settings,
@@ -69,7 +69,7 @@ const UserMenu = () => {
                 to="/dashboard/user"
                 className="flex items-center p-2 space-x-3 rounded-md"
               >
-                <Box strokeWidth={1} />
+                <LayoutDashboard strokeWidth={1} />
                 <span>Dashboard</span>
               </NavLink>
             </li>

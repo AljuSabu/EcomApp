@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  Blocks,
-  Box,
   DoorOpen,
+  Layers,
+  LayoutDashboard,
   PackagePlus,
   Settings,
+  ShoppingBag,
   User,
 } from "lucide-react";
 import AuthContext from "../../../context/AuthContext";
@@ -70,7 +71,7 @@ const AdminMenu = () => {
                 to="/dashboard/admin"
                 className="flex items-center p-2 space-x-3 rounded-md"
               >
-                <Box strokeWidth={1} />
+                <LayoutDashboard strokeWidth={1} />
                 <span>Dashboard</span>
               </NavLink>
             </li>
@@ -79,7 +80,7 @@ const AdminMenu = () => {
                 to="manage-collection"
                 className="flex items-center p-2 space-x-3 rounded-md"
               >
-                <Blocks strokeWidth={1} />
+                <Layers strokeWidth={1} />
                 <span>Manage Collection</span>
               </NavLink>
             </li>
@@ -88,7 +89,7 @@ const AdminMenu = () => {
                 to="manage-product"
                 className="flex items-center p-2 space-x-3 rounded-md"
               >
-                <PackagePlus strokeWidth={1} />
+                <ShoppingBag strokeWidth={1} />
                 <span>Manage Product</span>
               </NavLink>
             </li>
