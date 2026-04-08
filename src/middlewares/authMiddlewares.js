@@ -4,32 +4,64 @@ import User from "../models/userSchema.js";
 import AuthRoles from "../utils/AuthRoles.js";
 
 // isLoggedIn
+// export const isLoggedIn = async (req, res, next) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     console.log("AUTH HEADER:", authHeader);
+
+//     const { token } = req.cookies;
+
+//     //If no token send message
+//     if (!token) {
+//       res.status(401).json({
+//         success: false,
+//         message: "Un-authorized user",
+//       });
+//     }
+
+//     //if token found
+//     const decoded = JWT.verify(token, config.JWT_SECRET);
+
+//     req.user = decoded;
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Error in middleware",
+//       error,
+//     });
+//   }
+// };
+
+
 export const isLoggedIn = async (req, res, next) => {
   try {
-    const { token } = req.cookies;
+    let token;
 
-    //If no token send message
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
     if (!token) {
-      res.status(404).json({
+      return res.status(401).json({
         success: false,
-        message: "Un-authorized user",
+        message: "Unauthorized user",
       });
     }
 
-    //if token found
     const decoded = JWT.verify(token, config.JWT_SECRET);
-
     req.user = decoded;
+
     next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    return res.status(401).json({
       success: false,
-      message: "Error in middleware",
-      error,
+      message: "Invalid token",
     });
   }
 };
+
 
 //isAdmin
 export const isAdmin = async (req, res, next) => {
@@ -41,7 +73,6 @@ export const isAdmin = async (req, res, next) => {
         message: "You are not Authorizes to access this page",
       });
     } else next();
-
   } catch (error) {
     console.log(error);
     res.status(500).json({

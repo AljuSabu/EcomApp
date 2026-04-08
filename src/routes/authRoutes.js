@@ -22,4 +22,15 @@ router.post("/logout", logout);
 // test route
 router.get("/test", isLoggedIn, isAdmin, testController);
 
+// Protectd Route (to check authenticated user)
+// If the user is loggedin we get true in the frontend so that the user can access the dashboard or more
+router.get("/user-auth", (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
+//Protected Admin Route
+router.get("/admin-auth", isLoggedIn, isAdmin, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
 export default router;

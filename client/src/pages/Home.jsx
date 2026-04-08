@@ -10,7 +10,7 @@ const Home = () => {
         <title>Home</title>
       </Helmet>
 
-      <div>
+      <div className="min-h-screen">
         <pre>{JSON.stringify(auth, null, 4)}</pre>
       </div>
     </>

@@ -1,10 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", serif;
+  --color-primary: #312e81; /* Deep Indigo */
+  --color-primary-hover: #1e1b4b; /* Darker Indigo */
+  --color-accent: #f59e0b; /* Amber for subtle highlights */
+  --color-destructive: #be123c; /* Rose 700 */
+}
+
+.glass {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
 }
 
 .nav-link {
@@ -12,7 +20,7 @@
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   @apply absolute bottom-0 left-0 w-0 h-px bg-zinc-900 transition-all duration-300;
 }
 

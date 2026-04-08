@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 const Layout = ({ description, keywords, author, title }) => {
   return (
     <>
-      <Toaster position="top-right" richColors />
+      <Toaster position="bottom-right" richColors />
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content={description} />
@@ -18,14 +18,15 @@ const Layout = ({ description, keywords, author, title }) => {
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
 
-      <div className="min-h-screen pt-20 overflow-hidden">
+      <div className="min-h-screen pt-16 overflow-hidden">
         <Navbar />
 
         <main className="flex grow">
           <Outlet />
         </main>
+
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

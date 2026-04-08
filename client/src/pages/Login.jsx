@@ -1,14 +1,12 @@
-import React from "react";
 import { Helmet } from "react-helmet";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useState, useContext } from "react";
+import { React, useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import { ArrowRight } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,11 +28,11 @@ const Login = () => {
         toast.success(data.message);
         setAuth({
           ...auth,
-          user:data.user,
-          token:data.token
-        })
-        localStorage.setItem("auth",JSON.stringify(data))
-        navigate("/");
+          user: data.user,
+          token: data.token,
+        });
+        localStorage.setItem("auth", JSON.stringify(data));
+        navigate(location.state || "/");
       } else {
         toast.error(data.message);
       }
@@ -49,7 +47,7 @@ const Login = () => {
       <Helmet>
         <title>Login</title>
       </Helmet>
-      <div className="min-h-screen w-full pt-32 pb-24 flex items-center justify-center bg-zinc-50">
+      <div className="min-h-screen w-full pt-10 pb-10 flex items-center justify-center bg-zinc-50">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -126,7 +124,7 @@ const Login = () => {
               className="w-full bg-zinc-900 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors flex items-center justify-center group"
             >
               Sign In
-              <ArrowForwardIcon className="ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
 
