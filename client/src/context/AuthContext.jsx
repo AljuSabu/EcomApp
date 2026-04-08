@@ -4,46 +4,36 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() => {
-    // Local Storage inside useStare()
-    const data = localStorage.getItem("auth");
-    if (data) {
-      const parseData = JSON.parse(data);
-      return {
-        user: parseData.user,
-        token: parseData.token,
-      };
-    }
-    return {
-      user: null,
-      token: "",
-    };
+  const [auth, setAuth] = useState({
+    user: null,
+    token: "",
   });
+
+  const [loading, setLoading] = useState(true);
 
   //* BaseUrl
   // axios.defaults.baseURL = "http://localhost:4000"
 
-  //* Local Storage using useEffect(()=>{},[])
-  // useEffect(() => {
-  //   const data = localStorage.getItem("auth");
-  //   if (data) {
-  //     const parseData = JSON.parse(data);
-  //     setAuth({
-  //       user: parseData.user,
-  //       token: parseData.token,
-  //     });
-  //   }
-  // }, []);
-
-  // Axios header sync
   useEffect(() => {
-    if (auth?.token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
+    const data = localStorage.getItem("auth");
+
+    if (data) {
+      const parseData = JSON.parse(data);
+      
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAuth({
+        user: parseData.user,
+        token: parseData.token,
+      });
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${parseData.token}`
     }
-  }, [auth.token]);
+
+    setLoading(false);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, loading }}>
       {children}
     </AuthContext.Provider>
   );
