@@ -18,6 +18,7 @@ import UserLayout from "./components/layout/userLayout/UserLayout";
 import AdminLayout from "./components/layout/adminLayout/AdminLayout";
 import ManageCollection from "./pages/admin/ManageCollection";
 import ManageProduct from "./pages/admin/ManageProduct";
+import AdminProfile from "./pages/admin/AdminProfile";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/dashboard" element={<AdminRoute />}>
             <Route path="admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
+              <Route path="profile" element={<AdminProfile />} />
               <Route path="manage-collection" element={<ManageCollection />} />
               <Route path="manage-product" element={<ManageProduct />} />
             </Route>
