@@ -32,7 +32,7 @@ export const createCollection = async (req, res) => {
     const collection = await Collection.create({ name, slug });
     // Send success response
     res.status(201).json({
-      status: true,
+      success: true,
       message: "New collection has been created successfully",
       collection,
     });
