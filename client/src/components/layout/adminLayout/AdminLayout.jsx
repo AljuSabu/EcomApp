@@ -7,7 +7,7 @@ const AdminLayout = () => {
     <>
       <div className="min-h-screen flex gap-5">
         <AdminMenu />
-        <main className="grow pt-5">
+        <main className="grow p-10">
           <Outlet />
         </main>
       </div>
