@@ -48,7 +48,7 @@ const Signup = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-taupe-200 p-8 md:p-12 w-full max-w-lg rounded-2xl shadow-xl shadow-zinc-200/50"
+          className="bg-olive-300/80 p-8 md:p-12 w-full max-w-lg rounded-2xl shadow-xl shadow-olive-400/50"
         >
           <div className="text-center mb-10">
             <h1 className="text-3xl font-serif mb-2">Create Account</h1>
@@ -64,6 +64,7 @@ const Signup = () => {
               </label>
               <input
                 type="text"
+                placeholder="John Doe"
                 required
                 value={name}
                 onChange={(e) => {
@@ -79,6 +80,7 @@ const Signup = () => {
               </label>
               <input
                 type="email"
+                placeholder="john@example.com"
                 required
                 value={email}
                 onChange={(e) => {
@@ -153,7 +155,7 @@ const Signup = () => {
 
             <button
               type="submit"
-              className="w-full bg-zinc-900 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors flex items-center justify-center group"
+              className="w-full bg-indigo-950 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-indigo-900 transition-colors flex items-center justify-center group"
             >
               Create Account
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -165,7 +167,7 @@ const Signup = () => {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-zinc-900 font-bold hover:underline"
+                className="text-indigo-950 font-bold hover:underline"
               >
                 Sign In
               </Link>

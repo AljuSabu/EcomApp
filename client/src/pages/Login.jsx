@@ -51,7 +51,7 @@ const Login = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-taupe-200 p-8 md:p-12 w-full rounded-2xl max-w-lg shadow-xl shadow-zinc-200/50"
+          className="bg-olive-300/80 p-8 md:p-12 w-full rounded-2xl max-w-lg shadow-xl shadow-olive-400/50"
         >
           <div className="text-center mb-10">
             <h1 className="text-3xl font-serif mb-2">Welcome Back</h1>
@@ -67,7 +67,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                placeholder="abcd@gmail.com"
+                placeholder="john@example.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -104,24 +104,9 @@ const Login = () => {
               </div>
             </div>
 
-            {/* <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-                Account Type
-              </label>
-              <select
-                name="role"
-                required
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm appearance-none cursor-pointer"
-              >
-                <option value="">Select Role</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div> */}
-
             <button
               type="submit"
-              className="w-full bg-zinc-900 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors flex items-center justify-center group"
+              className="w-full bg-indigo-950 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-indigo-900 transition-colors flex items-center justify-center group"
             >
               Sign In
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -133,7 +118,7 @@ const Login = () => {
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-zinc-900 font-bold hover:underline"
+                className="text-indigo-950 font-bold hover:underline"
               >
                 Join the Club
               </Link>

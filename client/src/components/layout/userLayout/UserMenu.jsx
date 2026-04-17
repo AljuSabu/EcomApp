@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import axios from "axios";
 import { toast } from "sonner";
@@ -18,8 +18,6 @@ const UserMenu = () => {
 
   const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
 
-  const navigate = useNavigate()
-
   //logout
   const handleLogout = async () => {
     try {
@@ -35,7 +33,6 @@ const UserMenu = () => {
         });
         localStorage.removeItem("auth");
       }
-      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong while logging out");

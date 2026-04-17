@@ -114,8 +114,8 @@ const Navbar = () => {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center border transition-colors ${
                       auth?.user
-                        ? "bg-zinc-400 text-white"
-                        : "bg-zinc-100 text-black border-zinc-300 group-hover:bg-zinc-200"
+                        ? "bg-zinc-400/60 text-white group-hover:bg-zinc-400/80"
+                        : "bg-zinc-100 text-black border-indigo-300/50 group-hover:bg-indigo-700/10 group-hover:text-indigo-700"
                     }`}
                   >
                     {auth?.user ? (
@@ -154,7 +154,7 @@ const Navbar = () => {
                             </div>
                             <Link
                               to={`/dashboard/${auth.user.role === "admin" ? "admin" : "user"}`}
-                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-primary/5 hover:text-primary transition-colors"
+                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-indigo-800/10 hover:text-indigo-700 transition-colors"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
                               <LayoutDashboard size={16} />
@@ -162,7 +162,7 @@ const Navbar = () => {
                             </Link>
                             <Link
                               to="/profile"
-                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:text-primary transition-colors"
+                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-indigo-800/10 hover:text-indigo-700 transition-colors"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
                               <UserCircle size={16} />
@@ -170,7 +170,7 @@ const Navbar = () => {
                             </Link>
                             <button
                               onClick={handleLogout}
-                              className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/5 transition-colors text-left"
+                              className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-rose-600 hover:bg-rose-600/10 transition-colors text-left"
                             >
                               <LogOut size={16} />
                               <span>Logout</span>
@@ -188,7 +188,7 @@ const Navbar = () => {
                             </div>
                             <Link
                               to="/login"
-                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-primary/5 hover:text-primary transition-colors"
+                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-indigo-800/10 hover:text-indigo-700 transition-colors"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
                               <LogIn size={16} />
@@ -196,7 +196,7 @@ const Navbar = () => {
                             </Link>
                             <Link
                               to="/signup"
-                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-primary/5 hover:text-primary transition-colors"
+                              className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-indigo-800/10 hover:text-indigo-700 transition-colors"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
                               <UserPlus size={16} />

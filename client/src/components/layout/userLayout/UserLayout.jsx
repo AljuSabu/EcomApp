@@ -7,7 +7,7 @@ const UserLayout = () => {
     <>
       <div className="min-h-screen flex gap-5">
         <UserMenu />
-        <main className="grow pt-5">
+        <main className="grow p-5">
           <Outlet />
         </main>
       </div>
