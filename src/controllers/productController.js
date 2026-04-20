@@ -6,8 +6,7 @@ import slugify from "slugify";
 export const createProduct = async (req, res) => {
   try {
     // Get info from frontend. As we have installed formidable we will grap the data from req.fields instead of req.body
-    const { name, description, price, collection, quantity, shipping } =
-      req.fields;
+    const { name, description, price, collection, quantity } = req.fields;
 
     // Get photo from req.files
     const { photo } = req.files;
@@ -21,7 +20,7 @@ export const createProduct = async (req, res) => {
     }
 
     // Photo Validation
-    if (!photo && photo.size > 1000000) {
+    if (!photo || photo.size > 1000000) {
       return res.status(400).json({
         success: false,
         message: "Photo is required and it cannot be more than 1mb",
@@ -33,7 +32,7 @@ export const createProduct = async (req, res) => {
 
     // If exists sent response
     if (existingProduct) {
-      return res.status(200).json({
+      return res.status(409).json({
         success: false,
         message: "Product already exists",
       });
@@ -133,6 +132,82 @@ export const productPhoto = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error in fetching photo",
+    });
+  }
+};
+
+// Delete Product
+export const deleteProduct = async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.pid).select("-photo");
+    res.status(200).json({
+      success: true,
+      message: "Product has been deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in deleting product",
+      error,
+    });
+  }
+};
+
+// Update Product
+export const updateProduct = async (req, res) => {
+  try {
+    const { name, description, price, collection, quantity } = req.fields;
+    const { photo } = req.files;
+
+    // Validation
+    if (!name || !description || !price || !collection || !quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all the fields",
+      });
+    }
+
+    // Photo Validation
+    if (!photo || photo.size > 1000000) {
+      return res.status(400).json({
+        success: false,
+        message: "Photo is required",
+      });
+    }
+
+    // // Check if the product already exists
+    // const existingProduct = await Product.findOne({ name });
+    // if (existingProduct) {
+    //   return res.status(409).json({
+    //     success: false,
+    //     message: "Product already exists",
+    //   });
+    // }
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.pid,
+      { ...req.fields, slug: slugify(name) },
+      { new: true },
+    );
+
+    // Handle Photo
+    if (photo) {
+      product.photo.data = fs.readFileSync(photo.path);
+      product.photo.contentType = photo.type;
+    }
+    await product.save();
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in updating product",
+      error,
     });
   }
 };
