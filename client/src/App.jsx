@@ -19,6 +19,9 @@ import AdminLayout from "./components/layout/adminLayout/AdminLayout";
 import ManageCollection from "./pages/admin/ManageCollection";
 import ManageProduct from "./pages/admin/ManageProduct";
 import AdminProfile from "./pages/admin/AdminProfile";
+import SingleProduct from "./pages/SingleProduct";
+import AdminProduct from "./pages/admin/AdminProducts";
+import UpdateProduct from "./pages/admin/UpdateProduct";
 
 function App() {
   return (
@@ -41,11 +44,14 @@ function App() {
               <Route path="profile" element={<AdminProfile />} />
               <Route path="manage-collection" element={<ManageCollection />} />
               <Route path="manage-product" element={<ManageProduct />} />
+              <Route path="products" element={<AdminProduct />} />
+              <Route path="product/:slug" element={<UpdateProduct />} />
             </Route>
           </Route>
 
           <Route path="collection" element={<Collection />} />
           <Route path="products" element={<Products />} />
+          <Route path="products/:id" element={<SingleProduct />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />

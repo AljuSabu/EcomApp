@@ -23,3 +23,15 @@
 .nav-link:hover::after {
   @apply w-full;
 }
+
+.custom-select .ant-select-selector {
+  @apply bg-zinc-50 border border-zinc-200 rounded-md px-2 py-1;
+}
+
+.custom-select:hover .ant-select-selector {
+  @apply border-zinc-300;
+}
+
+.custom-select.ant-select-focused .ant-select-selector {
+  @apply border-indigo-900/50 shadow-none;
+}

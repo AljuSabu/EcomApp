@@ -44,6 +44,7 @@ const AdminMenu = () => {
     { name: "Profile", path: "profile", icon: User },
     { name: "Manage Collection", path: "manage-collection", icon: Layers },
     { name: "Manage Product", path: "manage-product", icon: ShoppingBag },
+     {name: "Products", path: "products", icon: ShoppingBag },
   ];
 
   return (
