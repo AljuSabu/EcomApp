@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema(
       ref: "Collection",
       require: true,
     },
-    quantity: {
+    stock: {
       type: Number,
       required: true,
     },

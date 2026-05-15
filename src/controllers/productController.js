@@ -6,13 +6,13 @@ import slugify from "slugify";
 export const createProduct = async (req, res) => {
   try {
     // Get info from frontend. As we have installed formidable we will grap the data from req.fields instead of req.body
-    const { name, description, price, collection, quantity } = req.fields;
+    const { name, description, price, collection, stock } = req.fields;
 
     // Get photo from req.files
     const { photo } = req.files;
 
     // Validation
-    if (!name || !description || !price || !collection || !quantity) {
+    if (!name || !description || !price || !collection || !stock) {
       return res.status(400).json({
         success: false,
         message: "Please fill all the fields",
@@ -121,7 +121,7 @@ export const singleProduct = async (req, res) => {
 // Get Photo
 export const productPhoto = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.pid).select("photo");
+    const product = await Product.findById(req.params.id).select("photo");
 
     if (product.photo.data) {
       res.set("Content-type", product.photo.contentType);
@@ -139,7 +139,7 @@ export const productPhoto = async (req, res) => {
 // Delete Product
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.pid).select("-photo");
+    await Product.findByIdAndDelete(req.params.id).select("-photo");
     res.status(200).json({
       success: true,
       message: "Product has been deleted successfully",
@@ -157,11 +157,11 @@ export const deleteProduct = async (req, res) => {
 // Update Product
 export const updateProduct = async (req, res) => {
   try {
-    const { name, description, price, collection, quantity } = req.fields;
+    const { name, description, price, collection, stock } = req.fields;
     const { photo } = req.files;
 
     // Validation
-    if (!name || !description || !price || !collection || !quantity) {
+    if (!name || !description || !price || !collection || !stock) {
       return res.status(400).json({
         success: false,
         message: "Please fill all the fields",
@@ -169,24 +169,15 @@ export const updateProduct = async (req, res) => {
     }
 
     // Photo Validation
-    if (!photo || photo.size > 1000000) {
+    if (photo && photo.size > 1000000) {
       return res.status(400).json({
         success: false,
-        message: "Photo is required",
+        message: "Photo should be less than 1MB",
       });
     }
 
-    // // Check if the product already exists
-    // const existingProduct = await Product.findOne({ name });
-    // if (existingProduct) {
-    //   return res.status(409).json({
-    //     success: false,
-    //     message: "Product already exists",
-    //   });
-    // }
-
     const product = await Product.findByIdAndUpdate(
-      req.params.pid,
+      req.params.id,
       { ...req.fields, slug: slugify(name) },
       { new: true },
     );

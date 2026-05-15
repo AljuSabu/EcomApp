@@ -97,7 +97,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "No user found , plese signup",
+        message: "No user found , please signup",
       });
     }
 
@@ -128,7 +128,7 @@ export const login = async (req, res) => {
     // Send success message
     res.status(200).json({
       success: true,
-      message: "User Successfully Loggied in",
+      message: "User Successfully Logged in",
       user: {
         id: user._id,
         name: user.name,
@@ -159,7 +159,7 @@ export const logout = async (req, res) => {
     });
     res.status(200).json({
       success: true,
-      message: "Logged  out Successfully",
+      message: "Logged out Successfully",
     });
   } catch (error) {
     console.log(error);
