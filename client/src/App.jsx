@@ -22,6 +22,8 @@ import AdminProfile from "./pages/admin/AdminProfile";
 import SingleProduct from "./pages/SingleProduct";
 import AdminProduct from "./pages/admin/AdminProducts";
 import UpdateProduct from "./pages/admin/UpdateProduct";
+import Cart from "./pages/Cart";
+import UserProfile from "./pages/user/UserProfile";
 
 function App() {
   return (
@@ -33,8 +35,10 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoutes />}>
             <Route path="user" element={<UserLayout />}>
               <Route index element={<UserDashboard />} />
+              <Route path="profile" element={<UserProfile />} />
               <Route path="orders" element={<Orders />} />
               <Route path="wishlist" element={<WishList />} />
+              <Route path="cart" element={<Cart />} />
             </Route>
           </Route>
 
