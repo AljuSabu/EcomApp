@@ -89,41 +89,6 @@ const AdminMenu = () => {
               </NavLink>
             ))}
           </div>
-          {/* <ul className="pt-2 pb-4 space-y-1 text-sm">
-            <li className="">
-              <NavLink className="flex items-center p-2 space-x-3 rounded-md">
-                <User strokeWidth={1} />
-                <span>Profile</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/admin"
-                className="flex items-center p-2 space-x-3 rounded-md"
-              >
-                <LayoutDashboard strokeWidth={1} />
-                <span>Dashboard</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="manage-collection"
-                className="flex items-center p-2 space-x-3 rounded-md"
-              >
-                <Layers strokeWidth={1} />
-                <span>Manage Collection</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="manage-product"
-                className="flex items-center p-2 space-x-3 rounded-md"
-              >
-                <ShoppingBag strokeWidth={1} />
-                <span>Manage Product</span>
-              </NavLink>
-            </li>
-          </ul> */}
           <ul className="pt-4 pb-2 space-y-1 text-sm">
             <li>
               <NavLink className="flex items-center px-4 py-3 space-x-3 rounded-md">

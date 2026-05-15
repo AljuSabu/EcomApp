@@ -6,6 +6,7 @@ import {
   LogIn,
   LogOut,
   Menu,
+  ShoppingCart,
   User,
   UserCircle,
   UserPlus,
@@ -16,18 +17,20 @@ import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import CartContext from "../../context/CartContex";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const { auth, setAuth } = useContext(AuthContext);
+  const [ cart ] = useContext(CartContext);
 
   const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
 
   const userMenuRef = useRef(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -64,7 +67,7 @@ const Navbar = () => {
         });
         localStorage.removeItem("auth");
       }
-      navigate("/")
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong while logging out");
@@ -119,9 +122,7 @@ const Navbar = () => {
                     }`}
                   >
                     {auth?.user ? (
-                      <>
-                        {userInitial || "?"}
-                      </>
+                      <>{userInitial || "?"}</>
                     ) : (
                       <User size={18} />
                     )}
@@ -161,7 +162,7 @@ const Navbar = () => {
                               <span>Dashboard</span>
                             </Link>
                             <Link
-                              to="/profile"
+                              to={`/dashboard/${auth.user.role === "admin" ? "admin" : "user"}/profile`}
                               className="flex items-center space-x-2 px-4 py-2 text-sm text-zinc-600 hover:bg-indigo-800/10 hover:text-indigo-700 transition-colors"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
@@ -209,10 +210,23 @@ const Navbar = () => {
                   )}
                 </AnimatePresence>
               </div>
+              {auth?.user && (
+                <Link
+                  to="/dashboard/user/cart"
+                  className="text-zinc-600/80 pl-5 relative cursor-pointer"
+                >
+                  <ShoppingCart />
+                  {cart?.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-zinc-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                      {cart.length}
+                    </span>
+                  )}
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-4">
+            <div className="md:hidden flex items-center space-x-4 ml-auto">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-zinc-600 hover:text-zinc-900 focus:outline-none"
