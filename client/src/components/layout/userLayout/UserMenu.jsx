@@ -11,6 +11,8 @@ import {
   Search,
   Settings,
   User,
+  ShoppingCart,
+  ChevronRight,
 } from "lucide-react";
 
 const UserMenu = () => {
@@ -39,72 +41,69 @@ const UserMenu = () => {
     }
   };
 
+  const menuItems = [
+    { name: "Dashboard", path: "", icon: LayoutDashboard },
+    { name: "Profile", path: "profile", icon: User },
+    { name: "Orders", path: "orders", icon: Scale },
+    { name: "Wishlist", path: "wishlist", icon: Heart },
+    { name: "Cart", path: "cart", icon: ShoppingCart },
+  ];
+
   return (
     <>
-      <div className="h-full p-3 space-y-2 w-60 bg-taupe-200 text-zinc-500 pt-5">
-        <div className="flex items-center p-2 space-x-4">
+      <div className="h-full p-3 space-y-2 w-60 bg-olive-300/70 text-zinc-500">
+        <div className="flex items-center p-2 space-x-4 pt-5">
           <div className="size-10 border rounded-full flex justify-center items-center bg-zinc-400 text-white text-xl">
             {userInitial}
           </div>
           <div>
             <h2 className="text-lg font-semibold">{auth?.user?.name}</h2>
             <span className="flex items-center space-x-1">
-              <div className="text-sm text-gray-700">{auth?.user?.role}</div>
+              <div className="text-xs hover:underline text-gray-700">
+                {auth?.user?.role}
+              </div>
             </span>
           </div>
         </div>
         <div className="divide-y divide-gray-700">
-          <ul className="pt-2 pb-4 space-y-1 text-sm">
-            <li className="">
-              <NavLink className="flex items-center p-2 space-x-3 rounded-md">
-                <User strokeWidth={1} />
-                <span>Profile</span>
-              </NavLink>
-            </li>
-            <li>
+          <div className="space-y-2 pt-3 pb-4 text-sm">
+            {menuItems.map((item) => (
               <NavLink
-                to="/dashboard/user"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                key={item.name}
+                to={item.path || "."}
+                end={item.path === ""}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-4 py-3 rounded-lg transition-all group ${
+                    isActive
+                      ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
+                      : "hover:bg-indigo-900/10 hover:text-zinc-900"
+                  }`
+                }
               >
-                <LayoutDashboard strokeWidth={1} />
-                <span>Dashboard</span>
+                <div className="flex items-center space-x-3">
+                  <item.icon size={18} strokeWidth={1} />
+                  <span>{item.name}</span>
+                </div>
+                <ChevronRight
+                  size={14}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                />
               </NavLink>
-            </li>
-            <li>
-              <NavLink className="flex items-center p-2 space-x-3 rounded-md">
-                <Search strokeWidth={1} />
-                <span>Search</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/user/orders"
-                className="flex items-center p-2 space-x-3 rounded-md"
-              >
-                <Scale strokeWidth={1} />
-                <span>Orders</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/user/wishlist"
-                className="flex items-center p-2 space-x-3 rounded-md"
-              >
-                <Heart strokeWidth={1} />
-                <span>Wishlist</span>
-              </NavLink>
-            </li>
-          </ul>
+            ))}
+          </div>
           <ul className="pt-4 pb-2 space-y-1 text-sm">
             <li>
-              <NavLink className="flex items-center p-2 space-x-3 rounded-md">
-                <Settings strokeWidth={1} />
+              <NavLink className="flex items-center px-4 py-3 space-x-3 rounded-md">
+                <Settings size={18} strokeWidth={1} />
                 <span>Settings</span>
               </NavLink>
             </li>
             <li>
-              <div onClick={handleLogout} className="flex items-center p-2 space-x-3 rounded-md cursor-pointer">
-                <DoorOpen strokeWidth={1} />
+              <div
+                onClick={handleLogout}
+                className="flex items-center px-4 py-3 space-x-3 rounded-md cursor-pointer"
+              >
+                <DoorOpen size={18} strokeWidth={1} />
                 <span>Logout</span>
               </div>
             </li>

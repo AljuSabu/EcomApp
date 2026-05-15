@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Select } from "antd";
 
 const { Option } = Select;
@@ -15,10 +15,12 @@ const UpdateProduct = () => {
   const [price, setPrice] = useState("");
   const [collection, setCollection] = useState("");
   const [collections, setCollections] = useState([]);
-  const [quantity, setQuantity] = useState("");
+  const [stock, setStock] = useState("");
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState("");
+  const [id, setId]=useState("")
 
+  const params = useParams();
   const navigate = useNavigate();
 
   const getCollection = async () => {
@@ -33,10 +35,11 @@ const UpdateProduct = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getCollection();
   }, []);
 
-  const createProduct = async (e) => {
+  const updateProduct = async (e) => {
     try {
       e.preventDefault();
       const productData = new FormData();
@@ -44,11 +47,12 @@ const UpdateProduct = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("collection", collection);
-      productData.append("quantity", quantity);
-      productData.append("photo", photo);
+      productData.append("shipping", shipping)
+      productData.append("stock", stock);
+      photo && productData.append("photo", photo);
 
-      const { data } = await axios.postForm(
-        "http://localhost:4000/api/v1/product/create-product",
+      const { data } = await axios.put(
+        `http://localhost:4000/api/v1/product/update-product/${id}`,
         productData,
       );
       if (data?.success) {
@@ -59,9 +63,34 @@ const UpdateProduct = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong when creating product");
+      toast.error("Something went wrong while updating product");
     }
   };
+
+  const getSingleProduct = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:4000/api/v1/product/single-product/${params.slug}`,
+      );
+      setName(data?.product?.name);
+      setDescription(data?.product?.description);
+      setPrice(data?.product?.price);
+      setStock(data?.product?.stock);
+      setShipping(data?.product?.shipping)
+      setCollection(data?.product?.collection?._id)
+      setId(data?.product?._id)
+
+      // console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getSingleProduct();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <motion.div
@@ -79,7 +108,7 @@ const UpdateProduct = () => {
         </div>
 
         <button
-          onClick={createProduct}
+          onClick={updateProduct}
           className="bg-indigo-800 text-white px-6 py-3 text-xs font-bold rounded-md uppercase tracking-widest hover:bg-indigo-900 transition-colors"
         >
           Save Product
@@ -137,7 +166,7 @@ const UpdateProduct = () => {
               />
             </div>
 
-            {/* Price + Quantity */}
+            {/* Price + Stock */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-xs uppercase text-zinc-500 mb-2 block">
@@ -157,8 +186,8 @@ const UpdateProduct = () => {
                 </label>
                 <input
                   type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
                   className="w-full px-4 py-2 border border-zinc-200 bg-zinc-50 rounded-md text-sm focus:outline-none focus:border-indigo-900"
                 />
               </div>
@@ -197,10 +226,18 @@ const UpdateProduct = () => {
           </label>
 
           {/* Preview */}
-          {photo && (
+          {photo ? (
             <div className="mt-6">
               <img
                 src={URL.createObjectURL(photo)}
+                alt="preview"
+                className="w-full object-cover border border-zinc-200"
+              />
+            </div>
+          ) : (
+            <div className="mt-6">
+              <img
+                src={`http://localhost:4000/api/v1/product/product-photo/${id}`}
                 alt="preview"
                 className="w-full object-cover border border-zinc-200"
               />

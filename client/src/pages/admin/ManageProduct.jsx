@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { Upload } from "lucide-react";
+import { Edit2, Filter, Search, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Select } from "antd";
@@ -15,9 +15,10 @@ const ManageProduct = () => {
   const [price, setPrice] = useState("");
   const [collection, setCollection] = useState("");
   const [collections, setCollections] = useState([]);
-  const [quantity, setQuantity] = useState("");
+  const [stock, setStock] = useState("");
   const [shipping, setShipping] = useState(false);
   const [photo, setPhoto] = useState("");
+  const [products, setProducts] = useState([]);
 
   const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ const ManageProduct = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getCollection();
   }, []);
 
@@ -44,7 +46,7 @@ const ManageProduct = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("collection", collection);
-      productData.append("quantity", quantity);
+      productData.append("stock", stock);
       productData.append("photo", photo);
 
       const { data } = await axios.postForm(
@@ -62,6 +64,26 @@ const ManageProduct = () => {
       toast.error("Something went wrong when creating product");
     }
   };
+
+  const getProducts = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:4000/api/v1/product/get-all-products",
+      );
+      if (data?.success) {
+        setProducts(data.products);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while fetching products");
+    }
+  };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getProducts();
+  }, []);
 
   return (
     <motion.div
@@ -82,7 +104,7 @@ const ManageProduct = () => {
           onClick={createProduct}
           className="bg-indigo-800 text-white px-6 py-3 text-xs font-bold rounded-md uppercase tracking-widest hover:bg-indigo-900 transition-colors"
         >
-          Save Product
+          Add Product
         </button>
       </div>
 
@@ -137,7 +159,7 @@ const ManageProduct = () => {
               />
             </div>
 
-            {/* Price + Quantity */}
+            {/* Price + Stock */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-xs uppercase text-zinc-500 mb-2 block">
@@ -157,8 +179,8 @@ const ManageProduct = () => {
                 </label>
                 <input
                   type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value)}
                   className="w-full px-4 py-2 border border-zinc-200 bg-zinc-50 rounded-md text-sm focus:outline-none focus:border-indigo-900"
                 />
               </div>
@@ -206,6 +228,101 @@ const ManageProduct = () => {
               />
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="bg-white border border-zinc-200 shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-zinc-100 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="relative w-full md:w-96">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+              size={16}
+            />
+            <input
+              type="text"
+              placeholder="Search by name..."
+              className="pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 text-sm focus:outline-none focus:border-indigo-900/50 w-full transition-colors"
+            />
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  Product
+                </th>
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  Collection
+                </th>
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  Price
+                </th>
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  Stock
+                </th>
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-right">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-100">
+              {products.map((product) => (
+                <tr
+                  key={product._id}
+                  className="hover:bg-zinc-50/50 transition-colors group"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-zinc-100 overflow-hidden rounded border border-zinc-200 fle shrink-0">
+                        <img
+                          src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-900 leading-none mb-1">
+                          {product.name}
+                        </p>
+                        <p className="text-xs text-zinc-500 truncate max-w-50">
+                          {product.description}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-zinc-600">
+                    {product.collection.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-zinc-900">
+                    {product.price}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-zinc-600">
+                    {product.stock}
+                  </td>
+
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end space-x-1">
+                      <button
+                        className="p-2 text-zinc-400 hover:text-zinc-900 transition-colors"
+                        title="Edit"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button
+                        className="p-2 text-zinc-400 hover:text-destructive transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </motion.div>

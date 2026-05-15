@@ -23,6 +23,7 @@ const AdminProducts = () => {
     }
   };
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getProducts();
   }, []);
 
@@ -67,7 +68,7 @@ const AdminProducts = () => {
                   </h2>
                 </div>
                 <p className="dark:text-gray-800">{item.description}</p>
-                <p className="text-gray-800 pt-2">Quantity : {item.quantity}</p>
+                <p className="text-gray-800 pt-2">Stock : {item.stock}</p>
                 <p className="text-gray-800 pt-2">
                   Collection : {item.collection.name}
                 </p>
