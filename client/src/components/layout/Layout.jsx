@@ -21,7 +21,7 @@ const Layout = ({ description, keywords, author, title }) => {
       <div className="min-h-screen py-16 overflow-hidden">
         <Navbar />
 
-        <main className="flex grow">
+        <main className="flex flex-col grow">
           <Outlet />
         </main>
 

@@ -24,6 +24,14 @@
   @apply w-full;
 }
 
+.nav-link.active {
+  @apply text-zinc-900;
+}
+
+.nav-link.active::after {
+  @apply w-full;
+}
+
 .custom-select .ant-select-selector {
   @apply bg-zinc-50 border border-zinc-200 rounded-md px-2 py-1;
 }

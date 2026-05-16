@@ -94,7 +94,7 @@ const Navbar = () => {
                   key={item.name}
                   to={item.path}
                   className={({ isActive }) =>
-                    `nav-link ${isActive ? "text-zinc-900 after:w-full" : ""}`
+                    `nav-link ${isActive ? "active" : ""}`
                   }
                 >
                   {item.name}
