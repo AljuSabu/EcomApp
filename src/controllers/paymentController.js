@@ -1,5 +1,7 @@
 import { instance } from "../../server.js";
+import config from "../config/config.js";
 
+// Controller function to process payment
 export const processPayment = async (req, res) => {
   try {
     // Get the amount from the request body sent by the frontend
@@ -25,6 +27,23 @@ export const processPayment = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Something went wrong while processing payment",
+    });
+  }
+};
+
+// Controller function to get the Razorpay key
+export const getKey = (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Key fetched successfully",
+      key: config.RAZORPAY_KEY_ID,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while fetching key",
     });
   }
 };
