@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import CartContext from "../context/CartContex";
+import axios from "axios";
 import { Helmet } from "react-helmet";
 import {
   ArrowLeft,
@@ -27,6 +28,46 @@ const Cart = () => {
     (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
     0,
   );
+
+  const checkout = async (amount) => {
+    try {
+      const { data: orderdata } = await axios.post(
+        "http://localhost:4000/api/v1/payment/process-payment",
+        { amount },
+      );
+      const { order } = orderdata;
+
+      const { data: keydata } = await axios.get(
+        "http://localhost:4000/api/v1/payment/get-key",
+      );
+      const { key } = keydata;
+      const options = {
+        key,
+        amount: order.amount,
+        currency: "INR",
+        name: "LUXE Commerce",
+        description: "Test Transaction",
+        order_id: order.id,
+        callback_url:
+          "http://localhost:4000/api/v1/payment/payment-verification",
+        prefill: {
+          name: "John Doe",
+          email: "john.doe@example.com",
+          contact: "9386816437",
+        },
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      localStorage.setItem("checkoutItems", JSON.stringify(cart));
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Checkout error:", error);
+    }
+  };
 
   const tax = subtotal * 0.02;
   const freeShipping = 5000;
@@ -225,22 +266,13 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <button className="w-full bg-indigo-800 text-white py-5 text-xs font-bold uppercase tracking-widest hover:bg-indigo-900 transition-all shadow-lg shadow-indigo-900/20 hover:shadow-indigo-900/30 flex items-center justify-center">
+                <button
+                  onClick={() => checkout(total)}
+                  className="w-full bg-indigo-800 text-white py-5 text-xs font-bold uppercase tracking-widest hover:bg-indigo-900 transition-all shadow-lg shadow-indigo-900/20 hover:shadow-indigo-900/30 flex items-center justify-center"
+                >
                   Checkout Now
                   <ArrowRight size={16} className="ml-2" />
                 </button>
-
-                <div className="mt-8">
-                  <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold mb-4">
-                    Accepted Payments
-                  </p>
-                  <div className="flex space-x-3 grayscale opacity-50">
-                    <div className="w-10 h-6 bg-zinc-200 rounded"></div>
-                    <div className="w-10 h-6 bg-zinc-200 rounded"></div>
-                    <div className="w-10 h-6 bg-zinc-200 rounded"></div>
-                    <div className="w-10 h-6 bg-zinc-200 rounded"></div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

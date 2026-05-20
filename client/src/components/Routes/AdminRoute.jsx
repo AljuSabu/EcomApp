@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
-import Loader from "../Loader";
+import Loader from "../utils/Loader";
 
 const AdminRoute = () => {
   const { auth, loading } = useContext(AuthContext);
