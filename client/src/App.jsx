@@ -24,10 +24,13 @@ import AdminProduct from "./pages/admin/AdminProducts";
 import UpdateProduct from "./pages/admin/UpdateProduct";
 import Cart from "./pages/Cart";
 import UserProfile from "./pages/user/UserProfile";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 function App() {
   return (
     <>
+    <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -59,6 +62,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="payment/payment-success" element={<PaymentSuccessPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
