@@ -11,7 +11,7 @@ import paymentRoutes from "./routes/paymentRoute.js";
 const app = express();
 
 //middlewares
-app.use(cors()); //It allows to interact with the client which is loaded in different domain
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); //It allows to interact with the client which is loaded in different domain
 app.use(express.json()); //Instructs the app to accept the data in json format
 app.use(express.urlencoded({ extended: true })); //Instructs the app to accept data in the url encoded format as well
 app.use(morgan("dev")); //Logs requests, errors and more to the console
