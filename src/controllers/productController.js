@@ -202,3 +202,71 @@ export const updateProduct = async (req, res) => {
     });
   }
 };
+
+// Product Filter
+export const productFilter = async (req, res) => {
+  try {
+    const { checked, radio } = req.body;
+
+    let args = {};
+    if (checked.length > 0) args.collection = checked;
+    if (radio.length) args.range = { $gte: radio[0], $lte: radio[1] };
+
+    const products = await Product.find(args);
+
+    res.status(200).json({
+      success: true,
+      message: "Products filtered successfully",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error while filtering products",
+      error,
+    });
+  }
+};
+
+// Product Count
+export const productCount = async (req, res) => {
+  try {
+    const total = await Product.find({}).estimatedDocumentCount();
+    res.status(200).json({
+      success: true,
+      total,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in counting products",
+      error,
+    });
+  }
+};
+
+// Product List per Page
+export const productList = async (req, res) => {
+  try {
+    const perPage = 2;
+    const page = req.params.page ? req.params.page : 1;
+    const products = await Product.find({})
+      .select("-photo")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching product list",
+      error,
+    });
+  }
+};

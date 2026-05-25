@@ -6,6 +6,9 @@ import {
   productPhoto,
   singleProduct,
   updateProduct,
+  productFilter,
+  productCount,
+  productList,
 } from "../controllers/productController.js";
 import formidable from "express-formidable";
 import { isAdmin, isLoggedIn } from "../middlewares/authMiddlewares.js";
@@ -29,5 +32,14 @@ router.delete("/delete-product/:id", isLoggedIn, isAdmin, deleteProduct);
 
 // updateProduct | method: put | path:"/api/v1/product/update-product/:id"
 router.put("/update-product/:id", formidable(), isLoggedIn, isAdmin, updateProduct);
+
+// Filter products | method: post | path:"/api/v1/product/product-filter"
+router.post("/product-filter", productFilter);
+
+// Product Count | method: get | path:"/api/v1/product/product-count"
+router.get("/product-count", productCount);
+
+// Product List | method: get | path:"/api/v1/product/product-list/:page"
+router.get("/product-list/:page",productList)
 
 export default router;
