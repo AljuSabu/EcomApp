@@ -209,8 +209,8 @@ export const productFilter = async (req, res) => {
     const { checked, radio } = req.body;
 
     let args = {};
-    if (checked.length > 0) args.collection = checked;
-    if (radio.length) args.range = { $gte: radio[0], $lte: radio[1] };
+    if (checked.length > 0) args.collection = { $in: checked };
+    if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
 
     const products = await Product.find(args);
 

@@ -8,9 +8,7 @@ const AdminProducts = () => {
 
   const getProducts = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/api/v1/product/get-all-products",
-      );
+      const { data } = await axios.get("/product/get-all-products");
 
       if (data?.success) {
         setProducts(data.products);
@@ -29,9 +27,7 @@ const AdminProducts = () => {
 
   const deleteProduct = async (id) => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:4000/api/v1/product/delete-product/${id}`,
-      );
+      const { data } = await axios.delete(`/product/delete-product/${id}`);
       if (data?.success) {
         getProducts();
         toast.success(data?.message);

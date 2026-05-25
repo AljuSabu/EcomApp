@@ -26,7 +26,7 @@ const UpdateProduct = () => {
   const getCollection = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/collection/get-all-collection",
+        "/collection/get-all-collection",
       );
       if (data?.success) setCollections(data.collection);
     } catch (error) {
@@ -52,7 +52,7 @@ const UpdateProduct = () => {
       photo && productData.append("photo", photo);
 
       const { data } = await axios.put(
-        `http://localhost:4000/api/v1/product/update-product/${id}`,
+        `/product/update-product/${id}`,
         productData,
       );
       if (data?.success) {
@@ -70,7 +70,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/product/single-product/${params.slug}`,
+        `/product/single-product/${params.slug}`,
       );
       setName(data?.product?.name);
       setDescription(data?.product?.description);

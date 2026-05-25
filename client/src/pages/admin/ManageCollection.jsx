@@ -17,7 +17,7 @@ const ManageCollection = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/collection/create-collection",
+        "/collection/create-collection",
         { name },
       );
       if (data?.success) {
@@ -36,7 +36,7 @@ const ManageCollection = () => {
   const getCollection = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/collection/get-all-collection",
+        "/collection/get-all-collection",
       );
 
       if (data?.success) {
@@ -55,7 +55,7 @@ const ManageCollection = () => {
   const deleteCollection = async (id) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:4000/api/v1/collection/delete-collection/${id}`,
+        `/collection/delete-collection/${id}`,
       );
       if (data?.success) {
         getCollection();
@@ -77,7 +77,7 @@ const ManageCollection = () => {
 
     try {
       const { data } = await axios.put(
-        `http://localhost:4000/api/v1/collection/update-collection/${selectedCollection._id}`,
+        `/collection/update-collection/${selectedCollection._id}`,
         { name: updatedName },
       );
 

@@ -24,7 +24,7 @@ const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const { auth, setAuth } = useContext(AuthContext);
-  const [ cart ] = useContext(CartContext);
+  const [cart] = useContext(CartContext);
 
   const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
 
@@ -55,9 +55,7 @@ const Navbar = () => {
   //logout
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:4000/api/v1/auth/logout",
-      );
+      const { data } = await axios.post("/auth/logout");
       if (data.success) {
         toast.success(data.message);
         setAuth({
@@ -212,7 +210,11 @@ const Navbar = () => {
               </div>
               {auth?.user && (
                 <Link
-                  to="/dashboard/user/cart"
+                  to={
+                    auth.user.role === "ADMIN"
+                      ? "/dashboard/admin"
+                      : "/dashboard/user/cart"
+                  }
                   className="text-zinc-600/80 pl-5 relative cursor-pointer"
                 >
                   <ShoppingCart />

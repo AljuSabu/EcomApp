@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      index: true,
     },
     collection: {
       type: mongoose.ObjectId,
@@ -35,7 +36,7 @@ const productSchema = new mongoose.Schema(
     shipping: {
       type: Boolean,
       required: true,
-      default:false
+      default: false,
     },
   },
   { timestamps: true },

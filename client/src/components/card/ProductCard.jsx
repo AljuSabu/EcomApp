@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ShoppingCart, Eye } from "lucide-react";
 import { toast } from "sonner";
+import AuthContext from "../../context/AuthContext";
 
 const ProductCard = ({ item, cart, setCart }) => {
+  const { auth } = useContext(AuthContext);
+
   const handleAddToCart = () => {
+    if(!auth?.user){
+      return toast.error("Please login to add items to cart");
+    }
+    
     const exists = cart.find((p) => p._id === item._id);
 
     if (exists) {

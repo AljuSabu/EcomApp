@@ -22,7 +22,7 @@ const AdminMenu = () => {
   const handleLogout = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/auth/logout",
+        "/auth/logout",
       );
       if (data.success) {
         toast.success(data.message);

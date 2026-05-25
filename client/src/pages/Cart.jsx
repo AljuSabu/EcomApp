@@ -31,15 +31,12 @@ const Cart = () => {
 
   const checkout = async (amount) => {
     try {
-      const { data: orderdata } = await axios.post(
-        "http://localhost:4000/api/v1/payment/process-payment",
-        { amount },
-      );
+      const { data: orderdata } = await axios.post("/payment/process-payment", {
+        amount,
+      });
       const { order } = orderdata;
 
-      const { data: keydata } = await axios.get(
-        "http://localhost:4000/api/v1/payment/get-key",
-      );
+      const { data: keydata } = await axios.get("/payment/get-key");
       const { key } = keydata;
       const options = {
         key,
@@ -48,8 +45,7 @@ const Cart = () => {
         name: "LUXE Commerce",
         description: "Test Transaction",
         order_id: order.id,
-        callback_url:
-          "http://localhost:4000/api/v1/payment/payment-verification",
+        callback_url: "/payment/payment-verification",
         prefill: {
           name: "John Doe",
           email: "john.doe@example.com",

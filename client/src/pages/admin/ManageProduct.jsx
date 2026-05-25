@@ -12,32 +12,28 @@ const { Option } = Select;
 const ManageProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [collection, setCollection] = useState("");
   const [collections, setCollections] = useState([]);
   const [stock, setStock] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [products, setProducts] = useState([]);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const navigate = useNavigate();
 
+  // Get Collections
   const getCollection = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/api/v1/collection/get-all-collection",
-      );
+      const { data } = await axios.get("/collection/get-all-collection");
       if (data?.success) setCollections(data.collection);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    getCollection();
-  }, []);
-
+  // Create Product
   const createProduct = async (e) => {
     try {
       e.preventDefault();
@@ -47,10 +43,11 @@ const ManageProduct = () => {
       productData.append("price", price);
       productData.append("collection", collection);
       productData.append("stock", stock);
+      productData.append("shipping", shipping);
       productData.append("photo", photo);
 
       const { data } = await axios.postForm(
-        "http://localhost:4000/api/v1/product/create-product",
+        "/product/create-product",
         productData,
       );
       if (data?.success) {
@@ -65,11 +62,10 @@ const ManageProduct = () => {
     }
   };
 
+  // Get Products
   const getProducts = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/api/v1/product/get-all-products",
-      );
+      const { data } = await axios.get("/product/get-all-products");
       if (data?.success) {
         setProducts(data.products);
       } else {
@@ -80,10 +76,78 @@ const ManageProduct = () => {
       toast.error("Something went wrong while fetching products");
     }
   };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    getCollection();
     getProducts();
   }, []);
+
+  const resetForm = () => {
+    setEditingProduct(null);
+    setName("");
+    setDescription("");
+    setPrice(0);
+    setCollection("");
+    setStock("");
+    setShipping(false);
+    setPhoto(null);
+  };
+
+  // Handle Edit Product
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+
+    setPhoto(null);
+
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price);
+    setCollection(product.collection._id);
+    setStock(product.stock);
+    setShipping(product.shipping);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const productData = new FormData();
+
+      productData.append("name", name);
+      productData.append("description", description);
+      productData.append("price", price);
+      productData.append("collection", collection);
+      productData.append("stock", stock);
+      productData.append("shipping", shipping);
+
+      if (photo) {
+        productData.append("photo", photo);
+      }
+
+      const { data } = await axios.put(
+        `/product/update-product/${editingProduct._id}`,
+        productData,
+      );
+
+      if (data?.success) {
+        toast.success(data.message);
+
+        // refresh list
+        getProducts();
+
+        // reset form
+        resetForm();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while updating the product");
+    }
+  };
 
   return (
     <motion.div
@@ -100,12 +164,23 @@ const ManageProduct = () => {
           </p>
         </div>
 
-        <button
-          onClick={createProduct}
-          className="bg-indigo-800 text-white px-6 py-3 text-xs font-bold rounded-md uppercase tracking-widest hover:bg-indigo-900 transition-colors"
-        >
-          Add Product
-        </button>
+        <div className="space-x-5">
+          {editingProduct && (
+            <button
+              onClick={resetForm}
+              className="ml-3 border border-zinc-300 px-6 py-3 text-xs font-bold rounded-md uppercase tracking-widest hover:bg-zinc-200/60"
+            >
+              Cancel
+            </button>
+          )}
+
+          <button
+            onClick={editingProduct ? handleUpdate : createProduct}
+            className="bg-indigo-800 text-white px-6 py-3 text-xs font-bold rounded-md uppercase tracking-widest hover:bg-indigo-900 transition-colors"
+          >
+            {editingProduct ? "Update Product" : "Add Product"}
+          </button>
+        </div>
       </div>
 
       {/* Main Layout */}
@@ -219,10 +294,14 @@ const ManageProduct = () => {
           </label>
 
           {/* Preview */}
-          {photo && (
+          {(photo || editingProduct) && (
             <div className="mt-6">
               <img
-                src={URL.createObjectURL(photo)}
+                src={
+                  photo
+                    ? URL.createObjectURL(photo)
+                    : `http://localhost:4000/api/v1/product/product-photo/${editingProduct?._id}`
+                }
                 alt="preview"
                 className="w-full object-cover border border-zinc-200"
               />
@@ -306,6 +385,7 @@ const ManageProduct = () => {
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end space-x-1">
                       <button
+                        onClick={() => handleEdit(product)}
                         className="p-2 text-zinc-400 hover:text-zinc-900 transition-colors"
                         title="Edit"
                       >
