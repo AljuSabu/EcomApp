@@ -125,6 +125,10 @@ export const productPhoto = async (req, res) => {
 
     if (product.photo.data) {
       res.set("Content-type", product.photo.contentType);
+
+      // "Don't download the image again for 1 year."
+      res.set("Cache-Control", "public, max-age=31536000");
+
       return res.status(200).send(product.photo.data);
     }
   } catch (error) {
@@ -250,7 +254,7 @@ export const productCount = async (req, res) => {
 // Product List per Page
 export const productList = async (req, res) => {
   try {
-    const perPage = 2;
+    const perPage = 3;
     const page = req.params.page ? req.params.page : 1;
     const products = await Product.find({})
       .select("-photo")

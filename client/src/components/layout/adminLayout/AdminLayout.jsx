@@ -5,9 +5,9 @@ import AdminMenu from "./AdminMenu";
 const AdminLayout = () => {
   return (
     <>
-      <div className="min-h-screen flex gap-5">
+      <div className="h-screen flex overflow-hidden">
         <AdminMenu />
-        <main className="grow p-10">
+        <main className="flex-1 overflow-y-auto p-10">
           <Outlet />
         </main>
       </div>

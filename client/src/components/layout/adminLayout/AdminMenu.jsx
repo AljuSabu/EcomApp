@@ -49,7 +49,7 @@ const AdminMenu = () => {
 
   return (
     <>
-      <div className="h-full p-3 space-y-2 w-60 bg-olive-300/70 text-zinc-500">
+      <div className="h-screen w-60 shrink-0 p-3 space-y-2 bg-olive-300/70 text-zinc-500 border-r border-zinc-200">
         <div className="flex items-center p-2 space-x-4 pt-5">
           <div className="size-10 border rounded-full flex justify-center items-center bg-zinc-400 text-white text-xl">
             {userInitial}

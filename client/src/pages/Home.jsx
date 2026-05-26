@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
-import AuthContext from "../context/AuthContext";
+// import AuthContext from "../context/AuthContext";
 import CartContext from "../context/CartContex";
 import Carousel from "../components/card/Carousel";
 import axios from "axios";
@@ -36,7 +36,7 @@ const Home = () => {
 
   const isFirstRender = useRef(true);
 
-  const { auth } = useContext(AuthContext);
+  // const { auth } = useContext(AuthContext);
   const [cart, setCart] = useContext(CartContext);
 
   const debouncedChecked = useDebounce(checked, 300);
@@ -169,97 +169,133 @@ const Home = () => {
 
       <section className="w-full mt-1 mb-20">
         <Carousel />
-        <pre>{JSON.stringify(auth, null, 4)}</pre>
-        <pre>{JSON.stringify(radio, null, 4)}</pre>
-        <div className="flex justify-between items-end mb-16 mt-10 px-10">
-          <div>
+        {/* <pre>{JSON.stringify(auth, null, 4)}</pre>
+        <pre>{JSON.stringify(radio, null, 4)}</pre> */}
+
+        <div className="max-w-7xl mx-auto px-6 py-20 lg:px-8 mt-14">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
             <div>
-              <h1>Collection Filter</h1>
-              {collections.map((item) => {
-                return (
-                  <Checkbox
-                    key={item._id}
-                    onChange={(e) => handleFilter(e.target.checked, item._id)}
-                  >
-                    {item.name}
-                  </Checkbox>
-                );
-              })}
+              <p className="text-sm uppercase tracking-[0.3em] text-zinc-400 mb-3">
+                Featured Collection
+              </p>
+
+              <h2 className="text-4xl font-serif text-zinc-900 leading-tight">
+                Featured Pieces
+              </h2>
+
+              <p className="text-zinc-500 mt-3 max-w-xl">
+                Handpicked selections from our latest drop.
+              </p>
+
+              <div className="mt-4 text-sm text-zinc-400">
+                {total} products available
+              </div>
             </div>
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-zinc-900 mb-3">
-                Price Filter
-              </h3>
-              <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-                {price.map((item) => {
-                  return (
-                    <div key={item._id}>
-                      <Radio value={item.arr}>{item.range}</Radio>
-                    </div>
-                  );
-                })}
-              </Radio.Group>
-            </div>
-            <button
-              type="button"
-              className="mt-4 px-4 py-2 bg-zinc-900 text-white text-sm font-bold uppercase tracking-widest hover:bg-zinc-700 transition-colors"
-              onClick={handleReset}
+
+            <Link
+              to="/products"
+              className="inline-flex items-center text-sm font-semibold uppercase tracking-[0.2em] border-b border-zinc-900 pb-1 hover:text-zinc-500 hover:border-zinc-500 transition"
             >
-              Reset Filters
-            </button>
+              View All
+            </Link>
           </div>
-          <div>
-            <h2 className="text-3xl font-serif mb-2 text-zinc-900 leading-tight">
-              Featured Pieces
-            </h2>
-            <div>{total} products</div>
-            <p className="text-zinc-500">
-              Handpicked selections from our latest drop.
-            </p>
-          </div>
-          <Link
-            to="/products"
-            className="text-sm font-bold uppercase tracking-widest border-b border-zinc-900 pb-1 hover:text-primary hover:border-primary transition-all"
-          >
-            View All
-          </Link>
-        </div>
-        {/* Show skeleton cards while filtering */}
-        {filtering ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 px-10">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-zinc-200 rounded-xl h-80 animate-pulse"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 px-10">
-            {products.map((item) => (
-              <ProductCard
-                key={item._id}
-                item={item}
-                cart={cart}
-                setCart={setCart}
-              />
-            ))}
-          </div>
-        )}
-        <div>
-          {products && products.length < total && (
-            <div className="flex justify-center mt-10">
-              <button
-                className="px-4 py-2 bg-zinc-900 text-white text-sm font-bold uppercase tracking-widest hover:bg-zinc-700 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(page + 1);
-                }}
-              >
-                {loading ? "Loading..." : "Load More"}
-              </button>
+          <div className="flex flex-col lg:flex-row gap-12">
+            {/* Sidebar Filters */}
+            <aside className="lg:w-64 shrink-0">
+              <div className="sticky top-24 border border-zinc-200 rounded-2xl p-6 bg-white">
+                <h2 className="text-lg font-semibold text-zinc-900 mb-6">
+                  Filters
+                </h2>
+
+                {/* Collections */}
+                <div className="mb-8">
+                  <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-4">
+                    Collections
+                  </h3>
+
+                  <div className="space-y-3">
+                    {collections.map((item) => (
+                      <Checkbox
+                        key={item._id}
+                        onChange={(e) =>
+                          handleFilter(e.target.checked, item._id)
+                        }
+                      >
+                        {item.name}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-4">
+                    Price
+                  </h3>
+
+                  <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+                    <div className="space-y-3">
+                      {price.map((item) => (
+                        <div key={item._id}>
+                          <Radio value={item.arr}>{item.range}</Radio>
+                        </div>
+                      ))}
+                    </div>
+                  </Radio.Group>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="w-full mt-8 bg-zinc-900 text-white py-3 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            </aside>
+
+            {/* Products Section */}
+            <div className="flex-1">
+              {/* Show skeleton cards while filtering */}
+              {filtering ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="bg-zinc-200 rounded-2xl aspect-3/4 animate-pulse"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {products.map((item) => (
+                    <ProductCard
+                      key={item._id}
+                      item={item}
+                      cart={cart}
+                      setCart={setCart}
+                    />
+                  ))}
+                </div>
+              )}
+              <div>
+                {products && products.length < total && (
+                  <div className="flex justify-center mt-14">
+                    <button
+                      className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPage(page + 1);
+                      }}
+                    >
+                      {loading ? "Loading..." : "Load More"}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </section>
 

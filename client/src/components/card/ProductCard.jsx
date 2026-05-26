@@ -1,16 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ShoppingCart, Eye } from "lucide-react";
 import { toast } from "sonner";
 import AuthContext from "../../context/AuthContext";
 
 const ProductCard = ({ item, cart, setCart }) => {
+  const [loaded, setLoaded] = useState(false);
+
   const { auth } = useContext(AuthContext);
 
   const handleAddToCart = () => {
-    if(!auth?.user){
+    if (!auth?.user) {
       return toast.error("Please login to add items to cart");
     }
-    
+
     const exists = cart.find((p) => p._id === item._id);
 
     if (exists) {
@@ -18,18 +20,25 @@ const ProductCard = ({ item, cart, setCart }) => {
     }
 
     setCart([...cart, item]);
-    toast.success("Product added to cart")
+    toast.success("Product added to cart");
   };
 
   return (
     <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-zinc-100 flex flex-col">
-      
       {/* Image */}
-      <div className="overflow-hidden">
+      <div className="overflow-hidden relative">
+        {!loaded && (
+          <div className="absolute inset-0 animate-pulse bg-zinc-200" />
+        )}
+
         <img
           src={`http://localhost:4000/api/v1/product/product-photo/${item._id}`}
           alt={item.name}
-          className="w-full h-90 object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          className={`w-full h-90 object-cover transition-all duration-500 group-hover:scale-105 ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
         />
       </div>
 
@@ -43,9 +52,7 @@ const ProductCard = ({ item, cart, setCart }) => {
           {item.name}
         </h2>
 
-        <p className="text-md font-medium text-zinc-700 mt-1">
-          ₹{item.price}
-        </p>
+        <p className="text-md font-medium text-zinc-700 mt-1">₹{item.price}</p>
 
         <p className="text-sm text-zinc-500 mt-2 line-clamp-2">
           {item.description}
@@ -72,4 +79,4 @@ const ProductCard = ({ item, cart, setCart }) => {
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);
