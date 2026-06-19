@@ -10,7 +10,7 @@ EcomApp is a modern full-stack e-commerce application built using the MERN stack
 
 # 🚀 Live Demo
 
-🔗 **Live Website:** `PASTE_LIVE_LINK_HERE`
+🔗 **Live Website:** [live@Vercel](https://ecom-app-teal.vercel.app/)
 
 ---
 
@@ -34,27 +34,21 @@ EcomApp is a modern full-stack e-commerce application built using the MERN stack
 
 ---
 
-## About Page
+## ℹ️ About Page
 
-```md
 ![Wishlist](./public/screenshots/about.png)
-```
 
 ---
 
 ## 💳 Payment Success Page
 
-```md
 ![Payment Success](./public/screenshots/payment.png)
-```
 
 ---
 
 ## 🛠️ Admin Dashboard
 
-```md
 ![Admin Dashboard](./public/screenshots/dashboard.png)
-```
 
 ---
 
