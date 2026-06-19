@@ -1,3 +1,6 @@
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]); // fixes Node's SRV (mongodb+srv://) DNS lookup failing on some Windows/ISP setups
+
 import app from "./src/app.js";
 import config from "./src/config/config.js";
 import colors from "colors";

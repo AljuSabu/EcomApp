@@ -9,9 +9,17 @@ export const processPayment = async (req, res) => {
     // Get the amount from the request body sent by the frontend
     const { amount, items } = req.body;
 
+    // Validate the amount before doing anything with it
+    if (!amount || typeof amount !== "number" || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid amount",
+      });
+    }
+
     // Create an order using Razorpay instance
     const options = {
-      amount: amount * 100, // Razorpay works with paise, so multiply by 100 to convert to INR
+      amount: Math.round(amount * 100), // Razorpay works with paise, so multiply by 100 to convert to INR
       currency: "INR",
       receipt: `receipt_${Date.now()}`, // Unique receipt ID
       notes: {
