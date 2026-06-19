@@ -45,7 +45,8 @@ const Cart = () => {
         name: "LUXE Commerce",
         description: "Test Transaction",
         order_id: order.id,
-        callback_url: "/payment/payment-verification",
+        callback_url:
+          "http://localhost:4000/api/v1/payment/payment-verification",
         prefill: {
           name: "John Doe",
           email: "john.doe@example.com",

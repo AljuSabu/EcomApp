@@ -211,7 +211,7 @@ const Navbar = () => {
               {auth?.user && (
                 <Link
                   to={
-                    auth.user.role === "ADMIN"
+                    auth.user.role === "admin"
                       ? "/dashboard/admin"
                       : "/dashboard/user/cart"
                   }

@@ -172,7 +172,7 @@ const Home = () => {
         {/* <pre>{JSON.stringify(auth, null, 4)}</pre>
         <pre>{JSON.stringify(radio, null, 4)}</pre> */}
 
-        <div className="max-w-7xl mx-auto px-6 py-20 lg:px-8 mt-14">
+        <div className="max-w-7xl mx-auto px-6 py-10 lg:px-8 mt-14">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
             <div>
