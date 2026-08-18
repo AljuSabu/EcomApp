@@ -42,6 +42,8 @@ const Home = () => {
   const debouncedChecked = useDebounce(checked, 300);
   const debouncedRadio = useDebounce(radio, 300);
 
+  const isFiltering = checked.length > 0 || radio.length > 0 
+
   //Get all collections
   const getCollections = async () => {
     try {
@@ -280,7 +282,7 @@ const Home = () => {
                 </div>
               )}
               <div>
-                {products && products.length < total && (
+                {!isFiltering && products && products.length < total && (
                   <div className="flex justify-center mt-14">
                     <button
                       className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full"

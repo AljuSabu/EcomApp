@@ -99,7 +99,7 @@ const AdminMenu = () => {
             <li>
               <div
                 onClick={handleLogout}
-                className="flex items-center px-4 py-3 space-x-3 rounded-md cursor-pointer"
+                className="flex items-center hover:text-rose-600 px-4 py-3 space-x-3 rounded-md cursor-pointer"
               >
                 <DoorOpen size={18}  strokeWidth={1} />
                 <span>Logout</span>
