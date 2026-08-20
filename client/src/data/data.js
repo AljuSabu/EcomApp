@@ -1,3 +1,4 @@
+//Price filter for sorting
 export const price = [
   {
     _id: 0,
@@ -23,5 +24,143 @@ export const price = [
     _id: 4,
     range: "8000 to 9999",
     arr: [8000, 9999],
+  },
+];
+
+//Dummy data of user for the profile
+export const userProfileData = [
+  {
+    name: "Eleanor Vance",
+    email: "eleanor.vance@example.com",
+    phone: "+1 (555) 349-8210",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+    role: "Member",
+    memberTier: "Gold Member",
+    memberSince: "March 2024",
+    rewardPoints: 1250,
+    storeCredit: 150.0,
+    address: {
+      street: "742 Evergreen Terrace, Apt 4B",
+      city: "San Francisco",
+      state: "CA",
+      zip: "94102",
+      country: "United States",
+    },
+    billingAddress: {
+      street: "742 Evergreen Terrace, Apt 4B",
+      city: "San Francisco",
+      state: "CA",
+      zip: "94102",
+      country: "United States",
+    },
+    preferences: {
+      newsletter: true,
+      smsAlerts: true,
+      currency: "USD ($)",
+    },
+  },
+];
+
+//Dummy data for the order page
+export const userOrder = [
+  {
+    id: "ORD-98421",
+    orderNumber: "ORD-98421",
+    date: "May 16, 2026",
+    status: "In Transit",
+    paymentMethod: "Credit Card (Visa •••• 4242)",
+    paymentId: "PAY-89234XN9",
+    shippingAddress: "742 Evergreen Terrace, Apt 4B, San Francisco, CA 94102",
+    subtotal: 620.0,
+    shipping: 0.0,
+    tax: 49.6,
+    total: 669.6,
+    trackingNumber: "LX-883920194US",
+    carrier: "FedEx Express Priority",
+    estimatedDelivery: "May 20, 2026",
+    items: [
+      {
+        id: 1,
+        name: "Minimalist Watch",
+        price: "$240",
+        priceValue: 240,
+        image: "https://picsum.photos/seed/watch/800/1000",
+        quantity: 1,
+        selectedSize: "One Size",
+      },
+      {
+        id: 2,
+        name: "Leather Tote",
+        price: "$380",
+        priceValue: 380,
+        image: "https://picsum.photos/seed/bag/800/1000",
+        quantity: 1,
+        selectedSize: "Standard",
+      },
+    ],
+  },
+  {
+    id: "ORD-76192",
+    orderNumber: "ORD-76192",
+    date: "April 28, 2026",
+    status: "Delivered",
+    paymentMethod: "Apple Pay",
+    paymentId: "PAY-41982QM3",
+    shippingAddress: "742 Evergreen Terrace, Apt 4B, San Francisco, CA 94102",
+    subtotal: 120.0,
+    shipping: 0.0,
+    tax: 9.6,
+    total: 129.6,
+    trackingNumber: "LX-441209581US",
+    carrier: "DHL Luxury Express",
+    estimatedDelivery: "May 02, 2026",
+    items: [
+      {
+        id: 4,
+        name: "Cotton Shirt",
+        price: "$120",
+        priceValue: 120,
+        image: "https://picsum.photos/seed/shirt/800/1000",
+        quantity: 1,
+        selectedSize: "M",
+      },
+    ],
+  },
+  {
+    id: "ORD-54810",
+    orderNumber: "ORD-54810",
+    date: "March 15, 2026",
+    status: "Delivered",
+    paymentMethod: "Credit Card (Mastercard •••• 8812)",
+    paymentId: "PAY-11983KK2",
+    shippingAddress: "742 Evergreen Terrace, Apt 4B, San Francisco, CA 94102",
+    subtotal: 235.0,
+    shipping: 0.0,
+    tax: 18.8,
+    total: 253.8,
+    trackingNumber: "LX-110948293US",
+    carrier: "UPS Standard",
+    estimatedDelivery: "March 19, 2026",
+    items: [
+      {
+        id: 3,
+        name: "Ceramic Vase",
+        price: "$85",
+        priceValue: 85,
+        image: "https://picsum.photos/seed/vase/800/1000",
+        quantity: 1,
+        selectedSize: "Standard",
+      },
+      {
+        id: 6,
+        name: "Silver Cuff",
+        price: "$150",
+        priceValue: 150,
+        image: "https://picsum.photos/seed/cuff/800/1000",
+        quantity: 1,
+        selectedSize: "Adjustable",
+      },
+    ],
   },
 ];
