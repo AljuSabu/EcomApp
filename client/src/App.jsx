@@ -13,7 +13,6 @@ import AdminRoute from "./components/Routes/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Orders from "./pages/user/Orders";
 import WishList from "./pages/user/WishList";
-import CreateCollection from "./pages/admin/ManageCollection";
 import UserLayout from "./components/layout/userLayout/UserLayout";
 import AdminLayout from "./components/layout/adminLayout/AdminLayout";
 import ManageCollection from "./pages/admin/ManageCollection";
@@ -30,32 +29,11 @@ import ScrollToTop from "./components/utils/ScrollToTop";
 function App() {
   return (
     <>
-    <ScrollToTop />
+      <ScrollToTop />
       <Routes>
+        {/* Public routes with Navbar/Footer */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-
-          <Route path="/dashboard" element={<PrivateRoutes />}>
-            <Route path="user" element={<UserLayout />}>
-              <Route index element={<UserDashboard />} />
-              <Route path="profile" element={<UserProfile />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="wishlist" element={<WishList />} />
-              <Route path="cart" element={<Cart />} />
-            </Route>
-          </Route>
-
-          <Route path="/dashboard" element={<AdminRoute />}>
-            <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="profile" element={<AdminProfile />} />
-              <Route path="manage-collection" element={<ManageCollection />} />
-              <Route path="manage-product" element={<ManageProduct />} />
-              <Route path="products" element={<AdminProduct />} />
-              <Route path="product/:slug" element={<UpdateProduct />} />
-            </Route>
-          </Route>
-
           <Route path="collection" element={<Collection />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<SingleProduct />} />
@@ -64,6 +42,29 @@ function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="payment/payment-success" element={<PaymentSuccessPage />} />
           <Route path="*" element={<PageNotFound />} />
+        </Route>
+
+        {/* User routes */}
+        <Route path="/dashboard" element={<PrivateRoutes />}>
+          <Route path="user" element={<UserLayout />}>
+            <Route index element={<UserDashboard />} />
+            <Route path="profile" element={<UserProfile />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="wishlist" element={<WishList />} />
+            <Route path="cart" element={<Cart />} />
+          </Route>
+        </Route>
+
+        {/* Admin routes */}
+        <Route path="/dashboard" element={<AdminRoute />}>
+          <Route path="admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="manage-collection" element={<ManageCollection />} />
+            <Route path="manage-product" element={<ManageProduct />} />
+            <Route path="products" element={<AdminProduct />} />
+            <Route path="product/:slug" element={<UpdateProduct />} />
+          </Route>
         </Route>
       </Routes>
     </>
