@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
-import Collection from "./pages/Collection";
 import PageNotFound from "./pages/PageNotFound";
 import Products from "./pages/Products";
 import About from "./pages/About";
@@ -34,7 +33,6 @@ function App() {
         {/* Public routes with Navbar/Footer */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="collection" element={<Collection />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<SingleProduct />} />
           <Route path="about" element={<About />} />
