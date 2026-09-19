@@ -35,7 +35,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-24">
             <div className="aspect-8/9 bg-zinc-100 overflow-hidden">
               <img
-                src="https://picsum.photos/seed/studio/800/1000"
+                src="/about.jpg"
                 alt="Our Studio"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

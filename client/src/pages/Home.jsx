@@ -338,7 +338,7 @@ const Home = () => {
             className="aspect-square bg-zinc-800 overflow-hidden"
           >
             <img
-              src="https://picsum.photos/seed/craft/800/800"
+              src="/info.jpg"
               alt="Craftsmanship"
               className="w-full h-full object-cover opacity-80"
               referrerPolicy="no-referrer"
