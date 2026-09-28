@@ -15,6 +15,8 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
+// import { useWishlist } from '../contexts/WishlistContext';
+// import { useUser } from '../contexts/UserContext';
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { userProfileData } from "../../../data/data";
@@ -22,7 +24,13 @@ import { userProfileData } from "../../../data/data";
 const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const { auth, setAuth } = useContext(AuthContext);
   const location = useLocation();
+  // const { wishlistCount } = useWishlist();
+  // const { profile, orders } = useUser();
   const [profile] = useState(userProfileData[0]);
+
+  // const activeOrdersCount = orders.filter(
+  //   (o) => o.status === 'In Transit' || o.status === 'Processing'
+  // ).length;
 
   //logout
   const handleLogout = async () => {
@@ -63,12 +71,14 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
       name: "Orders",
       path: "/dashboard/user/orders",
       icon: ShoppingBag,
+      // badge: activeOrdersCount > 0 ? `${activeOrdersCount} active` : null,
       badgeColor: "bg-primary/10 text-primary",
     },
     {
       name: "Wishlist",
       path: "/dashboard/user/wishlist",
       icon: Heart,
+      // badge: wishlistCount > 0 ? `${wishlistCount}` : null,
       badgeColor: "bg-rose-50 text-rose-600",
     },
     {
