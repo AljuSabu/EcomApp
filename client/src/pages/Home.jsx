@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 // import AuthContext from "../context/AuthContext";
-import CartContext from "../context/CartContex";
+import { useCart } from "../context/CartContext";
 import Carousel from "../components/card/Carousel";
 import axios from "axios";
 import { toast } from "sonner";
@@ -37,12 +37,12 @@ const Home = () => {
   const isFirstRender = useRef(true);
 
   // const { auth } = useContext(AuthContext);
-  const [cart, setCart] = useContext(CartContext);
+  const { cart, setCart } = useCart();
 
   const debouncedChecked = useDebounce(checked, 300);
   const debouncedRadio = useDebounce(radio, 300);
 
-  const isFiltering = checked.length > 0 || radio.length > 0 
+  const isFiltering = checked.length > 0 || radio.length > 0;
 
   //Get all collections
   const getCollections = async () => {

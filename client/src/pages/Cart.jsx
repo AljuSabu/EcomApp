@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import CartContext from "../context/CartContex";
+import { useCart } from "../context/CartContext";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import {
@@ -15,7 +14,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Cart = () => {
-  const [cart, , removeFromCart, updateQuantity] = useContext(CartContext);
+  const { cart, removeFromCart, updateQuantity } = useCart();
 
   //Total Quantity
   const totalQuantity = cart.reduce(

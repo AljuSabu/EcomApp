@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import ProductCard from "../components/card/ProductCard";
 import { toast } from "sonner";
-import CartContext from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import axios from "axios";
 import { ChevronDown, Filter } from "lucide-react";
 import { Radio } from "antd";
@@ -20,7 +20,7 @@ const Products = () => {
   const [filtering, setFiltering] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const [cart, setCart] = useContext(CartContext);
+  const { cart, setCart } = useCart();
 
   const userMenuRef = useRef(null);
 
@@ -166,7 +166,7 @@ const Products = () => {
               onMouseLeave={() => setIsUserMenuOpen(false)}
             >
               <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen) }
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center text-sm font-medium text-zinc-900 border-l border-zinc-300 pl-6"
               >
                 <Filter size={16} className="mr-2" />
@@ -189,9 +189,7 @@ const Products = () => {
                     className="absolute top-2 w-50 z-50"
                   >
                     <div className="mt-6 border border-zinc-200 rounded-2xl p-6 bg-white max-w-sm shadow-sm">
-                      <h3 className="font-semibold mb-4">
-                        Price Filter
-                      </h3>
+                      <h3 className="font-semibold mb-4">Price Filter</h3>
 
                       <Radio.Group
                         onChange={(e) => handlePriceFilter(e.target.value)}
@@ -252,7 +250,9 @@ const Products = () => {
 
         {products.length === 0 && (
           <div className="py-55 text-center">
-            <p className="text-zinc-500 text-lg">No products found in this category.</p>
+            <p className="text-zinc-500 text-lg">
+              No products found in this category.
+            </p>
           </div>
         )}
       </div>

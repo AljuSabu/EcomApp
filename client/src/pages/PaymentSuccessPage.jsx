@@ -1,13 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import CartContext from "../context/CartContex";
+import { useState, useEffect } from "react";
+import { useCart } from "../context/CartContext";
 import {
   ArrowRight,
   Calendar,
   CheckCircle2,
-  CreditCard,
   Mail,
   Phone,
   Printer,
@@ -18,7 +17,7 @@ import {
 const PaymentSuccessPage = () => {
   const [searchParams] = useSearchParams();
   const [paymentData, setPaymentData] = useState(null);
-  const [, setCart] = useContext(CartContext);
+  const { setCart } = useCart();
 
   useEffect(() => {
     const data = searchParams.get("paymentData");

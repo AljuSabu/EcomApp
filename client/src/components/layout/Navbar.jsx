@@ -17,14 +17,14 @@ import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import CartContext from "../../context/CartContex";
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const { auth, setAuth } = useContext(AuthContext);
-  const [cart] = useContext(CartContext);
+  const { cartCount } = useCart();
 
   const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
 
@@ -217,9 +217,9 @@ const Navbar = () => {
                   className="text-zinc-600/80 pl-5 relative cursor-pointer"
                 >
                   <ShoppingCart />
-                  {cart?.length > 0 && (
+                  {cartCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-zinc-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                      {cart.length}
+                      {cartCount}
                     </span>
                   )}
                 </Link>
