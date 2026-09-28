@@ -3,10 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { ShoppingCart, Heart, ChevronRight, Menu } from "lucide-react";
 import { userProfileData } from "../../../data/data";
 import { useCart } from "../../../context/CartContext";
+// import { useWishlist } from '../contexts/WishlistContext';
+// import { useUser } from '../contexts/UserContext';
 
 const UserNavbar = ({ setIsMobileMenuOpen }) => {
   const location = useLocation();
   const { cartCount } = useCart();
+  //   const { wishlistCount } = useWishlist();
+  //   const { profile } = useUser();
   const [profile] = useState(userProfileData[0]);
 
   const getCurrentPageTitle = () => {
@@ -47,6 +51,11 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
           title="Wishlist"
         >
           <Heart size={18} />
+          {/* {wishlistCount > 0 && (
+            <span className="absolute top-0.5 right-0.5 bg-rose-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+              {wishlistCount}
+            </span>
+          )} */}
         </Link>
 
         <Link
