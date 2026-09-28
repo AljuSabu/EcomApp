@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import ProductCard from "../components/card/ProductCard";
 import { toast } from "sonner";
-import CartContext from "../context/CartContex";
+import CartContext from "../context/CartContext";
 import axios from "axios";
 import { ChevronDown, Filter } from "lucide-react";
 import { Radio } from "antd";
