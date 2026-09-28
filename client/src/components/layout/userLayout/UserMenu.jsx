@@ -1,24 +1,28 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import axios from "axios";
 import { toast } from "sonner";
 import {
-  DoorOpen,
-  Heart,
   LayoutDashboard,
-  Scale,
-  Search,
-  Settings,
   User,
   ShoppingCart,
+  ShoppingBag,
+  Heart,
+  LogOut,
   ChevronRight,
+  Store,
+  X,
+  Sparkles,
 } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
+import { userProfileData } from "../../../data/data";
 
-const UserMenu = () => {
+const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const { auth, setAuth } = useContext(AuthContext);
-
-  const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
+  const location = useLocation();
+  const [profile] = useState(userProfileData[0]);
 
   //logout
   const handleLogout = async () => {
@@ -42,74 +46,233 @@ const UserMenu = () => {
   };
 
   const menuItems = [
-    { name: "Dashboard", path: "", icon: LayoutDashboard },
-    { name: "Profile", path: "profile", icon: User },
-    { name: "Orders", path: "orders", icon: Scale },
-    { name: "Wishlist", path: "wishlist", icon: Heart },
-    { name: "Cart", path: "cart", icon: ShoppingCart },
+    {
+      name: "Dashboard",
+      path: "/dashboard/user",
+      end: true,
+      icon: LayoutDashboard,
+      badge: null,
+    },
+    {
+      name: "Profile",
+      path: "/dashboard/user/profile",
+      icon: User,
+      badge: null,
+    },
+    {
+      name: "Orders",
+      path: "/dashboard/user/orders",
+      icon: ShoppingBag,
+      badgeColor: "bg-primary/10 text-primary",
+    },
+    {
+      name: "Wishlist",
+      path: "/dashboard/user/wishlist",
+      icon: Heart,
+      badgeColor: "bg-rose-50 text-rose-600",
+    },
+    {
+      name: "Cart",
+      path: "/dashboard/user/cart",
+      icon: ShoppingCart,
+      badgeColor: "bg-rose-50 text-rose-600",
+    },
   ];
 
   return (
     <>
-      <div className="h-full p-3 space-y-2 w-60 bg-olive-300/70 text-zinc-500">
-        <div className="flex items-center p-2 space-x-4 pt-5">
-          <div className="size-10 border rounded-full flex justify-center items-center bg-zinc-400 text-white text-xl">
-            {userInitial}
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">{auth?.user?.name}</h2>
-            <span className="flex items-center space-x-1">
-              <div className="text-xs hover:underline text-gray-700">
-                {auth?.user?.role}
-              </div>
+      {/* Desktop Sidebar */}
+      <aside className="w-64 bg-white border-r border-zinc-300 fixed h-screen overflow-y-auto hidden md:flex flex-col justify-between z-20">
+        <div>
+          <div className="p-8 border-b border-zinc-200 flex items-center justify-between">
+            <Link
+              to="/"
+              className="text-2xl font-serif font-bold tracking-tighter"
+            >
+              LUXE<span className="text-zinc-400">.</span>
+            </Link>
+            <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
+              <Sparkles size={10} className="mr-1" />
+              Member
             </span>
           </div>
-        </div>
-        <div className="divide-y divide-gray-700">
-          <div className="space-y-2 pt-3 pb-4 text-sm">
-            {menuItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.path || "."}
-                end={item.path === ""}
-                className={({ isActive }) =>
-                  `flex items-center justify-between px-4 py-3 rounded-lg transition-all group ${
-                    isActive
-                      ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
-                      : "hover:bg-indigo-900/10 hover:text-zinc-900"
-                  }`
-                }
-              >
-                <div className="flex items-center space-x-3">
-                  <item.icon size={18} strokeWidth={1} />
-                  <span>{item.name}</span>
-                </div>
-                <ChevronRight
-                  size={14}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
-                />
-              </NavLink>
-            ))}
+
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+                User Portal
+              </h2>
+              <span className="text-[10px] text-zinc-400 font-mono font-medium">
+                v1.2
+              </span>
+            </div>
+
+            <nav className="space-y-2">
+              {menuItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-lg transition-all group ${
+                      isActive
+                        ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
+                        : "text-zinc-600 hover:bg-indigo-900/10 hover:text-zinc-900"
+                    }`
+                  }
+                >
+                  <div className="flex items-center space-x-3">
+                    <item.icon size={18} />
+                    <span className="text-sm font-medium">{item.name}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {item.badge && (
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                          location.pathname.startsWith(item.path)
+                            ? "bg-white/20 text-white"
+                            : item.badgeColor || "bg-zinc-100 text-zinc-600"
+                        }`}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                    <ChevronRight
+                      size={14}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                </NavLink>
+              ))}
+            </nav>
           </div>
-          <ul className="pt-4 pb-2 space-y-1 text-sm">
-            <li>
-              <NavLink className="flex items-center px-4 py-3 space-x-3 rounded-md">
-                <Settings size={18} strokeWidth={1} />
-                <span>Settings</span>
-              </NavLink>
-            </li>
-            <li>
-              <div
-                onClick={handleLogout}
-                className="flex items-center px-4 py-3 space-x-3 rounded-md cursor-pointer"
-              >
-                <DoorOpen size={18} strokeWidth={1} />
-                <span>Logout</span>
-              </div>
-            </li>
-          </ul>
         </div>
-      </div>
+
+        <div className="p-6 border-t border-zinc-100 bg-white space-y-2">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 px-4 py-2.5 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors"
+          >
+            <Store size={18} />
+            <span>Back to Store</span>
+          </Link>
+          <div
+            onClick={handleLogout}
+            className="flex items-center space-x-3 px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/5 rounded-lg transition-colors cursor-pointer"
+          >
+            <LogOut size={18} />
+            <span>Logout</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 md:hidden"
+            />
+            <motion.aside
+              initial={{ x: -280 }}
+              animate={{ x: 0 }}
+              exit={{ x: -280 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 w-72 bg-white border-r border-zinc-200 z-50 flex flex-col justify-between md:hidden shadow-2xl"
+            >
+              <div>
+                <div className="p-6 border-b border-zinc-100 flex items-center justify-between">
+                  <Link
+                    to="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-serif font-bold tracking-tighter"
+                  >
+                    LUXE<span className="text-zinc-400">.</span>
+                  </Link>
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-2 text-zinc-500 hover:text-zinc-900"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-6 p-3 bg-zinc-50 rounded-xl">
+                    <img
+                      src={profile.avatar}
+                      alt={profile.name}
+                      className="w-10 h-10 rounded-full object-cover border border-zinc-200"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-zinc-900">
+                        {profile.name}
+                      </p>
+                      <p className="text-xs text-zinc-500">
+                        {profile.memberTier}
+                      </p>
+                    </div>
+                  </div>
+
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">
+                    User Portal
+                  </h2>
+                  <nav className="space-y-1">
+                    {menuItems.map((item) => (
+                      <NavLink
+                        key={item.name}
+                        to={item.path}
+                        end={item.end}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={({ isActive }) =>
+                          `flex items-center justify-between px-4 py-3 rounded-lg transition-all ${
+                            isActive
+                              ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
+                              : "text-zinc-600 hover:bg-indigo-900/10 hover:text-zinc-900"
+                          }`
+                        }
+                      >
+                        <div className="flex items-center space-x-3">
+                          <item.icon size={18} />
+                          <span className="text-sm font-medium">
+                            {item.name}
+                          </span>
+                        </div>
+                        {item.badge && (
+                          <span
+                            className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                              location.pathname.startsWith(item.path)
+                                ? "bg-white/20 text-white"
+                                : item.badgeColor || "bg-zinc-100 text-zinc-600"
+                            }`}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </NavLink>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+
+              <div className="p-6 border-t border-zinc-100 space-y-2">
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-3 px-4 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-900"
+                >
+                  <Store size={18} />
+                  <span>Back to Store</span>
+                </Link>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };
