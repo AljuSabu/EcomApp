@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Heart, ChevronRight, Menu } from "lucide-react";
+import { ShoppingCart, Heart, ChevronRight, Menu } from "lucide-react";
 import { userProfileData } from "../../../data/data";
-// import { useWishlist } from '../contexts/WishlistContext';
-// import { useCart } from '../contexts/CartContext';
-// import { useUser } from '../contexts/UserContext';
+import { useCart } from "../../../context/CartContext";
 
 const UserNavbar = ({ setIsMobileMenuOpen }) => {
   const location = useLocation();
-  //   const { wishlistCount } = useWishlist();
-  //   const { cartCount } = useCart();
-  //   const { profile } = useUser();
+  const { cartCount } = useCart();
   const [profile] = useState(userProfileData[0]);
 
   const getCurrentPageTitle = () => {
-    if (location.pathname.includes("/user/profile"))
+    if (location.pathname.includes("/dashboard/user/profile"))
       return "Profile & Settings";
-    if (location.pathname.includes("/user/orders")) return "My Orders";
-    if (location.pathname.includes("/user/wishlist")) return "Saved Wishlist";
+    if (location.pathname.includes("/dashboard/user/orders"))
+      return "My Orders";
+    if (location.pathname.includes("/dashboard/user/wishlist"))
+      return "Saved Wishlist";
+    if (location.pathname.includes("/dashboard/user/cart")) return "Cart";
     return "Dashboard";
   };
 
@@ -43,29 +42,24 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
 
       <div className="flex items-center space-x-4 sm:space-x-6">
         <Link
-          to="/cart"
-          className="relative p-2 text-zinc-500 hover:text-zinc-900 transition-colors"
-          title="Shopping Cart"
-        >
-          <ShoppingBag size={18} />
-          {/* {cartCount > 0 && (
-            <span className="absolute top-0.5 right-0.5 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-              {cartCount}
-            </span>
-          )} */}
-        </Link>
-
-        <Link
-          to="/user/wishlist"
+          to="/dashboard/user/wishlist"
           className="relative p-2 text-zinc-500 hover:text-zinc-900 transition-colors hidden sm:block"
           title="Wishlist"
         >
           <Heart size={18} />
-          {/* {wishlistCount > 0 && (
-            <span className="absolute top-0.5 right-0.5 bg-rose-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-              {wishlistCount}
+        </Link>
+
+        <Link
+          to="/dashboard/user/cart"
+          className="relative p-2 text-zinc-500 hover:text-zinc-900 transition-colors"
+          title="Shopping Cart"
+        >
+          <ShoppingCart size={18} />
+          {cartCount > 0 && (
+            <span className="absolute top-0.5 right-0.5 bg-indigo-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+              {cartCount}
             </span>
-          )} */}
+          )}
         </Link>
 
         <div className="h-5 w-px bg-zinc-200 hidden sm:block" />
