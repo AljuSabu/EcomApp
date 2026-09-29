@@ -4,6 +4,7 @@ const CartContext = createContext({
   cart: [],
   setCart: () => {},
   cartCount: 0,
+  addToCart: () => {},
   removeFromCart: () => {},
   updateQuantity: () => {},
 });
@@ -19,19 +20,30 @@ export const CartContextProvider = ({ children }) => {
     }
   });
 
-  //Remove Item
-  const removeFromCart = (_id, size) => {
-    setCart((prev) =>
-      prev.filter((item) => !(item._id === _id && item.selectedSize === size)),
-    );
+  //Add Item (merges with an existing line if same product)
+  const addToCart = (product, qty = 1) => {
+    setCart((prev) => {
+      const exists = prev.some((item) => item._id === product._id);
+      if (exists) {
+        return prev.map((item) =>
+          item._id === product._id
+            ? { ...item, quantity: (item.quantity || 1) + qty }
+            : item,
+        );
+      }
+      return [...prev, { ...product, quantity: qty }];
+    });
   };
 
-  //Updating the Quantity
-  const updateQuantity = (_id, size, change) => {
+  const removeFromCart = (_id) => {
+    setCart((prev) => prev.filter((item) => item._id !== _id));
+  };
+
+  const updateQuantity = (_id, change) => {
     setCart((prev) =>
       prev.map((item) =>
-        item._id === _id && item.selectedSize === size
-          ? { ...item, quantity: Math.max(1, item.quantity || 1) + change }
+        item._id === _id
+          ? { ...item, quantity: Math.max(1, (item.quantity || 1) + change) }
           : item,
       ),
     );
@@ -50,7 +62,14 @@ export const CartContextProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{cart, setCart, cartCount, removeFromCart, updateQuantity}}
+      value={{
+        cart,
+        setCart,
+        cartCount,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+      }}
     >
       {children}
     </CartContext.Provider>
