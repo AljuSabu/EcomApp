@@ -4,13 +4,16 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { CartContextProvider } from "./context/CartContext.jsx";
+import { WishlistContextProvider } from "./context/WishlistContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthContextProvider>
     <CartContextProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <WishlistContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </WishlistContextProvider>
     </CartContextProvider>
   </AuthContextProvider>,
 );
