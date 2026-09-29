@@ -70,38 +70,39 @@ const Cart = () => {
   const shipping = subtotal > freeShipping ? 0 : 50;
   const total = subtotal + tax + shipping;
 
-  if (cart.length === 0) {
-    return (
-      <>
-        <Helmet>
-          <title>Cart</title>
-        </Helmet>
+if (cart.length === 0) {
+  return (
+    <>
+      <Helmet>
+        <title>Cart</title>
+      </Helmet>
 
-        <div className="pt-32 pb-24 min-h-[70vh] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-zinc-50 rounded-full text-zinc-300 mb-6">
-              <ShoppingBag size={48} />
+      <div className="pt-32 pb-24 min-h-[70vh] flex items-center">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="bg-white border border-zinc-100 rounded-xl p-16 text-center shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center mx-auto mb-4 text-zinc-400">
+              <ShoppingBag size={32} />
             </div>
-            <h1 className="text-4xl font-serif mb-4">Your bag is empty</h1>
-            <p className="text-zinc-500 mb-12 max-w-md mx-auto">
-              Looks like you haven't added anything to your bag yet. Explore our
-              curated collections to find your next essential.
+            <h2 className="text-3xl font-serif text-zinc-900 mb-2">
+              Your bag is empty
+            </h2>
+            <p className="text-zinc-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+              Looks like you haven't added anything to your bag yet. Explore
+              our curated collections to find your next essential.
             </p>
             <Link
               to="/products"
-              className="group inline-flex items-center bg-indigo-900 text-white px-10 py-5 text-xs font-bold uppercase tracking-widest hover:bg-indigo-950 transition-all shadow-lg shadow-indigo-900/20"
+              className="inline-flex items-center px-8 py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-lg"
             >
-              Start Shopping
-              <ArrowRight
-                size={16}
-                className="ml-2 group-hover:translate-x-1 transition-transform"
-              />
+              Explore Catalog
+              <ArrowRight size={14} className="ml-2" />
             </Link>
           </div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
+}
 
   return (
     <>
@@ -114,7 +115,7 @@ const Cart = () => {
           <div className="flex items-center justify-between mb-12">
             <h1 className="text-4xl font-serif">Shopping Bag</h1>
             <Link
-              to="products"
+              to="/products"
               className="text-sm font-medium text-zinc-500 hover:text-zinc-900 flex items-center transition-colors"
             >
               <ArrowLeft size={16} className="mr-2" />
