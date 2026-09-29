@@ -7,6 +7,7 @@ import {
   LogOut,
   Menu,
   ShoppingCart,
+  Heart,
   User,
   UserCircle,
   UserPlus,
@@ -18,6 +19,7 @@ import AuthContext from "../../context/AuthContext";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +27,7 @@ const Navbar = () => {
 
   const { auth, setAuth } = useContext(AuthContext);
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
 
   const userInitial = auth?.user?.name?.[0]?.toUpperCase() || "?";
 
@@ -208,21 +211,39 @@ const Navbar = () => {
                 </AnimatePresence>
               </div>
               {auth?.user && (
-                <Link
-                  to={
-                    auth.user.role === "admin"
-                      ? "/dashboard/admin"
-                      : "/dashboard/user/cart"
-                  }
-                  className="text-zinc-600/80 pl-5 relative cursor-pointer"
-                >
-                  <ShoppingCart />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-zinc-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
+                <div className="flex items-center gap-3 ml-4">
+                  {/* Wishlist Link */}
+                  <Link
+                    to="/dashboard/user/wishlist"
+                    className="relative flex items-center justify-center w-9 h-9 text-zinc-600 hover:text-zinc-900 transition-colors"
+                    title="Saved Wishlist"
+                  >
+                    <Heart size={20} />
+                    {wishlistCount > 0 && (
+                      <span className="absolute top-0 right-0 bg-rose-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+
+                  {/* Cart Link */}
+                  <Link
+                    to={
+                      auth.user.role === "admin"
+                        ? "/dashboard/admin"
+                        : "/dashboard/user/cart"
+                    }
+                    className="relative flex items-center justify-center w-9 h-9 text-zinc-600 hover:text-zinc-900 transition-colors"
+                    title="Shopping Bag"
+                  >
+                    <ShoppingCart size={20} />
+                    {cartCount > 0 && (
+                      <span className="absolute top-0 right-0 bg-zinc-900 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
               )}
             </div>
 
