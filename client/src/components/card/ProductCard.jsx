@@ -1,12 +1,24 @@
 import React, { useContext, useState } from "react";
-import { ShoppingCart, Eye } from "lucide-react";
+import { ShoppingCart, Eye, Heart } from "lucide-react";
 import { toast } from "sonner";
 import AuthContext from "../../context/AuthContext";
+import { useWishlist } from "../../context/WishlistContext";
 
 const ProductCard = ({ item, cart, setCart }) => {
   const [loaded, setLoaded] = useState(false);
 
   const { auth } = useContext(AuthContext);
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
+  const isWishlisted = isInWishlist(item._id);
+
+  const handleWishlist = () => {
+    if (!auth?.user) {
+      return toast.error("Please login to save items to your wishlist");
+    }
+    toggleWishlist(item);
+    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+  };
 
   const handleAddToCart = () => {
     if (!auth?.user) {
@@ -40,6 +52,20 @@ const ProductCard = ({ item, cart, setCart }) => {
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />
+        <button
+          onClick={handleWishlist}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur shadow-sm hover:bg-white hover:scale-110 transition"
+        >
+          <Heart
+            size={18}
+            className={
+              isWishlisted
+                ? "fill-rose-500 text-rose-500"
+                : "text-zinc-600 hover:text-rose-500"
+            }
+          />
+        </button>
       </div>
 
       {/* Content */}
@@ -65,7 +91,7 @@ const ProductCard = ({ item, cart, setCart }) => {
           >
             <ShoppingCart size={16} />
             Add
-          </button>
+          </button> 
 
           <button className="flex items-center justify-center px-3 border border-zinc-200 hover:bg-zinc-100 transition">
             <Eye size={16} />
