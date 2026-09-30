@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
+import { useWishlist } from "../../../context/WishlistContext";
 import axios from "axios";
 import { toast } from "sonner";
 import {
@@ -15,24 +16,32 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
-// import { useWishlist } from '../contexts/WishlistContext';
-// import { useUser } from '../contexts/UserContext';
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-import { userProfileData } from "../../../data/data";
+import { userOrder } from "../../../data/data";
 
 const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const { auth, setAuth } = useContext(AuthContext);
   const location = useLocation();
-  // const { wishlistCount } = useWishlist();
-  // const { profile, orders } = useUser();
-  const [profile] = useState(userProfileData[0]);
+  const { wishlistCount } = useWishlist();
 
-  // const activeOrdersCount = orders.filter(
-  //   (o) => o.status === 'In Transit' || o.status === 'Processing'
-  // ).length;
+  // Build a display profile from real auth data + placeholder extras.
+  // Swap memberTier for a real field once your backend returns one.
+  const profile = {
+    name: auth?.user?.name || "Guest",
+    avatar:
+      auth?.user?.avatar ||
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        auth?.user?.name || "Guest",
+      )}&background=18181b&color=fff`,
+    memberTier: "Gold Member",
+  };
 
-  //logout
+  // TEMP: derived from mock userOrder data until a real orders API/context exists.
+  const activeOrdersCount = userOrder.filter(
+    (o) => o.status === "In Transit" || o.status === "Processing",
+  ).length;
+
   const handleLogout = async () => {
     try {
       const { data } = await axios.post(
@@ -71,20 +80,21 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
       name: "Orders",
       path: "/dashboard/user/orders",
       icon: ShoppingBag,
-      // badge: activeOrdersCount > 0 ? `${activeOrdersCount} active` : null,
-      badgeColor: "bg-primary/10 text-primary",
+      badge: activeOrdersCount > 0 ? `${activeOrdersCount} active` : null,
+      badgeColor: "bg-blue-50 text-blue-700",
     },
     {
       name: "Wishlist",
       path: "/dashboard/user/wishlist",
       icon: Heart,
-      // badge: wishlistCount > 0 ? `${wishlistCount}` : null,
+      badge: wishlistCount > 0 ? `${wishlistCount}` : null,
       badgeColor: "bg-rose-50 text-rose-600",
     },
     {
       name: "Cart",
       path: "/dashboard/user/cart",
       icon: ShoppingCart,
+      badge: null,
       badgeColor: "bg-rose-50 text-rose-600",
     },
   ];
@@ -92,9 +102,9 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-white border-r border-zinc-300 fixed h-screen overflow-y-auto hidden md:flex flex-col justify-between z-20">
+      <aside className="w-64 bg-white border-r border-zinc-200 fixed h-screen overflow-y-auto hidden md:flex flex-col justify-between z-20">
         <div>
-          <div className="p-8 border-b border-zinc-200 flex items-center justify-between">
+          <div className="p-8 border-b border-zinc-100 flex items-center justify-between">
             <Link
               to="/"
               className="text-2xl font-serif font-bold tracking-tighter"
@@ -126,8 +136,8 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                   className={({ isActive }) =>
                     `flex items-center justify-between px-4 py-3 rounded-lg transition-all group ${
                       isActive
-                        ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
-                        : "text-zinc-600 hover:bg-indigo-900/10 hover:text-zinc-900"
+                        ? "bg-zinc-900 text-white shadow-md"
+                        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                     }`
                   }
                 >
@@ -166,13 +176,13 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
             <Store size={18} />
             <span>Back to Store</span>
           </Link>
-          <div
+          <button
             onClick={handleLogout}
-            className="flex items-center space-x-3 px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/5 rounded-lg transition-colors cursor-pointer"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer text-left"
           >
             <LogOut size={18} />
             <span>Logout</span>
-          </div>
+          </button>
         </div>
       </aside>
 
@@ -241,8 +251,8 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                         className={({ isActive }) =>
                           `flex items-center justify-between px-4 py-3 rounded-lg transition-all ${
                             isActive
-                              ? "bg-indigo-900 text-white shadow-md shadow-indigo-900/20"
-                              : "text-zinc-600 hover:bg-indigo-900/10 hover:text-zinc-900"
+                              ? "bg-zinc-900 text-white shadow-md"
+                              : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                           }`
                         }
                       >
