@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,7 +7,7 @@ import {
   ShoppingCart,
   Trash2,
   ArrowRight,
-  Eye,
+  // Eye,
   CheckCircle2,
 } from "lucide-react";
 import { useWishlist } from "../../context/WishlistContext";
@@ -23,7 +23,7 @@ const WishlistCard = ({ item }) => {
 
   const handleAddToCart = () => {
     if (isInCart) return toast.error("Already in cart");
-    addToCart(item, "Standard", 1);
+    addToCart(item, 1);
     toast.success(`"${item.name}" added to cart`);
   };
 
@@ -64,7 +64,7 @@ const WishlistCard = ({ item }) => {
           <Heart size={18} className="fill-rose-500 text-rose-500" />
         </button>
 
-        <Link
+        {/* <Link
           to={`/product/${item._id}`}
           className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
         >
@@ -72,7 +72,7 @@ const WishlistCard = ({ item }) => {
             <Eye size={12} className="mr-1.5" />
             View Product
           </span>
-        </Link>
+        </Link> */}
       </div>
 
       {/* Content */}
@@ -132,7 +132,7 @@ const UserWishlist = () => {
 
   const handleMoveAllToCart = () => {
     if (wishlist.length === 0) return;
-    wishlist.forEach((item) => addToCart(item, "Standard", 1));
+    wishlist.forEach((item) => addToCart(item, 1));
     showToast(`All ${wishlist.length} wishlist items added to cart!`);
   };
 
@@ -147,12 +147,12 @@ const UserWishlist = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-3 mb-1">
-            <h1 className="text-3xl font-serif">Saved Wishlist</h1>
+            <h1 className="text-4xl font-serif">Saved Wishlist</h1>
             <span className="px-2.5 py-0.5 bg-rose-50 text-rose-600 border border-rose-200/60 rounded-full text-xs font-bold font-mono">
               {wishlist.length}
             </span>
           </div>
-          <p className="text-zinc-500 text-sm">
+          <p className="text-zinc-500 mt-3 text-sm">
             Curate and save your coveted luxury pieces for later or move them
             directly to your cart.
           </p>
@@ -206,10 +206,10 @@ const UserWishlist = () => {
           <div className="w-16 h-16 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-4 text-rose-400">
             <Heart size={32} />
           </div>
-          <h2 className="text-2xl font-serif text-zinc-900 mb-2">
+          <h2 className="text-3xl font-serif text-zinc-900 mb-2">
             Your wishlist is empty
           </h2>
-          <p className="text-zinc-500 text-xs max-w-md mx-auto mb-8 leading-relaxed">
+          <p className="text-zinc-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">
             You haven't saved any items to your wishlist yet. Browse our catalog
             to save items you love.
           </p>
