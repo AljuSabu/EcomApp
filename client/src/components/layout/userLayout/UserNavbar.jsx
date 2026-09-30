@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShoppingCart, Heart, ChevronRight, Menu } from "lucide-react";
-import { userProfileData } from "../../../data/data";
+import AuthContext from "../../../context/AuthContext";
 import { useCart } from "../../../context/CartContext";
 import { useWishlist } from "../../../context/WishlistContext";
-// import { useUser } from '../contexts/UserContext';
 
 const UserNavbar = ({ setIsMobileMenuOpen }) => {
   const location = useLocation();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
-  //   const { profile } = useUser();
-  const [profile] = useState(userProfileData[0]);
+  const { auth } = useContext(AuthContext);
+
+  const profile = {
+    name: auth?.user?.name || "Guest",
+    avatar:
+      auth?.user?.avatar ||
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        auth?.user?.name || "Guest",
+      )}&background=18181b&color=fff`,
+    memberTier: "Gold Member",
+  };
 
   const getCurrentPageTitle = () => {
     if (location.pathname.includes("/dashboard/user/profile"))
@@ -73,8 +81,11 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
 
         <div className="h-5 w-px bg-zinc-200 hidden sm:block" />
 
-        <Link to="/user/profile" className="flex items-center space-x-3 group">
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-zinc-200 group-hover:border-primary transition-colors">
+        <Link
+          to="/dashboard/user/profile"
+          className="flex items-center space-x-3 group"
+        >
+          <div className="w-8 h-8 rounded-full overflow-hidden border border-zinc-200 group-hover:border-zinc-400 transition-colors">
             <img
               src={profile.avatar}
               alt={profile.name}
@@ -82,7 +93,7 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
             />
           </div>
           <div className="hidden lg:block text-left">
-            <p className="text-xs font-semibold text-zinc-900 group-hover:text-primary transition-colors leading-tight">
+            <p className="text-xs font-semibold text-zinc-900 group-hover:text-zinc-600 transition-colors leading-tight">
               {profile.name}
             </p>
             <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-bold">
