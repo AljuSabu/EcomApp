@@ -12,6 +12,8 @@ const ProductCard = ({ item, cart, setCart }) => {
 
   const isWishlisted = isInWishlist(item._id);
 
+  const isInCart = cart.some((p) => p._id === item._id);
+
   const handleWishlist = () => {
     if (!auth?.user) {
       return toast.error("Please login to save items to your wishlist");
@@ -87,11 +89,12 @@ const ProductCard = ({ item, cart, setCart }) => {
         <div className="flex gap-3 pt-5 mt-auto">
           <button
             onClick={handleAddToCart}
-            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2  hover:bg-zinc-800 transition"
+            disabled={isInCart}
+            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition"
           >
             <ShoppingCart size={16} />
             Add
-          </button> 
+          </button>
 
           <button className="flex items-center justify-center px-3 border border-zinc-200 hover:bg-zinc-100 transition">
             <Eye size={16} />
