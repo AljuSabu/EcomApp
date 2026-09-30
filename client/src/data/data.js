@@ -27,43 +27,35 @@ export const price = [
   },
 ];
 
-//Dummy data of user for the profile
-export const userProfileData = [
-  {
-    name: "Eleanor Vance",
-    email: "eleanor.vance@example.com",
-    phone: "+1 (555) 349-8210",
-    avatar:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
-    role: "Member",
-    memberTier: "Gold Member",
-    memberSince: "March 2024",
-    rewardPoints: 1250,
-    storeCredit: 150.0,
-    address: {
-      street: "742 Evergreen Terrace, Apt 4B",
-      city: "San Francisco",
-      state: "CA",
-      zip: "94102",
-      country: "United States",
-    },
-    billingAddress: {
-      street: "742 Evergreen Terrace, Apt 4B",
-      city: "San Francisco",
-      state: "CA",
-      zip: "94102",
-      country: "United States",
-    },
-    preferences: {
-      newsletter: true,
-      smsAlerts: true,
-      currency: "USD ($)",
-    },
-  },
-];
-
 //Dummy data for the order page
 export const userOrder = [
+  {
+    id: "ORD-10933",
+    orderNumber: "ORD-10933",
+    date: "May 28, 2026",
+    status: "Processing",
+    paymentMethod: "Credit Card (Visa •••• 4242)",
+    paymentId: "PAY-77213LZ8",
+    shippingAddress: "742 Evergreen Terrace, Apt 4B, San Francisco, CA 94102",
+    subtotal: 150.0,
+    shipping: 50.0,
+    tax: 12.0,
+    total: 212.0,
+    trackingNumber: null,
+    carrier: null,
+    estimatedDelivery: "June 02, 2026",
+    items: [
+      {
+        id: 6,
+        name: "Silver Cuff",
+        price: "₹150",
+        priceValue: 150,
+        image: "https://picsum.photos/seed/cuff/800/1000",
+        quantity: 1,
+        selectedSize: "Adjustable",
+      },
+    ],
+  },
   {
     id: "ORD-98421",
     orderNumber: "ORD-98421",
@@ -83,7 +75,7 @@ export const userOrder = [
       {
         id: 1,
         name: "Minimalist Watch",
-        price: "$240",
+        price: "₹240",
         priceValue: 240,
         image: "https://picsum.photos/seed/watch/800/1000",
         quantity: 1,
@@ -92,7 +84,7 @@ export const userOrder = [
       {
         id: 2,
         name: "Leather Tote",
-        price: "$380",
+        price: "₹380",
         priceValue: 380,
         image: "https://picsum.photos/seed/bag/800/1000",
         quantity: 1,
@@ -119,7 +111,7 @@ export const userOrder = [
       {
         id: 4,
         name: "Cotton Shirt",
-        price: "$120",
+        price: "₹120",
         priceValue: 120,
         image: "https://picsum.photos/seed/shirt/800/1000",
         quantity: 1,
@@ -146,7 +138,7 @@ export const userOrder = [
       {
         id: 3,
         name: "Ceramic Vase",
-        price: "$85",
+        price: "₹85",
         priceValue: 85,
         image: "https://picsum.photos/seed/vase/800/1000",
         quantity: 1,
@@ -155,7 +147,7 @@ export const userOrder = [
       {
         id: 6,
         name: "Silver Cuff",
-        price: "$150",
+        price: "₹150",
         priceValue: 150,
         image: "https://picsum.photos/seed/cuff/800/1000",
         quantity: 1,
