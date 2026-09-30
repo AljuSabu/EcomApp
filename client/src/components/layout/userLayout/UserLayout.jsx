@@ -13,7 +13,7 @@ const UserLayout = () => {
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
-      <main className="flex-1 md:ml-64 flex flex-col min-h-screen">
+      <main className="flex-1 md:ml-60 flex flex-col min-h-screen">
         <UserNavbar setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
         <div className="p-6 sm:p-8 max-w-6xl w-full mx-auto flex-1">
