@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import { useWishlist } from "../../../context/WishlistContext";
@@ -26,7 +26,6 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const { wishlistCount } = useWishlist();
 
   // Build a display profile from real auth data + placeholder extras.
-  // Swap memberTier for a real field once your backend returns one.
   const profile = {
     name: auth?.user?.name || "Guest",
     avatar:
