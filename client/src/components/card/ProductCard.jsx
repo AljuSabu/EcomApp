@@ -3,15 +3,16 @@ import { ShoppingCart, Eye, Heart } from "lucide-react";
 import { toast } from "sonner";
 import AuthContext from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
 
-const ProductCard = ({ item, cart, setCart }) => {
+const ProductCard = ({ item }) => {
   const [loaded, setLoaded] = useState(false);
 
   const { auth } = useContext(AuthContext);
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { cart, addToCart } = useCart();
 
   const isWishlisted = isInWishlist(item._id);
-
   const isInCart = cart.some((p) => p._id === item._id);
 
   const handleWishlist = () => {
@@ -27,13 +28,11 @@ const ProductCard = ({ item, cart, setCart }) => {
       return toast.error("Please login to add items to cart");
     }
 
-    const exists = cart.find((p) => p._id === item._id);
-
-    if (exists) {
+    if (isInCart) {
       return toast.error("Already in cart");
     }
 
-    setCart([...cart, item]);
+    addToCart(item, 1);
     toast.success("Product added to cart");
   };
 
@@ -72,9 +71,11 @@ const ProductCard = ({ item, cart, setCart }) => {
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
-          {item.collection.name}
-        </p>
+        {item.collection?.name && (
+          <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
+            {item.collection.name}
+          </p>
+        )}
 
         <h2 className="text-lg font-semibold text-zinc-900 truncate">
           {item.name}
@@ -93,7 +94,7 @@ const ProductCard = ({ item, cart, setCart }) => {
             className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition"
           >
             <ShoppingCart size={16} />
-            Add
+            {isInCart ? "In Cart" : "Add"}
           </button>
 
           <button className="flex items-center justify-center px-3 border border-zinc-200 hover:bg-zinc-100 transition">
