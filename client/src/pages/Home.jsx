@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
-// import AuthContext from "../context/AuthContext";
-import { useCart } from "../context/CartContext";
 import Carousel from "../components/card/Carousel";
 import axios from "axios";
 import { toast } from "sonner";
@@ -36,30 +34,24 @@ const Home = () => {
 
   const isFirstRender = useRef(true);
 
-  // const { auth } = useContext(AuthContext);
-  const { cart, setCart } = useCart();
-
   const debouncedChecked = useDebounce(checked, 300);
   const debouncedRadio = useDebounce(radio, 300);
 
   const isFiltering = checked.length > 0 || radio.length > 0;
 
-  //Get all collections
   const getCollections = async () => {
     try {
       const { data } = await axios.get("/collection/get-all-collection");
-      setCollections(data?.collection);
+      setCollections(data?.collection || []);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong while fetching collections");
     }
   };
 
-  // Get all products
   const getProducts = async () => {
     try {
       const { data } = await axios.get(`/product/product-list/1`);
-
       if (data?.success) {
         setProducts(data.products);
       } else {
@@ -71,12 +63,10 @@ const Home = () => {
     }
   };
 
-  // Load more functionality
   const loadMore = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/product/product-list/${page}`);
-
       if (data?.success) {
         setProducts((prev) => [...prev, ...data.products]);
       }
@@ -88,7 +78,6 @@ const Home = () => {
     }
   };
 
-  // HandleFilter Function
   const handleFilter = (value, id) => {
     let all = [...checked];
     if (value) {
@@ -99,10 +88,9 @@ const Home = () => {
     setChecked(all);
   };
 
-  // Filter products
   const filterProduct = async () => {
     try {
-      setFiltering(true); // show loading before request
+      setFiltering(true);
       const { data } = await axios.post("/product/product-filter", {
         checked,
         radio,
@@ -113,11 +101,10 @@ const Home = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setFiltering(false); // hide loading after request
+      setFiltering(false);
     }
   };
 
-  // Get total count of products
   const getTotal = async () => {
     try {
       const { data } = await axios.get("/product/product-count");
@@ -127,21 +114,18 @@ const Home = () => {
     }
   };
 
-  // 1. Runs only once on mount
   useEffect(() => {
     getCollections();
     getTotal();
     getProducts();
   }, []);
 
-  // 2. Runs only when page increases (load more)
   useEffect(() => {
     if (page === 1) return;
     loadMore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  // 3. Runs only when filters actually change
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -155,12 +139,13 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(debouncedChecked), JSON.stringify(debouncedRadio)]);
 
-  // Reset filters and reload
   const handleReset = () => {
     setChecked([]);
     setRadio([]);
     setPage(1);
-    getProducts();
+    // No need to call getProducts() here too — clearing checked/radio to []
+    // already triggers the filter-watching effect above, which calls
+    // getProducts() itself. Calling it here as well just double-fetches.
   };
 
   return (
@@ -171,8 +156,6 @@ const Home = () => {
 
       <section className="w-full mt-1 mb-20">
         <Carousel />
-        {/* <pre>{JSON.stringify(auth, null, 4)}</pre>
-        <pre>{JSON.stringify(radio, null, 4)}</pre> */}
 
         <div className="max-w-7xl mx-auto px-6 py-10 lg:px-8 mt-14">
           {/* Header */}
@@ -202,6 +185,7 @@ const Home = () => {
               View All
             </Link>
           </div>
+
           <div className="flex flex-col lg:flex-row gap-12">
             {/* Sidebar Filters */}
             <aside className="lg:w-64 shrink-0">
@@ -216,13 +200,15 @@ const Home = () => {
                     Collections
                   </h3>
 
-                  <div className="space-y-3">
+                  <div className="flex flex-col gap-3">
                     {collections.map((item) => (
                       <Checkbox
                         key={item._id}
+                        checked={checked.includes(item._id)}
                         onChange={(e) =>
                           handleFilter(e.target.checked, item._id)
                         }
+                        className="flex items-center text-sm text-zinc-700"
                       >
                         {item.name}
                       </Checkbox>
@@ -236,12 +222,20 @@ const Home = () => {
                     Price
                   </h3>
 
-                  <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-                    <div className="space-y-3">
+                  <Radio.Group
+                    onChange={(e) => setRadio(e.target.value)}
+                    value={radio}
+                    className="w-full"
+                  >
+                    <div className="flex flex-col gap-3">
                       {price.map((item) => (
-                        <div key={item._id}>
-                          <Radio value={item.arr}>{item.range}</Radio>
-                        </div>
+                        <Radio
+                          key={item._id}
+                          value={item.arr}
+                          className="flex items-center text-sm text-zinc-700"
+                        >
+                          {item.range}
+                        </Radio>
                       ))}
                     </div>
                   </Radio.Group>
@@ -250,7 +244,7 @@ const Home = () => {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="w-full mt-8 bg-zinc-900 text-white py-3 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition"
+                  className="w-full mt-8 bg-zinc-900 text-white py-3 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-lg"
                 >
                   Reset Filters
                 </button>
@@ -259,7 +253,6 @@ const Home = () => {
 
             {/* Products Section */}
             <div className="flex-1">
-              {/* Show skeleton cards while filtering */}
               {filtering ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                   {[...Array(6)].map((_, i) => (
@@ -269,33 +262,43 @@ const Home = () => {
                     />
                   ))}
                 </div>
+              ) : products.length === 0 ? (
+                <div className="py-24 text-center">
+                  <p className="text-zinc-900 text-lg font-serif mb-2">
+                    No matches found
+                  </p>
+                  <p className="text-zinc-500 text-sm mb-6">
+                    Try adjusting your filters, or reset to see everything.
+                  </p>
+                  <button
+                    onClick={handleReset}
+                    className="text-sm font-bold uppercase tracking-widest text-zinc-900 hover:underline"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                   {products.map((item) => (
-                    <ProductCard
-                      key={item._id}
-                      item={item}
-                      cart={cart}
-                      setCart={setCart}
-                    />
+                    <ProductCard key={item._id} item={item} />
                   ))}
                 </div>
               )}
-              <div>
-                {!isFiltering && products && products.length < total && (
-                  <div className="flex justify-center mt-14">
-                    <button
-                      className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPage(page + 1);
-                      }}
-                    >
-                      {loading ? "Loading..." : "Load More"}
-                    </button>
-                  </div>
-                )}
-              </div>
+
+              {!isFiltering && products && products.length < total && (
+                <div className="flex justify-center mt-14">
+                  <button
+                    className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full disabled:opacity-60 disabled:cursor-not-allowed"
+                    disabled={loading}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(page + 1);
+                    }}
+                  >
+                    {loading ? "Loading..." : "Load More"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -342,6 +345,10 @@ const Home = () => {
               alt="Craftsmanship"
               className="w-full h-full object-cover opacity-80"
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://picsum.photos/seed/luxecraft/800/800";
+              }}
             />
           </motion.div>
         </div>
