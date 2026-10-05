@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
@@ -14,19 +13,27 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    if (password.length < 6) {
+      return toast.error("Password must be at least 6 characters.");
+    }
+
+    setIsSubmitting(true);
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/auth/signup",
-        { name, email, password, address, phone, role },
+        // Roll removed 
+        // Now the backend always create new signups as "user" by default.
+        { name, email, password, address, phone },
       );
-      // console.log(data);
-      // alert(data);
+
       if (data && data.success) {
         toast.success(data.message);
         navigate("/login");
@@ -35,7 +42,11 @@ const Signup = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
+      toast.error(
+        error?.response?.data?.message || "Something went wrong during signup",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -48,7 +59,7 @@ const Signup = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-olive-300/80 p-8 md:p-12 w-full max-w-lg rounded-2xl shadow-xl shadow-olive-400/50"
+          className="bg-white p-8 md:p-12 w-full max-w-lg rounded-2xl border border-zinc-200 shadow-xl shadow-zinc-200/60"
         >
           <div className="text-center mb-10">
             <h1 className="text-3xl font-serif mb-2">Create Account</h1>
@@ -67,10 +78,8 @@ const Signup = () => {
                 placeholder="John Doe"
                 required
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm"
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg focus:border-zinc-900 outline-none transition-colors text-sm"
               />
             </div>
 
@@ -83,10 +92,8 @@ const Signup = () => {
                 placeholder="john@example.com"
                 required
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm"
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg focus:border-zinc-900 outline-none transition-colors text-sm"
               />
             </div>
 
@@ -96,13 +103,12 @@ const Signup = () => {
               </label>
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="At least 6 characters"
                 required
+                minLength={6}
                 value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm"
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg focus:border-zinc-900 outline-none transition-colors text-sm"
               />
             </div>
 
@@ -114,10 +120,8 @@ const Signup = () => {
                 type="text"
                 required
                 value={address}
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                }}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm"
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg focus:border-zinc-900 outline-none transition-colors text-sm"
               />
             </div>
 
@@ -129,46 +133,27 @@ const Signup = () => {
                 type="text"
                 required
                 value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm"
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg focus:border-zinc-900 outline-none transition-colors text-sm"
               />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-                Account Type
-              </label>
-              <select
-                name="role"
-                required
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 focus:border-zinc-900 focus:outline-none transition-colors text-sm appearance-none cursor-pointer"
-              >
-                <option value="">Select Role</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-indigo-950 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-indigo-900 transition-colors flex items-center justify-center group"
+              disabled={isSubmitting}
+              className="w-full bg-black text-white py-4 rounded-lg text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors flex items-center justify-center group disabled:bg-zinc-300 disabled:cursor-not-allowed"
             >
-              Create Account
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              {isSubmitting ? "Creating Account..." : "Create Account"}
+              {!isSubmitting && (
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              )}
             </button>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-sm text-zinc-500">
               Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-indigo-950 font-bold hover:underline"
-              >
+              <Link to="/login" className="text-zinc-900 font-bold hover:underline">
                 Sign In
               </Link>
             </p>
