@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Plus, Edit2, Trash2, Search } from "lucide-react";
+import { Edit2, Trash2, Search, Layers } from "lucide-react";
 import { toast } from "sonner";
 import CollectionForm from "../../components/forms/CollectionForm";
 import { Modal, Input } from "antd";
 
 const ManageCollection = () => {
   const [collection, setCollection] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Create Collection
   const createCollection = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "/collection/create-collection",
-        { name },
-      );
+      const { data } = await axios.post("/collection/create-collection", {
+        name,
+      });
       if (data?.success) {
         toast.success(data?.message);
         getCollection();
@@ -35,16 +35,16 @@ const ManageCollection = () => {
 
   const getCollection = async () => {
     try {
-      const { data } = await axios.get(
-        "/collection/get-all-collection",
-      );
-
+      setLoading(true);
+      const { data } = await axios.get("/collection/get-all-collection");
       if (data?.success) {
         setCollection(data.collection);
       }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong in getting collection");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,6 +53,9 @@ const ManageCollection = () => {
   }, []);
 
   const deleteCollection = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this collection?")) {
+      return;
+    }
     try {
       const { data } = await axios.delete(
         `/collection/delete-collection/${id}`,
@@ -69,7 +72,6 @@ const ManageCollection = () => {
     }
   };
 
-  // Update Collection
   const updateCollection = async () => {
     if (!updatedName.trim()) {
       return toast.error("Collection name is required");
@@ -94,85 +96,128 @@ const ManageCollection = () => {
     }
   };
 
+  const filteredCollection = collection.filter((col) =>
+    col.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   return (
     <>
-      <div className="w-6xl flex flex-col gap-10">
-        <div className="flex justify-between items-end">
-          <div>
-            <h1 className="text-3xl font-serif mb-2">Manage Collections</h1>
-            <p className="text-zinc-500">
-              Organize and curate your product series.
-            </p>
-          </div>
+      <div className="max-w-6xl flex flex-col gap-8">
+        <div>
+          <h1 className="text-3xl font-serif mb-2">Manage Collections</h1>
+          <p className="text-zinc-500 text-sm">
+            Organize and curate your product series.
+          </p>
         </div>
 
-        <div className="space-y-10">
+        <div className="space-y-8">
           {/* Create Collection Section */}
-          <CollectionForm
-            handleSubmit={createCollection}
-            value={name}
-            setValue={setName}
-          />
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-4">
+              New Collection
+            </h3>
+            <CollectionForm
+              handleSubmit={createCollection}
+              value={name}
+              setValue={setName}
+            />
+          </div>
 
           {/* Collections Table */}
-          <div className="lg:col-span-2">
-            <div className="bg-white border border-zinc-300/80 shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
-                <div className="relative">
-                  <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                    size={16}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search collections..."
-                    className="pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-200 text-sm focus:outline-none focus:border-indigo-900/50 w-124"
-                  />
-                </div>
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
+              <div className="relative">
+                <Search
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  size={16}
+                />
+                <input
+                  type="text"
+                  placeholder="Search collections..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm outline-none focus:border-zinc-900 w-full sm:w-72"
+                />
               </div>
+              <span className="text-xs text-zinc-400 font-medium hidden sm:block">
+                {filteredCollection.length}{" "}
+                {filteredCollection.length === 1 ? "collection" : "collections"}
+              </span>
+            </div>
+
+            {loading ? (
+              <div className="divide-y divide-zinc-100">
+                {[...Array(4)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="px-6 py-4 flex items-center justify-between animate-pulse"
+                  >
+                    <div className="h-4 bg-zinc-200 rounded w-40" />
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-zinc-200 rounded-lg" />
+                      <div className="h-8 w-8 bg-zinc-200 rounded-lg" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredCollection.length === 0 ? (
+              <div className="text-center py-16">
+                <Layers size={36} className="mx-auto text-zinc-300 mb-3" />
+                <p className="text-sm font-medium text-zinc-700">
+                  {collection.length === 0
+                    ? "No collections yet"
+                    : "No collections match your search"}
+                </p>
+                <p className="text-xs text-zinc-400 mt-1">
+                  {collection.length === 0
+                    ? "Create your first collection above to get started."
+                    : "Try a different search term."}
+                </p>
+              </div>
+            ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-zinc-300/50 border-b border-zinc-100">
-                      <th className="px-6 py-4 text-sm font-bold uppercase tracking-widest text-zinc-400">
+                    <tr className="bg-zinc-50 border-b border-zinc-100">
+                      <th className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400">
                         Collection
                       </th>
-                      <th className="px-6 py-4 text-sm font-bold uppercase tracking-widest text-zinc-400 text-right">
+                      <th className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 text-right">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-200/50">
-                    {collection.map((col) => (
+                  <tbody className="divide-y divide-zinc-100">
+                    {filteredCollection.map((col) => (
                       <tr
                         key={col._id}
-                        className="hover:bg-zinc-200/50 transition-colors"
+                        className="hover:bg-zinc-50 transition-colors"
                       >
                         <td className="px-6 py-4">
-                          <div className="font-medium text-zinc-900">
+                          <div className="font-medium text-zinc-900 text-sm">
                             {col.name}
                           </div>
                         </td>
 
                         <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end space-x-2 ">
+                          <div className="flex justify-end space-x-1">
                             <button
                               onClick={() => {
                                 setSelectedCollection(col);
                                 setUpdatedName(col.name);
                                 setIsModalOpen(true);
                               }}
-                              className="p-2 text-zinc-400 hover:text-indigo-900 transition-colors"
+                              className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors"
+                              title="Edit"
                             >
-                              <Edit2 size={18} />
+                              <Edit2 size={16} />
                             </button>
                             <button
-                              onClick={() => {
-                                deleteCollection(col._id);
-                              }}
-                              className="p-2 text-zinc-400 hover:text-rose-500 transition-colors"
+                              onClick={() => deleteCollection(col._id)}
+                              className="p-2 text-zinc-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                              title="Delete"
                             >
-                              <Trash2 size={18} />
+                              <Trash2 size={16} />
                             </button>
                           </div>
                         </td>
@@ -181,10 +226,11 @@ const ManageCollection = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
+
       <Modal
         title="Edit Collection"
         open={isModalOpen}
