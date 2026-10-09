@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import AuthContext from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ item }) => {
   const [loaded, setLoaded] = useState(false);
@@ -77,9 +78,11 @@ const ProductCard = ({ item }) => {
           </p>
         )}
 
-        <h2 className="text-lg font-semibold text-zinc-900 truncate">
-          {item.name}
-        </h2>
+        <Link to={`/products/${item.slug}`}>
+          <h2 className="text-lg font-semibold text-zinc-900 truncate">
+            {item.name}
+          </h2>
+        </Link>
 
         <p className="text-md font-medium text-zinc-700 mt-1">₹{item.price}</p>
 
@@ -97,9 +100,13 @@ const ProductCard = ({ item }) => {
             {isInCart ? "In Cart" : "Add"}
           </button>
 
-          <button className="flex items-center justify-center px-3 border border-zinc-200 hover:bg-zinc-100 transition">
+          <Link
+            to={`/products/${item.slug}`}
+            title="View details"
+            className="flex items-center justify-center px-3 border border-zinc-200 hover:bg-zinc-100 transition"
+          >
             <Eye size={16} />
-          </button>
+          </Link>
         </div>
       </div>
 

@@ -52,7 +52,7 @@ const Carousel = () => {
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black/25 flex items-center">
+              <div className="absolute inset-0 bg-black/5 flex items-center">
                 <div className="px-10 md:px-20 text-white max-w-xl">
                   <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
                     {slide.title}
