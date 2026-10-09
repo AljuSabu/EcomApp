@@ -7,7 +7,7 @@ import {
   ShoppingCart,
   Trash2,
   ArrowRight,
-  // Eye,
+  Eye,
   CheckCircle2,
 } from "lucide-react";
 import { useWishlist } from "../../context/WishlistContext";
@@ -64,15 +64,15 @@ const WishlistCard = ({ item }) => {
           <Heart size={18} className="fill-rose-500 text-rose-500" />
         </button>
 
-        {/* <Link
-          to={`/product/${item._id}`}
+        <Link
+          to={`/products/${item.slug}`}
           className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
         >
           <span className="bg-white text-zinc-900 text-[10px] font-bold uppercase tracking-widest px-4 py-2 shadow-lg flex items-center">
             <Eye size={12} className="mr-1.5" />
             View Product
           </span>
-        </Link> */}
+        </Link>
       </div>
 
       {/* Content */}
