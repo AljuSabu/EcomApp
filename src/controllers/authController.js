@@ -12,12 +12,12 @@ export const cookieOptions = {
 export const signup = async (req, res) => {
   try {
     // console.log(req.body);
-    
+
     // Get info from Frontend
-    const { name, email, password, phone, address, role } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     // Validation and Response
-    if (!name || !email || !password || !phone || !address || !role) {
+    if (!name || !email || !password || !phone || !address) {
       return res.status(400).json({
         success: false,
         message: "Please fill all the fields",
@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
 
     // Send response if the user exists
     if (existingUser) {
-      return res.status(200).json({
+      return res.status(409).json({
         success: false,
         message: "User already exists , Please login",
       });
@@ -42,7 +42,6 @@ export const signup = async (req, res) => {
       password,
       phone,
       address,
-      role,
     });
 
     // Create Token
@@ -65,7 +64,7 @@ export const signup = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       success: false,
       message: "Error in signing up",
@@ -78,7 +77,6 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    
     // Get info from the frontend
     const { email, password } = req.body;
 
@@ -95,7 +93,7 @@ export const login = async (req, res) => {
 
     // If user dosent exist send response
     if (!user) {
-      return res.status(404).json({
+      return res.status(401).json({
         success: false,
         message: "No user found , please signup",
       });
@@ -106,7 +104,7 @@ export const login = async (req, res) => {
 
     // If password dosent match send response
     if (!isPasswordMatched) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid Password",
       });
@@ -140,7 +138,7 @@ export const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       success: false,
       message: "Error in login",
@@ -162,16 +160,11 @@ export const logout = async (req, res) => {
       message: "Logged out Successfully",
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
-      sucess: false,
+      success: false,
       message: "Error in Logout",
       error,
     });
   }
 };
-
-//test controller 
-export const testController = (req,res)=>{
-  res.send("Protected Rotes")
-}
