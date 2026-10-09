@@ -27,6 +27,72 @@ export const price = [
   },
 ];
 
+//Shared perks shown on the product detail page
+export const productPerks = [
+  {
+    id: "shipping",
+    icon: "truck",
+    title: "Free shipping over ₹5,000",
+    desc: "Flat ₹50 on smaller orders",
+  },
+  {
+    id: "returns",
+    icon: "returns",
+    title: "7-day easy returns",
+    desc: "Unused items, original packaging",
+  },
+  {
+    id: "secure",
+    icon: "shield",
+    title: "Secure checkout",
+    desc: "Payments protected by Razorpay",
+  },
+];
+
+//Content for the product detail page
+export const productInfo = [
+  {
+    id: "details",
+    title: "Product Details",
+    points: [
+      "Designed and finished in small batches",
+      "Made with natural, responsibly sourced materials",
+      "Each piece is quality-checked before dispatch",
+      "Colours may vary slightly between screens",
+    ],
+  },
+  {
+    id: "shipping",
+    title: "Shipping & Delivery",
+    points: [
+      "Free shipping on orders above ₹5,000",
+      "Flat ₹50 shipping on orders below ₹5,000",
+      "Orders are dispatched within 1–2 business days",
+      "Delivery in 3–5 business days across India",
+    ],
+  },
+  {
+    id: "returns",
+    title: "Returns & Exchanges",
+    points: [
+      "Returns accepted within 7 days of delivery",
+      "Items must be unused and in original packaging",
+      "Refunds go to your original payment method within 5–7 business days",
+      "Contact support to start a return",
+    ],
+  },
+  {
+    id: "care",
+    title: "Care Instructions",
+    points: [
+      "Follow the care label on the product",
+      "Avoid prolonged exposure to direct sunlight and moisture",
+      "Clean gently with a soft, dry cloth where possible",
+      "Store in a cool, dry place when not in use",
+    ],
+  },
+];
+
 //Dummy data for the order page
 export const userOrder = [
   {

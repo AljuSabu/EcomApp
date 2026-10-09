@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  login,
-  logout,
-  signup,
-  testController,
-} from "../controllers/authController.js";
+import { login, logout, signup } from "../controllers/authController.js";
 import { isAdmin, isLoggedIn } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
@@ -18,9 +13,6 @@ router.post("/login", login);
 
 // logout | method:post | /api/v1/logout
 router.post("/logout", logout);
-
-// test route
-router.get("/test", isLoggedIn, isAdmin, testController);
 
 // Protectd Route (to check authenticated user)
 // If the user is loggedin we get true in the frontend so that the user can access the dashboard or more
