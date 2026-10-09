@@ -16,7 +16,7 @@ export const isLoggedIn = async (req, res, next) => {
     // Check Authorization header
     else if (
       req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
+      req.headers.authorization.startsWith("Bearer ")
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
@@ -33,7 +33,7 @@ export const isLoggedIn = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({
       success: false,
       message: "Invalid token",
@@ -48,13 +48,13 @@ export const isAdmin = async (req, res, next) => {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-      return res.status(404).json({
+      return res.status(401).json({
         success: false,
         message: "User not found",
       });
     }
 
-    if (user.role.toLowerCase() !== AuthRoles.ADMIN.toLowerCase()) {
+    if (user.role !== AuthRoles.ADMIN) {
       return res.status(403).json({
         success: false,
         message: "You are not authorized to access this page",
@@ -63,7 +63,7 @@ export const isAdmin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error in admin middleware",
