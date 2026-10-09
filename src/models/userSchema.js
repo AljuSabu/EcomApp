@@ -13,16 +13,20 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
+      lowercase: true,
+      trim: true,
       unique: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email"],
     },
     password: {
       type: String,
-      required: [true],
+      required: [true, "Password is required"],
       minLength: [8, "Password should contain atleast 8 characters"],
       select: false,
     },
     phone: {
       type: String,
+      trim: true,
       required: true,
     },
     address: {
@@ -33,41 +37,23 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: Object.values.AuthRoles,
+      enum: Object.values(AuthRoles),
       default: AuthRoles.USER,
     },
   },
   { timestamps: true },
 );
 
-// Encrypt password before saving | you can use mongoose hooks
-// userSchema.pre("save", async function (next) {
-//   try {
-//     if (!this.isModified("password")) {
-//       return next();
-//     }
-//     this.password = await bcrypt.hash(this.password, 10);
-//     next();
-//   } catch (error) {
-//     console.log("from schema", error);
-//   }
-// });
+// Encrypt password before saving | use mongoose hooks
 
 userSchema.pre("save", async function () {
-  try {
-    if (!this.isModified("password")) return;
-
-    this.password = await bcrypt.hash(this.password, 10);
-  } catch (error) {
-    console.log("from schema", error);
-  }
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 // Schema Methods
-userSchema.methods = {
-  comparePassword: async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
-  },
+userSchema.methods.comparePassword = function (enteredPassword) {
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
 export default mongoose.model("User", userSchema);
