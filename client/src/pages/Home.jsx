@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/card/ProductCard";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Checkbox, Radio } from "antd";
 import { price } from "../data/data";
 
@@ -31,6 +31,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [filtering, setFiltering] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const isFirstRender = useRef(true);
 
@@ -38,6 +39,7 @@ const Home = () => {
   const debouncedRadio = useDebounce(radio, 300);
 
   const isFiltering = checked.length > 0 || radio.length > 0;
+  const activeFilterCount = checked.length + (radio.length > 0 ? 1 : 0);
 
   const getCollections = async () => {
     try {
@@ -143,9 +145,6 @@ const Home = () => {
     setChecked([]);
     setRadio([]);
     setPage(1);
-    // No need to call getProducts() here too — clearing checked/radio to []
-    // already triggers the filter-watching effect above, which calls
-    // getProducts() itself. Calling it here as well just double-fetches.
   };
 
   return (
@@ -154,97 +153,126 @@ const Home = () => {
         <title>Home</title>
       </Helmet>
 
-      <section className="w-full mt-1 mb-20">
+      <section className="w-full mt-1 mb-12 md:mb-16 lg:mb-20">
         <Carousel />
 
-        <div className="max-w-7xl mx-auto px-6 py-10 lg:px-8 mt-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 mt-8 sm:mt-10 lg:mt-14">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-zinc-400 mb-3">
+              <p className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-zinc-400 mb-2 sm:mb-3">
                 Featured Collection
               </p>
 
-              <h2 className="text-4xl font-serif text-zinc-900 leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-zinc-900 leading-tight">
                 Featured Pieces
               </h2>
 
-              <p className="text-zinc-500 mt-3 max-w-xl">
+              <p className="text-sm sm:text-base text-zinc-500 mt-2 sm:mt-3 max-w-xl">
                 Handpicked selections from our latest drop.
               </p>
 
-              <div className="mt-4 text-sm text-zinc-400">
+              <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-zinc-400">
                 {total} products available
               </div>
             </div>
 
             <Link
               to="/products"
-              className="inline-flex items-center text-sm font-semibold uppercase tracking-[0.2em] border-b border-zinc-900 pb-1 hover:text-zinc-500 hover:border-zinc-500 transition"
+              className="self-start sm:self-auto inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] border-b border-zinc-900 pb-1 hover:text-zinc-500 hover:border-zinc-500 transition"
             >
               View All
             </Link>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Sidebar Filters */}
             <aside className="lg:w-64 shrink-0">
-              <div className="sticky top-24 border border-zinc-200 rounded-2xl p-6 bg-white">
-                <h2 className="text-lg font-semibold text-zinc-900 mb-6">
+              <div className="sticky top-24 border border-zinc-200 rounded-2xl p-4 sm:p-5 lg:p-6 bg-white">
+                <button
+                  type="button"
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  aria-expanded={isFilterOpen}
+                  className="lg:hidden w-full flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-2 text-base sm:text-lg font-semibold text-zinc-900">
+                    Filters
+                    {activeFilterCount > 0 && (
+                      <span className="bg-zinc-900 text-white text-[10px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </span>
+                  <ChevronDown
+                    size={18}
+                    className={`text-zinc-500 transition-transform duration-300 ${
+                      isFilterOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <h2 className="hidden lg:block text-lg font-semibold text-zinc-900 mb-6">
                   Filters
                 </h2>
 
-                {/* Collections */}
-                <div className="mb-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-4">
-                    Collections
-                  </h3>
+                <div
+                  className={`${
+                    isFilterOpen ? "grid" : "hidden"
+                  } grid-cols-1 sm:grid-cols-2 sm:gap-8 mt-4 sm:mt-6 lg:mt-0 lg:block`}
+                >
+                  {/* Collections */}
+                  <div className="mb-6 sm:mb-0 lg:mb-8">
+                    <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-3 sm:mb-4">
+                      Collections
+                    </h3>
 
-                  <div className="flex flex-col gap-3">
-                    {collections.map((item) => (
-                      <Checkbox
-                        key={item._id}
-                        checked={checked.includes(item._id)}
-                        onChange={(e) =>
-                          handleFilter(e.target.checked, item._id)
-                        }
-                        className="flex items-center text-sm text-zinc-700"
-                      >
-                        {item.name}
-                      </Checkbox>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Price */}
-                <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-4">
-                    Price
-                  </h3>
-
-                  <Radio.Group
-                    onChange={(e) => setRadio(e.target.value)}
-                    value={radio}
-                    className="w-full"
-                  >
                     <div className="flex flex-col gap-3">
-                      {price.map((item) => (
-                        <Radio
+                      {collections.map((item) => (
+                        <Checkbox
                           key={item._id}
-                          value={item.arr}
+                          checked={checked.includes(item._id)}
+                          onChange={(e) =>
+                            handleFilter(e.target.checked, item._id)
+                          }
                           className="flex items-center text-sm text-zinc-700"
                         >
-                          {item.range}
-                        </Radio>
+                          {item.name}
+                        </Checkbox>
                       ))}
                     </div>
-                  </Radio.Group>
+                  </div>
+
+                  {/* Price */}
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-zinc-500 mb-3 sm:mb-4">
+                      Price
+                    </h3>
+
+                    <Radio.Group
+                      onChange={(e) => setRadio(e.target.value)}
+                      value={radio}
+                      className="w-full"
+                    >
+                      <div className="flex flex-col gap-3">
+                        {price.map((item) => (
+                          <Radio
+                            key={item._id}
+                            value={item.arr}
+                            className="flex items-center text-sm text-zinc-700"
+                          >
+                            {item.range}
+                          </Radio>
+                        ))}
+                      </div>
+                    </Radio.Group>
+                  </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="w-full mt-8 bg-zinc-900 text-white py-3 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-lg"
+                  className={`${
+                    isFilterOpen ? "block" : "hidden"
+                  } lg:block w-full mt-6 lg:mt-8 bg-zinc-900 text-white py-3 text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-lg`}
                 >
                   Reset Filters
                 </button>
@@ -254,7 +282,7 @@ const Home = () => {
             {/* Products Section */}
             <div className="flex-1">
               {filtering ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
                   {[...Array(6)].map((_, i) => (
                     <div
                       key={i}
@@ -263,8 +291,8 @@ const Home = () => {
                   ))}
                 </div>
               ) : products.length === 0 ? (
-                <div className="py-24 text-center">
-                  <p className="text-zinc-900 text-lg font-serif mb-2">
+                <div className="py-12 sm:py-16 lg:py-24 text-center">
+                  <p className="text-zinc-900 text-base sm:text-lg font-serif mb-2">
                     No matches found
                   </p>
                   <p className="text-zinc-500 text-sm mb-6">
@@ -278,7 +306,7 @@ const Home = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
                   {products.map((item) => (
                     <ProductCard key={item._id} item={item} />
                   ))}
@@ -286,7 +314,7 @@ const Home = () => {
               )}
 
               {!isFiltering && products && products.length < total && (
-                <div className="flex justify-center mt-14">
+                <div className="flex justify-center mt-8 sm:mt-10 lg:mt-14">
                   <button
                     className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full disabled:opacity-60 disabled:cursor-not-allowed"
                     disabled={loading}
@@ -305,19 +333,19 @@ const Home = () => {
       </section>
 
       {/* About Teaser */}
-      <section className="bg-zinc-900 py-24 text-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <section className="bg-zinc-900 py-12 sm:py-16 lg:py-24 text-white mt-12 sm:mt-16 lg:mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-serif mb-8 leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif mb-5 sm:mb-6 lg:mb-8 leading-tight">
               Crafted with purpose, <br />
               worn with <span className="italic text-zinc-400">confidence</span>
               .
             </h2>
-            <p className="text-zinc-400 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base text-zinc-400 mb-6 lg:mb-8 leading-relaxed">
               We believe that true luxury lies in simplicity and quality. Our
               pieces are designed to be timeless, durable, and ethically
               produced. Every detail is considered, from the source of our
@@ -325,7 +353,7 @@ const Home = () => {
             </p>
             <Link
               to="/about"
-              className="inline-flex items-center text-sm font-bold uppercase tracking-widest group"
+              className="inline-flex items-center text-xs sm:text-sm font-bold uppercase tracking-widest group"
             >
               Our Story
               <ArrowRight
@@ -338,7 +366,7 @@ const Home = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="aspect-square bg-zinc-800 overflow-hidden"
+            className="aspect-4/3 md:aspect-square bg-zinc-800 overflow-hidden"
           >
             <img
               src="/info.jpg"
