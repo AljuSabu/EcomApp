@@ -50,14 +50,14 @@ const ProductCard = ({ item }) => {
           alt={item.name}
           loading="lazy"
           onLoad={() => setLoaded(true)}
-          className={`w-full h-90 object-cover transition-all duration-500 group-hover:scale-105 ${
+          className={`w-full h-72 md:h-80 xl:h-90 object-cover transition-all duration-500 group-hover:scale-105 ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />
         <button
           onClick={handleWishlist}
           aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur shadow-sm hover:bg-white hover:scale-110 transition"
+          className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur shadow-sm hover:bg-white hover:scale-110 transition"
         >
           <Heart
             size={18}
@@ -71,30 +71,32 @@ const ProductCard = ({ item }) => {
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-4 xl:p-5 flex flex-col flex-1">
         {item.collection?.name && (
-          <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
+          <p className="text-xs uppercase tracking-wider sm:tracking-widest text-zinc-400 mb-1">
             {item.collection.name}
           </p>
         )}
 
         <Link to={`/products/${item.slug}`}>
-          <h2 className="text-lg font-semibold text-zinc-900 truncate">
+          <h2 className="text-base sm:text-lg font-semibold text-zinc-900 truncate">
             {item.name}
           </h2>
         </Link>
 
-        <p className="text-md font-medium text-zinc-700 mt-1">₹{item.price}</p>
+        <p className="text-sm sm:text-base font-medium text-zinc-700 mt-1">
+          ₹{item.price}
+        </p>
 
         <p className="text-sm text-zinc-500 mt-2 line-clamp-2">
           {item.description}
         </p>
 
-        <div className="flex gap-3 pt-5 mt-auto">
+        <div className="flex gap-2 sm:gap-3 pt-4 xl:pt-5 mt-auto">
           <button
             onClick={handleAddToCart}
             disabled={isInCart}
-            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition"
+            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 text-sm sm:text-base hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition"
           >
             <ShoppingCart size={16} />
             {isInCart ? "In Cart" : "Add"}
