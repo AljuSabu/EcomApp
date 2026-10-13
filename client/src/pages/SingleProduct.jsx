@@ -24,6 +24,7 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import ProductCard from "../components/card/ProductCard";
 import { productPerks, productInfo } from "../data/data";
+import { API_URL } from "../config";
 
 // Maps the string keys in data.js to actual icon components
 const perkIcons = {
@@ -280,7 +281,7 @@ const SingleProduct = () => {
                   <div className="absolute inset-0 animate-pulse bg-zinc-200" />
                 )}
                 <img
-                  src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
+                  src={`${API_URL}/product/product-photo/${product._id}`}
                   alt={product.name}
                   onLoad={() => setImageLoaded(true)}
                   className={`w-full h-full object-cover transition-opacity duration-500 ${

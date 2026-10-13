@@ -109,7 +109,7 @@ export const paymentVerification = async (req, res) => {
       );
 
       return res.redirect(
-        `http://localhost:5173/payment/payment-success?paymentData=${encodedPaymentData}`,
+        `${config.CLIENT_URL}/payment/payment-success?paymentData=${encodedPaymentData}`,
       );
     } else {
       res.status(400).json({

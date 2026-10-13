@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Edit2, Trash2, Search, PackageSearch } from "lucide-react";
+import { API_URL } from "../../config";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -115,7 +116,7 @@ const AdminProducts = () => {
               {/* Image */}
               <div className="relative overflow-hidden">
                 <img
-                  src={`http://localhost:4000/api/v1/product/product-photo/${item._id}`}
+                  src={`${API_URL}/product/product-photo/${item._id}`}
                   alt={item.name}
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                 />

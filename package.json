@@ -11,6 +11,7 @@
   "author": "AljuSabu",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "backend": "nodemon server.js",
     "frontend": "npm run dev --prefix client",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""

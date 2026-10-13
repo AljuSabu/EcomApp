@@ -19,6 +19,7 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { userOrder } from "../../../data/data";
+import { API_URL } from "../../../config";
 
 const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -44,7 +45,7 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const handleLogout = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/auth/logout",
+        `${API_URL}/auth/logout`,
       );
       if (data.success) {
         toast.success(data.message);

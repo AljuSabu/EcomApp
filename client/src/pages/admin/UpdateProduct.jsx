@@ -6,6 +6,7 @@ import { ArrowLeft, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Select } from "antd";
+import { API_URL } from "../../config";
 
 const { Option } = Select;
 
@@ -251,7 +252,7 @@ const UpdateProduct = () => {
               src={
                 photo
                   ? URL.createObjectURL(photo)
-                  : `http://localhost:4000/api/v1/product/product-photo/${id}`
+                  : `${API_URL}/product/product-photo/${id}`
               }
               alt="preview"
               className="w-full object-cover rounded-lg border border-zinc-200"

@@ -6,6 +6,7 @@ import axios from "axios";
 import { ArrowRight } from "lucide-react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { API_URL } from "../config";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -28,7 +29,7 @@ const Signup = () => {
     setIsSubmitting(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/auth/signup",
+        `${API_URL}/auth/signup`,
         // Roll removed 
         // Now the backend always create new signups as "user" by default.
         { name, email, password, address, phone },

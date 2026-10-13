@@ -15,6 +15,7 @@ import {
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { API_URL } from "../config";
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -52,7 +53,7 @@ const Cart = () => {
         description: "Test Transaction",
         order_id: order.id,
         callback_url:
-          "http://localhost:4000/api/v1/payment/payment-verification",
+          `${API_URL}/payment/payment-verification`,
         prefill: {
           name: auth?.user?.name || "",
           email: auth?.user?.email || "",
@@ -190,7 +191,7 @@ const Cart = () => {
                   >
                     <div className="w-20 h-28 sm:w-32 sm:h-40 bg-zinc-100 shrink-0 overflow-hidden rounded-lg">
                       <img
-                        src={`http://localhost:4000/api/v1/product/product-photo/${item._id}`}
+                        src={`${API_URL}/product/product-photo/${item._id}`}
                         alt={item.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         referrerPolicy="no-referrer"

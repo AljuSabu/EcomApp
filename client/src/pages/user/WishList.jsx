@@ -13,6 +13,7 @@ import {
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 import { toast } from "sonner";
+import { API_URL } from "../../config";
 
 const WishlistCard = ({ item }) => {
   const [loaded, setLoaded] = useState(false);
@@ -45,7 +46,7 @@ const WishlistCard = ({ item }) => {
         <img
           src={
             item.image ||
-            `http://localhost:4000/api/v1/product/product-photo/${item._id}`
+            `${API_URL}/product/product-photo/${item._id}`
           }
           alt={item.name}
           loading="lazy"

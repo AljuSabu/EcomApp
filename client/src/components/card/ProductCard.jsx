@@ -5,6 +5,7 @@ import AuthContext from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../config";
 
 const ProductCard = ({ item }) => {
   const [loaded, setLoaded] = useState(false);
@@ -46,7 +47,7 @@ const ProductCard = ({ item }) => {
         )}
 
         <img
-          src={`http://localhost:4000/api/v1/product/product-photo/${item._id}`}
+          src={`${API_URL}/product/product-photo/${item._id}`}
           alt={item.name}
           loading="lazy"
           onLoad={() => setLoaded(true)}

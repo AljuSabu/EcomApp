@@ -18,6 +18,7 @@ import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../config";
 
 // TEMP MOCK DATA — replace with a real UserContext / orders API later.
 // Swap this block out once you build GET /order/get-orders and a profile endpoint.
@@ -390,7 +391,7 @@ const UserDashboard = () => {
                         <img
                           src={
                             item.image ||
-                            `http://localhost:4000/api/v1/product/product-photo/${item._id}`
+                            `${API_URL}/product/product-photo/${item._id}`
                           }
                           alt={item.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

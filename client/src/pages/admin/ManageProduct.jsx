@@ -6,6 +6,7 @@ import { Edit2, Search, Trash2, Upload, PackageSearch } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Select } from "antd";
+import { API_URL } from "../../config";
 
 const { Option } = Select;
 
@@ -305,7 +306,7 @@ const ManageProduct = () => {
                 src={
                   photo
                     ? URL.createObjectURL(photo)
-                    : `http://localhost:4000/api/v1/product/product-photo/${editingProduct?._id}`
+                    : `${API_URL}/product/product-photo/${editingProduct?._id}`
                 }
                 alt="preview"
                 className="w-full object-cover rounded-lg border border-zinc-200"
@@ -381,7 +382,7 @@ const ManageProduct = () => {
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 bg-zinc-100 overflow-hidden rounded-lg border border-zinc-200 shrink-0">
                           <img
-                            src={`http://localhost:4000/api/v1/product/product-photo/${product._id}`}
+                            src={`${API_URL}/product/product-photo/${product._id}`}
                             alt={product.name}
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
