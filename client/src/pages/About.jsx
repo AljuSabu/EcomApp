@@ -81,23 +81,23 @@ const About = () => {
         <title>About</title>
       </Helmet>
 
-      <div className="pt-20 pb-24 w-full">
+      <div className="pt-10 sm:pt-14 lg:pt-20 pb-12 sm:pb-16 lg:pb-24 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto text-center mb-16"
+            className="max-w-3xl mx-auto text-center mb-10 sm:mb-12 lg:mb-16"
           >
-            <span className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4 block">
+            <span className="text-xs font-bold uppercase tracking-wider sm:tracking-widest text-zinc-400 mb-3 sm:mb-4 block">
               Our Philosophy
             </span>
-            <h1 className="text-5xl md:text-6xl font-serif mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif mb-5 sm:mb-6 lg:mb-8 leading-tight">
               We exist to create{" "}
               <span className="italic text-zinc-400">meaningful</span> objects
               for a simpler life.
             </h1>
-            <p className="text-xl text-zinc-600 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-zinc-600 leading-relaxed">
               Founded in 2020, Luxe was born out of a desire for better
               essentials. We tired of the fast-fashion cycle and decided to
               build something that lasts.
@@ -105,13 +105,13 @@ const About = () => {
           </motion.div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24 rounded-xl border border-zinc-100 shadow-sm bg-white p-8 md:p-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16 lg:mb-24 rounded-xl border border-zinc-100 shadow-sm bg-white p-5 sm:p-8 md:p-10">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <p className="text-3xl md:text-4xl font-serif text-zinc-900 mb-1">
+                <p className="text-2xl sm:text-3xl md:text-4xl font-serif text-zinc-900 mb-1">
                   {stat.value}
                 </p>
-                <p className="text-xs uppercase tracking-widest text-zinc-400 font-bold">
+                <p className="text-xs uppercase tracking-wider sm:tracking-widest text-zinc-400 font-bold">
                   {stat.label}
                 </p>
               </div>
@@ -119,8 +119,8 @@ const About = () => {
           </div>
 
           {/* Quality over Quantity */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-24">
-            <div className="aspect-8/9 bg-zinc-100 overflow-hidden rounded-xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-12 sm:mb-16 lg:mb-24">
+            <div className="aspect-4/3 md:aspect-8/9 bg-zinc-100 overflow-hidden rounded-xl">
               <img
                 src="/about.jpg"
                 alt="Our Studio"
@@ -133,15 +133,15 @@ const About = () => {
               />
             </div>
             <div>
-              <h2 className="text-3xl font-serif mb-6">
+              <h2 className="text-2xl sm:text-3xl font-serif mb-4 sm:mb-6">
                 Quality over Quantity
               </h2>
-              <p className="text-zinc-600 mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base text-zinc-600 mb-4 sm:mb-6 leading-relaxed">
                 Every piece in our collection is the result of months of design
                 and testing. We partner with small, family-owned factories that
                 share our commitment to ethical production and fair wages.
               </p>
-              <p className="text-zinc-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-zinc-600 leading-relaxed">
                 We use only the finest materials—organic cotton,
                 vegetable-tanned leather, and recycled metals—to ensure that
                 your Luxe pieces only get better with age.
@@ -149,55 +149,57 @@ const About = () => {
             </div>
           </div>
 
-         {/* Timeline */}
-<div className="mb-24">
-  <h2 className="text-3xl font-serif text-center mb-16">
-    How We Got Here
-  </h2>
-  <div className="relative max-w-3xl mx-auto">
-    <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-zinc-200 md:-translate-x-1/2" />
-    <div className="space-y-12">
-      {timeline.map((item, idx) => (
-        <motion.div
-          key={item.year}
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.3 }}
-          className={`relative flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 pl-12 md:pl-0 ${
-            idx % 2 === 1 ? "md:flex-row-reverse" : ""
-          }`}
-        >
-          <div className="absolute left-4 md:left-1/2 top-1.5 w-3 h-3 rounded-full bg-zinc-900 -translate-x-1/2" />
-          <div
-            className={`md:w-1/2 ${
-              idx % 2 === 1 ? "md:text-left" : "md:text-right"
-            }`}
-          >
-            <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-              {item.year}
-            </span>
+          {/* Timeline */}
+          <div className="mb-12 sm:mb-16 lg:mb-24">
+            <h2 className="text-2xl sm:text-3xl font-serif text-center mb-10 sm:mb-12 lg:mb-16">
+              How We Got Here
+            </h2>
+            <div className="relative max-w-3xl mx-auto">
+              <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-zinc-200 md:-translate-x-1/2" />
+              <div className="space-y-8 sm:space-y-10 lg:space-y-12">
+                {timeline.map((item, idx) => (
+                  <motion.div
+                    key={item.year}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.3 }}
+                    className={`relative flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 pl-12 md:pl-0 ${
+                      idx % 2 === 1 ? "md:flex-row-reverse" : ""
+                    }`}
+                  >
+                    <div className="absolute left-4 md:left-1/2 top-1.5 w-3 h-3 rounded-full bg-zinc-900 -translate-x-1/2" />
+                    <div
+                      className={`md:w-1/2 ${
+                        idx % 2 === 1 ? "md:text-left" : "md:text-right"
+                      }`}
+                    >
+                      <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+                        {item.year}
+                      </span>
+                    </div>
+                    <div className="w-full md:w-1/2 bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
+                      <h3 className="text-base sm:text-lg font-serif text-zinc-900 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-zinc-500 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="md:w-1/2 bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
-            <h3 className="text-lg font-serif text-zinc-900 mb-2">
-              {item.title}
-            </h3>
-            <p className="text-sm text-zinc-500 leading-relaxed">
-              {item.desc}
-            </p>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</div>
 
           {/* Values */}
-          <div className="bg-zinc-50 p-12 md:p-24 text-center max-w-7xl mx-auto rounded-xl mb-24">
-            <h2 className="text-3xl font-serif mb-12">Our Values</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="bg-zinc-50 p-6 sm:p-10 md:p-12 lg:p-24 text-center max-w-7xl mx-auto rounded-xl mb-12 sm:mb-16 lg:mb-24">
+            <h2 className="text-2xl sm:text-3xl font-serif mb-8 sm:mb-10 lg:mb-12">
+              Our Values
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
               <div>
-                <h3 className="font-bold mb-4 uppercase text-xs tracking-widest">
+                <h3 className="font-bold mb-3 sm:mb-4 uppercase text-xs tracking-widest">
                   Transparency
                 </h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">
@@ -206,7 +208,7 @@ const About = () => {
                 </p>
               </div>
               <div>
-                <h3 className="font-bold mb-4 uppercase text-xs tracking-widest">
+                <h3 className="font-bold mb-3 sm:mb-4 uppercase text-xs tracking-widest">
                   Sustainability
                 </h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">
@@ -215,7 +217,7 @@ const About = () => {
                 </p>
               </div>
               <div>
-                <h3 className="font-bold mb-4 uppercase text-xs tracking-widest">
+                <h3 className="font-bold mb-3 sm:mb-4 uppercase text-xs tracking-widest">
                   Community
                 </h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">
@@ -227,17 +229,22 @@ const About = () => {
           </div>
 
           {/* Team */}
-          <div className="mb-24">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl font-serif mb-4">The People Behind It</h2>
+          <div className="mb-12 sm:mb-16 lg:mb-24">
+            <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-serif mb-3 sm:mb-4">
+                The People Behind It
+              </h2>
               <p className="text-zinc-500 text-sm leading-relaxed">
                 A small team, intentionally. Every person here touches every
                 piece before it reaches you.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
               {team.map((member) => (
-                <div key={member.name} className="text-center">
+                <div
+                  key={member.name}
+                  className="text-center w-full max-w-xs mx-auto sm:max-w-none"
+                >
                   <div className="aspect-4/5 bg-zinc-100 overflow-hidden rounded-xl mb-4">
                     <img
                       src={member.image}
@@ -249,7 +256,7 @@ const About = () => {
                   <h3 className="text-base font-semibold text-zinc-900">
                     {member.name}
                   </h3>
-                  <p className="text-xs text-zinc-400 uppercase tracking-widest font-bold mt-1">
+                  <p className="text-xs text-zinc-400 uppercase tracking-wider lg:tracking-widest font-bold mt-1">
                     {member.role}
                   </p>
                 </div>
@@ -258,15 +265,15 @@ const About = () => {
           </div>
 
           {/* Testimonials */}
-          <div className="mb-24">
-            <h2 className="text-3xl font-serif text-center mb-12">
+          <div className="mb-12 sm:mb-16 lg:mb-24">
+            <h2 className="text-2xl sm:text-3xl font-serif text-center mb-8 sm:mb-12">
               What People Are Saying
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6 flex flex-col"
+                  className="bg-white rounded-xl border border-zinc-100 shadow-sm p-5 sm:p-6 flex flex-col"
                 >
                   <Quote size={24} className="text-zinc-200 mb-4" />
                   <p className="text-sm text-zinc-600 leading-relaxed flex-1 mb-4">
@@ -284,16 +291,16 @@ const About = () => {
           </div>
 
           {/* CTA */}
-          <div className="text-center bg-zinc-900 text-white rounded-xl p-12 md:p-16">
-            <h2 className="text-3xl font-serif mb-4">
+          <div className="text-center bg-zinc-900 text-white rounded-xl p-6 sm:p-10 md:p-12 lg:p-16">
+            <h2 className="text-2xl sm:text-3xl font-serif mb-3 sm:mb-4">
               See the Collection for Yourself
             </h2>
-            <p className="text-zinc-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+            <p className="text-zinc-400 text-sm max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
               Every piece we make is built to be lived in, not just looked at.
             </p>
             <Link
               to="/products"
-              className="inline-flex items-center px-8 py-4 bg-white text-zinc-900 text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-all rounded-lg"
+              className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 bg-white text-zinc-900 text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-all rounded-lg"
             >
               Shop the Collection
               <ArrowRight size={14} className="ml-2" />
