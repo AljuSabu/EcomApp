@@ -272,7 +272,7 @@ const Navbar = () => {
               ))}
 
               {auth?.user && !isAdmin && (
-                <div className="pt-2 border-t border-zinc-100 flex justify-center items-center gap-6">
+                <div className="pt-2 pb-2 border-t border-zinc-100 bg-zinc-100 flex justify-center items-center gap-6">
                   <Link
                     to="/dashboard/user/wishlist"
                     onClick={() => setIsOpen(false)}

@@ -116,11 +116,13 @@ const Products = () => {
         <title>Products</title>
       </Helmet>
 
-      <div className="px-6 sm:px-12 lg:px-32 pt-10 pb-20">
+      <div className="px-4 sm:px-8 md:px-10 lg:px-12 xl:px-20 2xl:px-32 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
           <div>
-            <h1 className="text-4xl font-serif mb-2">All Products</h1>
-            <p className="text-zinc-500 text-sm max-w-md">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif mb-2">
+              All Products
+            </h1>
+            <p className="text-zinc-500 text-xs sm:text-sm max-w-md">
               Thoughtfully made essentials, built to outlast the trend cycle.
             </p>
           </div>
@@ -128,7 +130,7 @@ const Products = () => {
           <div ref={filterRef} className="relative self-start md:self-auto">
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="flex items-center text-sm font-medium text-zinc-900 border border-zinc-200 rounded-lg px-4 py-2.5 hover:bg-zinc-50 transition-colors"
+              className="flex items-center text-xs sm:text-sm font-medium text-zinc-900 border border-zinc-200 rounded-lg px-3 sm:px-4 py-2.5 hover:bg-zinc-50 transition-colors"
             >
               <Filter size={16} className="mr-2" />
               Filter
@@ -152,9 +154,11 @@ const Products = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 top-full mt-2 w-80 z-50"
+                  // Below md the button sits on the left, so anchor the panel to
+                  // the left there; from md the button moves right, so anchor right.
+                  className="absolute left-0 md:left-auto md:right-0 top-full mt-2 w-72 sm:w-80 z-50"
                 >
-                  <div className="border border-zinc-200 rounded-xl p-6 bg-white shadow-lg">
+                  <div className="border border-zinc-200 rounded-xl p-4 sm:p-6 bg-white shadow-lg">
                     <div className="mb-6">
                       <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
                         Collection
@@ -223,7 +227,7 @@ const Products = () => {
 
         {/* Active filter chips */}
         {(activeCollectionName || radio.length > 0) && (
-          <div className="flex items-center flex-wrap gap-2 mb-8">
+          <div className="flex items-center flex-wrap gap-2 mb-6 sm:mb-8">
             {activeCollectionName && (
               <span className="inline-flex items-center gap-1.5 bg-zinc-100 text-zinc-700 text-xs font-medium px-3 py-1.5 rounded-full">
                 {activeCollectionName}
@@ -251,8 +255,8 @@ const Products = () => {
 
         {/* Intro line above the grid */}
         {!loading && !filtering && products.length > 0 && (
-          <div className="max-w-2xl mb-10">
-            <p className="text-zinc-600 text-sm leading-relaxed">
+          <div className="max-w-2xl mb-6 sm:mb-8 lg:mb-10">
+            <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
               Every piece is made in small batches with natural materials — no
               overstock, no filler. What's here is what we stand behind.
             </p>
@@ -260,7 +264,7 @@ const Products = () => {
         )}
 
         {loading || filtering ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 xl:gap-x-8 gap-y-8 sm:gap-y-10 xl:gap-y-12">
             {[...Array(8)].map((_, index) => (
               <div key={index} className="animate-pulse space-y-4">
                 <div className="bg-zinc-200 aspect-3/4 rounded-xl" />
@@ -272,8 +276,8 @@ const Products = () => {
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="py-32 text-center">
-            <p className="text-zinc-900 text-lg font-serif mb-2">
+          <div className="py-16 sm:py-24 lg:py-32 text-center">
+            <p className="text-zinc-900 text-base sm:text-lg font-serif mb-2">
               No matches found
             </p>
             <p className="text-zinc-500 text-sm mb-6">
@@ -287,7 +291,7 @@ const Products = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 xl:gap-x-8 gap-y-8 sm:gap-y-10 xl:gap-y-12">
             {products.map((item) => (
               <ProductCard key={item._id} item={item} />
             ))}
