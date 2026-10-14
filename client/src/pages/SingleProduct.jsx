@@ -202,11 +202,11 @@ const SingleProduct = () => {
   // Loading skeleton
   if (loading) {
     return (
-      <div className="pt-10 pb-24">
+      <div className="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-pulse">
-          <div className="h-4 bg-zinc-200 rounded w-32 mb-10" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            <div className="aspect-4/5 bg-zinc-200 rounded-xl" />
+          <div className="h-4 bg-zinc-200 rounded w-32 mb-6 sm:mb-8 lg:mb-10" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+            <div className="aspect-4/5 bg-zinc-200 rounded-xl mx-auto w-full max-w-md lg:max-w-none" />
             <div className="space-y-6">
               <div className="h-4 bg-zinc-200 rounded w-24" />
               <div className="h-10 bg-zinc-200 rounded w-3/4" />
@@ -223,22 +223,22 @@ const SingleProduct = () => {
   // Not found state
   if (notFound || !product) {
     return (
-      <div className="pt-10 pb-24 min-h-[60vh] flex items-center">
+      <div className="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-24 min-h-[60vh] flex items-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="bg-white border border-zinc-100 rounded-xl p-16 text-center shadow-sm">
-            <div className="w-16 h-16 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center mx-auto mb-4 text-zinc-400">
-              <PackageX size={32} />
+          <div className="bg-white border border-zinc-100 rounded-xl p-6 sm:p-10 lg:p-16 text-center shadow-sm">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center mx-auto mb-4 text-zinc-400">
+              <PackageX size={32} className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
-            <h2 className="text-2xl font-serif text-zinc-900 mb-2">
+            <h2 className="text-xl sm:text-2xl font-serif text-zinc-900 mb-2">
               Product not found
             </h2>
-            <p className="text-zinc-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+            <p className="text-zinc-500 text-xs sm:text-sm max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
               This product may have been removed or the link might be incorrect.
               Browse the catalog to find something similar.
             </p>
             <Link
               to="/products"
-              className="inline-flex items-center px-8 py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-lg"
+              className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-lg"
             >
               Explore Catalog
             </Link>
@@ -257,11 +257,11 @@ const SingleProduct = () => {
         <title>{product.name}</title>
       </Helmet>
 
-      <div className="pt-10 pb-24">
+      <div className="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/products"
-            className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors mb-10 group"
+            className="inline-flex items-center text-xs sm:text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors mb-6 sm:mb-8 lg:mb-10 group"
           >
             <ArrowLeft
               size={16}
@@ -270,11 +270,13 @@ const SingleProduct = () => {
             Back to Products
           </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Image */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+            {/* Image — capped width while stacked so it doesn't become a huge
+                portrait on tablets; full column width from lg */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
+              className="w-full max-w-md mx-auto lg:max-w-none lg:mx-0"
             >
               <div className="relative aspect-4/5 bg-zinc-100 rounded-xl overflow-hidden border border-zinc-100 shadow-sm">
                 {!imageLoaded && (
@@ -303,13 +305,13 @@ const SingleProduct = () => {
               className="flex flex-col"
             >
               <div className="flex items-start justify-between gap-4 mb-4">
-                <div>
+                <div className="min-w-0">
                   {product.collection?.name && (
-                    <span className="text-xs font-bold uppercase tracking-[0.3em] text-zinc-400 mb-2 block">
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-zinc-400 mb-2 block">
                       {product.collection.name}
                     </span>
                   )}
-                  <h1 className="text-4xl font-serif text-zinc-900 leading-tight">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-zinc-900 leading-tight wrap-break-word">
                     {product.name}
                   </h1>
                 </div>
@@ -345,12 +347,12 @@ const SingleProduct = () => {
                 </div>
               </div>
 
-              <p className="text-2xl font-medium text-zinc-900 mb-3">
+              <p className="text-xl sm:text-2xl font-medium text-zinc-900 mb-3">
                 ₹{product.price}
               </p>
 
               {/* Stock status */}
-              <div className="mb-6">
+              <div className="mb-5 sm:mb-6">
                 {outOfStock ? (
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/60">
                     Out of stock
@@ -366,13 +368,13 @@ const SingleProduct = () => {
                 )}
               </div>
 
-              <p className="text-zinc-600 leading-relaxed mb-8">
+              <p className="text-sm sm:text-base text-zinc-600 leading-relaxed mb-6 sm:mb-8">
                 {product.description}
               </p>
 
               {/* Quantity */}
               {!outOfStock && (
-                <div className="mb-8">
+                <div className="mb-6 sm:mb-8">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
                     Quantity
                   </h3>
@@ -406,7 +408,7 @@ const SingleProduct = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={!canAdd}
-                className={`w-full py-4 rounded-lg text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center shadow-sm disabled:cursor-not-allowed ${
+                className={`w-full py-3.5 sm:py-4 rounded-lg text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center shadow-sm disabled:cursor-not-allowed ${
                   added
                     ? "bg-emerald-600 text-white"
                     : "bg-black text-white hover:bg-zinc-800 disabled:bg-zinc-300"
@@ -448,13 +450,13 @@ const SingleProduct = () => {
               )}
 
               {/* Perks */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-10 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8 sm:mt-10 mb-8 sm:mb-10">
                 {productPerks.map((perk) => {
                   const Icon = perkIcons[perk.icon];
                   return (
                     <div
                       key={perk.id}
-                      className="bg-zinc-50 rounded-xl border border-zinc-100 p-4"
+                      className="bg-zinc-50 rounded-xl border border-zinc-100 p-4 lg:p-3 xl:p-4"
                     >
                       {Icon && (
                         <Icon size={18} className="text-zinc-900 mb-2" />
@@ -471,7 +473,7 @@ const SingleProduct = () => {
               </div>
 
               {/* Accordion */}
-              <div className="bg-white rounded-xl border border-zinc-100 shadow-sm px-6">
+              <div className="bg-white rounded-xl border border-zinc-100 shadow-sm px-4 sm:px-6">
                 {sections.map((section) => (
                   <AccordionItem
                     key={section.id}
@@ -490,14 +492,16 @@ const SingleProduct = () => {
 
           {/* Related products */}
           {related.length > 0 && (
-            <div className="mt-24">
-              <div className="mb-8">
-                <h2 className="text-3xl font-serif mb-2">You May Also Like</h2>
-                <p className="text-zinc-500 text-sm">
+            <div className="mt-12 sm:mt-16 lg:mt-24">
+              <div className="mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl font-serif mb-2">
+                  You May Also Like
+                </h2>
+                <p className="text-zinc-500 text-xs sm:text-sm">
                   More from {product.collection?.name}.
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-4 sm:gap-x-6 xl:gap-x-8 gap-y-8 sm:gap-y-10 xl:gap-y-12">
                 {related.map((item) => (
                   <ProductCard key={item._id} item={item} />
                 ))}
