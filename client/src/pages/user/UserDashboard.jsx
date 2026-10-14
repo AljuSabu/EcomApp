@@ -20,8 +20,6 @@ import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 import { API_URL } from "../../config";
 
-// TEMP MOCK DATA — replace with a real UserContext / orders API later.
-// Swap this block out once you build GET /order/get-orders and a profile endpoint.
 const mockProfile = {
   memberTier: "Gold Member",
   memberSince: "Jan 2024",
@@ -133,16 +131,17 @@ const UserDashboard = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
-      {/* Welcome Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-xl border border-zinc-100 shadow-sm">
-        <div className="flex items-center space-x-5">
-          <div className="relative">
+      {/* Welcome Header — side-by-side layout starts at xl because the
+          dashboard sidebar takes 256px of width from md up */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-white p-4 sm:p-6 lg:p-8 rounded-xl border border-zinc-100 shadow-sm">
+        <div className="flex items-center space-x-3 sm:space-x-5">
+          <div className="relative shrink-0">
             <img
               src={profile.avatar}
               alt={profile.name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-zinc-100 shadow-sm"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-zinc-100 shadow-sm"
             />
             <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center">
               <CheckCircle2 size={12} className="text-white" />
@@ -150,7 +149,7 @@ const UserDashboard = () => {
           </div>
           <div>
             <div className="flex items-center space-x-2 mb-1">
-              <h1 className="text-2xl sm:text-3xl font-serif text-zinc-900 leading-tight">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-serif text-zinc-900 leading-tight">
                 Welcome back, {profile.name.split(" ")[0]}
               </h1>
               <span className="hidden sm:inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
@@ -164,7 +163,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 self-start md:self-auto pt-2 md:pt-0">
+        <div className="flex flex-wrap items-center gap-3 self-start xl:self-auto pt-2 xl:pt-0">
           <Link
             to="/products"
             className="inline-flex items-center px-4 py-2.5 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
@@ -181,15 +180,15 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      {/* 4 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* 4 Stat Cards — 4 across from xl (2 across before that) for the same reason */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat) => (
           <Link
             key={stat.name}
             to={stat.link}
-            className="bg-white p-6 rounded-xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-zinc-200 transition-all group"
+            className="bg-white p-4 sm:p-5 lg:p-6 rounded-xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-zinc-200 transition-all group"
           >
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex justify-between items-start mb-3 sm:mb-4">
               <div
                 className={`p-2.5 bg-zinc-50 rounded-lg ${stat.accent} group-hover:scale-105 transition-transform`}
               >
@@ -203,7 +202,7 @@ const UserDashboard = () => {
             <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-1">
               {stat.name}
             </h3>
-            <p className="text-2xl font-serif text-zinc-900 mb-1">
+            <p className="text-xl sm:text-2xl font-serif text-zinc-900 mb-1">
               {stat.value}
             </p>
             <p className="text-[11px] text-zinc-500 font-medium">
@@ -215,13 +214,13 @@ const UserDashboard = () => {
 
       {/* Active Shipment Alert */}
       {activeOrders.length > 0 && (
-        <div className="bg-zinc-900 text-white p-6 rounded-xl sm:flex items-center justify-between shadow-lg">
+        <div className="bg-zinc-900 text-white p-4 sm:p-6 rounded-xl sm:flex items-center justify-between shadow-lg">
           <div className="flex items-start space-x-4 mb-4 sm:mb-0">
             <div className="p-3 bg-white/10 rounded-full shrink-0">
               <Truck size={24} className="text-white" />
             </div>
             <div>
-              <div className="flex items-center space-x-2 mb-1">
+              <div className="flex flex-wrap items-center gap-x-2 mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">
                   Live Delivery
                 </span>
@@ -244,7 +243,7 @@ const UserDashboard = () => {
           </div>
           <Link
             to="/dashboard/user/orders"
-            className="inline-flex items-center justify-center px-5 py-2.5 bg-white text-zinc-900 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors shrink-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 bg-white text-zinc-900 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors shrink-0"
           >
             Track Order
             <ChevronRight size={14} className="ml-1" />
@@ -252,12 +251,12 @@ const UserDashboard = () => {
         </div>
       )}
 
-      {/* Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Two Column Layout — columns start at xl */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 xl:gap-8">
         {/* Recent Orders */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-zinc-100">
+        <div className="xl:col-span-2 space-y-4 sm:space-y-6">
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-4 sm:mb-6 pb-4 border-b border-zinc-100">
               <div className="flex items-center space-x-2">
                 <Package size={18} className="text-zinc-400" />
                 <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-900">
@@ -274,7 +273,7 @@ const UserDashboard = () => {
             </div>
 
             {recentOrders.length === 0 ? (
-              <div className="text-center py-12">
+              <div className="text-center py-8 sm:py-12">
                 <ShoppingBag size={36} className="mx-auto text-zinc-300 mb-3" />
                 <p className="text-sm font-medium text-zinc-700">
                   No orders placed yet
@@ -294,9 +293,9 @@ const UserDashboard = () => {
                 {recentOrders.map((order) => (
                   <div
                     key={order.id}
-                    className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-4"
                   >
-                    <div className="flex items-start space-x-4">
+                    <div className="flex items-start space-x-4 min-w-0">
                       <div className="flex -space-x-3 overflow-hidden shrink-0">
                         {order.items.slice(0, 3).map((item, idx) => (
                           <img
@@ -358,8 +357,8 @@ const UserDashboard = () => {
           </div>
 
           {/* Wishlist Highlights */}
-          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-zinc-100">
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-4 sm:mb-6 pb-4 border-b border-zinc-100">
               <div className="flex items-center space-x-2">
                 <Heart size={18} className="text-rose-500" />
                 <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-900">
@@ -387,7 +386,7 @@ const UserDashboard = () => {
                     className="group border border-zinc-100 rounded-lg p-3 bg-zinc-50/50 hover:bg-white hover:border-zinc-200 hover:shadow-sm transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="aspect-square bg-zinc-100 overflow-hidden mb-2 rounded">
+                      <div className="aspect-4/3 sm:aspect-square bg-zinc-100 overflow-hidden mb-2 rounded">
                         <img
                           src={
                             item.image ||
@@ -419,17 +418,19 @@ const UserDashboard = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Membership Tier */}
-          <div className="bg-linear-to-br from-zinc-900 to-zinc-800 text-white p-6 rounded-xl shadow-sm">
+          <div className="bg-linear-to-br from-zinc-900 to-zinc-800 text-white p-4 sm:p-6 rounded-xl shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">
                 {profile.memberTier}
               </span>
               <Award size={20} className="text-amber-300" />
             </div>
-            <h3 className="text-xl font-serif mb-1">{profile.name}</h3>
-            <p className="text-xs text-zinc-400 mb-6">
+            <h3 className="text-lg sm:text-xl font-serif mb-1">
+              {profile.name}
+            </h3>
+            <p className="text-xs text-zinc-400 mb-4 sm:mb-6">
               Member since {profile.memberSince}
             </p>
 
@@ -454,7 +455,7 @@ const UserDashboard = () => {
           </div>
 
           {/* Shipping Address */}
-          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <MapPin size={16} className="text-zinc-400" />
@@ -486,7 +487,7 @@ const UserDashboard = () => {
           </div>
 
           {/* Payment Method */}
-          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <CreditCard size={16} className="text-zinc-400" />
