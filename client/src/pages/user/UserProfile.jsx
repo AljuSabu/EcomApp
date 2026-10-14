@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import {
@@ -126,12 +126,14 @@ const UserProfile = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-serif mb-2">My Profile & Account</h1>
-        <p className="text-zinc-500 text-sm">
+        <h1 className="text-2xl sm:text-3xl font-serif mb-2">
+          My Profile & Account
+        </h1>
+        <p className="text-zinc-500 text-xs sm:text-sm">
           Manage your personal information, delivery addresses, and account
           security.
         </p>
@@ -144,18 +146,18 @@ const UserProfile = () => {
           className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold uppercase tracking-wider flex items-center justify-between"
         >
           <div className="flex items-center space-x-2">
-            <Check size={16} className="text-emerald-600" />
+            <Check size={16} className="text-emerald-600 shrink-0" />
             <span>Your profile details have been successfully updated!</span>
           </div>
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 xl:gap-8">
         {/* Left Column: Avatar & Summary Card */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white p-8 rounded-xl border border-zinc-100 shadow-sm text-center">
-            <div className="relative inline-block mb-6">
-              <div className="w-32 h-32 rounded-full bg-zinc-100 flex items-center justify-center border-4 border-white shadow-md overflow-hidden mx-auto">
+        <div className="xl:col-span-1 space-y-4 sm:space-y-6">
+          <div className="bg-white p-5 sm:p-6 lg:p-8 rounded-xl border border-zinc-100 shadow-sm text-center">
+            <div className="relative inline-block mb-4 sm:mb-6">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full bg-zinc-100 flex items-center justify-center border-4 border-white shadow-md overflow-hidden mx-auto">
                 <img
                   src={formData.avatar}
                   alt={formData.name}
@@ -171,12 +173,14 @@ const UserProfile = () => {
               </button>
             </div>
 
-            <h2 className="text-xl font-serif mb-1 text-zinc-900">
+            <h2 className="text-lg sm:text-xl font-serif mb-1 text-zinc-900">
               {formData.name}
             </h2>
-            <p className="text-xs text-zinc-500 mb-4">{formData.email}</p>
+            <p className="text-xs text-zinc-500 mb-4 wrap-break-word">
+              {formData.email}
+            </p>
 
-            <div className="flex justify-center items-center space-x-2 mb-6">
+            <div className="flex flex-wrap justify-center items-center gap-2 mb-4 sm:mb-6">
               <span className="px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[10px] font-bold uppercase tracking-widest rounded-full flex items-center">
                 <Sparkles size={10} className="mr-1" />
                 {formData.memberTier}
@@ -186,7 +190,7 @@ const UserProfile = () => {
               </span>
             </div>
 
-            <div className="border-t border-zinc-100 pt-6 text-left space-y-3 text-xs">
+            <div className="border-t border-zinc-100 pt-4 sm:pt-6 text-left space-y-3 text-xs">
               <div className="flex justify-between">
                 <span className="text-zinc-400 font-medium">Member Since:</span>
                 <span className="text-zinc-800 font-semibold">
@@ -210,8 +214,9 @@ const UserProfile = () => {
             </div>
           </div>
 
-          {/* Quick Nav Tabs */}
-          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-2 space-y-1">
+          {/* Quick Nav Tabs — a horizontally scrolling strip below xl,
+              the original stacked list from xl */}
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-2 flex gap-1 overflow-x-auto xl:block xl:space-y-1 xl:overflow-visible">
             {[
               { key: "general", label: "Personal Details", icon: User },
               { key: "address", label: "Addresses", icon: MapPin },
@@ -222,7 +227,7 @@ const UserProfile = () => {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-left transition-colors ${
+                className={`xl:w-full shrink-0 whitespace-nowrap flex items-center space-x-3 px-3 sm:px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-left transition-colors ${
                   activeTab === key
                     ? "bg-zinc-900 text-white"
                     : "text-zinc-600 hover:bg-zinc-50"
@@ -236,17 +241,20 @@ const UserProfile = () => {
         </div>
 
         {/* Right Column: Tab Content */}
-        <div className="lg:col-span-2">
+        <div className="xl:col-span-2">
           {/* TAB 1: GENERAL */}
           {activeTab === "general" && (
-            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-8">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-6 flex items-center">
+            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6 lg:p-8">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-4 sm:mb-6 flex items-center">
                 <User size={18} className="mr-2 text-zinc-400" />
                 Personal Information
               </h3>
 
-              <form onSubmit={handleSaveProfile} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <form
+                onSubmit={handleSaveProfile}
+                className="space-y-5 sm:space-y-6"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 block">
                       Full Name
@@ -325,10 +333,10 @@ const UserProfile = () => {
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-zinc-100 flex justify-end">
+                <div className="pt-5 sm:pt-6 border-t border-zinc-100 flex justify-end">
                   <button
                     type="submit"
-                    className="px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
                   >
                     Save Changes
                   </button>
@@ -340,8 +348,8 @@ const UserProfile = () => {
           {/* TAB 2: ADDRESSES */}
           {activeTab === "address" && (
             <div className="space-y-6">
-              <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-8">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-6 flex items-center">
+              <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6 lg:p-8">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-4 sm:mb-6 flex items-center">
                   <MapPin size={18} className="mr-2 text-zinc-400" />
                   Primary Shipping Address
                 </h3>
@@ -361,7 +369,7 @@ const UserProfile = () => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 block">
                         City
@@ -426,10 +434,10 @@ const UserProfile = () => {
                   </div>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-zinc-100 flex justify-end">
+                <div className="pt-5 sm:pt-6 mt-5 sm:mt-6 border-t border-zinc-100 flex justify-end">
                   <button
                     onClick={handleSaveProfile}
-                    className="px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
                   >
                     Save Address
                   </button>
@@ -440,27 +448,27 @@ const UserProfile = () => {
 
           {/* TAB 3: SECURITY */}
           {activeTab === "security" && (
-            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-8 space-y-8">
+            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-2 flex items-center">
                   <Lock size={18} className="mr-2 text-zinc-400" />
                   Change Password
                 </h3>
-                <p className="text-xs text-zinc-500 mb-6">
+                <p className="text-xs text-zinc-500 mb-4 sm:mb-6">
                   Ensure your account is protected with a strong, secure
                   passphrase.
                 </p>
 
                 {passwordError && (
                   <div className="p-3 mb-6 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs font-medium flex items-center space-x-2">
-                    <AlertCircle size={15} />
+                    <AlertCircle size={15} className="shrink-0" />
                     <span>{passwordError}</span>
                   </div>
                 )}
 
                 {passwordSuccess && (
                   <div className="p-3 mb-6 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-medium flex items-center space-x-2">
-                    <Check size={15} />
+                    <Check size={15} className="shrink-0" />
                     <span>Your password has been changed successfully.</span>
                   </div>
                 )}
@@ -516,15 +524,15 @@ const UserProfile = () => {
 
                   <button
                     type="submit"
-                    className="mt-2 px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
+                    className="w-full sm:w-auto mt-2 px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
                   >
                     Update Password
                   </button>
                 </form>
               </div>
 
-              <div className="pt-6 border-t border-zinc-100">
-                <div className="flex items-start justify-between">
+              <div className="pt-5 sm:pt-6 border-t border-zinc-100">
+                <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex items-center space-x-2">
                       <ShieldCheck size={18} className="text-emerald-600" />
@@ -537,7 +545,7 @@ const UserProfile = () => {
                       account.
                     </p>
                   </div>
-                  <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-200/50">
+                  <span className="shrink-0 px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-200/50">
                     Active
                   </span>
                 </div>
@@ -547,14 +555,14 @@ const UserProfile = () => {
 
           {/* TAB 4: PREFERENCES */}
           {activeTab === "preferences" && (
-            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-8 space-y-6">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-6 flex items-center">
-                <Bell size={18} className="mr-2 text-zinc-400" />
+            <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6 lg:p-8 space-y-6">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-4 sm:mb-6 flex items-center">
+                <Bell size={18} className="mr-2 text-zinc-400 shrink-0" />
                 Notification & Communication Preferences
               </h3>
 
               <div className="space-y-6 divide-y divide-zinc-100">
-                <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center justify-between gap-4 pt-2">
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">
                       Exclusive VIP Drops & Editorial Newsletters
@@ -564,10 +572,11 @@ const UserProfile = () => {
                       previews.
                     </p>
                   </div>
+                  {/* shrink-0 stops the switch from being squeezed by long text on narrow screens */}
                   <button
                     type="button"
                     onClick={() => handlePreferenceToggle("newsletter")}
-                    className={`w-12 h-6 rounded-full transition-colors relative ${
+                    className={`shrink-0 w-12 h-6 rounded-full transition-colors relative ${
                       formData.preferences.newsletter
                         ? "bg-zinc-900"
                         : "bg-zinc-200"
@@ -581,7 +590,7 @@ const UserProfile = () => {
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between pt-6">
+                <div className="flex items-center justify-between gap-4 pt-6">
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">
                       Live SMS Order Tracking & Delivery Alerts
@@ -594,7 +603,7 @@ const UserProfile = () => {
                   <button
                     type="button"
                     onClick={() => handlePreferenceToggle("smsAlerts")}
-                    className={`w-12 h-6 rounded-full transition-colors relative ${
+                    className={`shrink-0 w-12 h-6 rounded-full transition-colors relative ${
                       formData.preferences.smsAlerts
                         ? "bg-zinc-900"
                         : "bg-zinc-200"
@@ -609,10 +618,10 @@ const UserProfile = () => {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-zinc-100 flex justify-end">
+              <div className="pt-5 sm:pt-6 border-t border-zinc-100 flex justify-end">
                 <button
                   onClick={handleSaveProfile}
-                  className="px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
                 >
                   Save Preferences
                 </button>
