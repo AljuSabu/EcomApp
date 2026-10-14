@@ -33,8 +33,9 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-zinc-200 sticky top-0 z-10 px-6 sm:px-8 flex items-center justify-between">
-      <div className="flex items-center space-x-3">
+    <header className="h-16 bg-white border-b border-zinc-200 sticky top-0 z-10 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+      {/* min-w-0 lets the page title shrink and truncate instead of pushing the icons off-screen */}
+      <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={() => setIsMobileMenuOpen(true)}
           className="p-2 -ml-2 text-zinc-600 hover:text-zinc-900 md:hidden"
@@ -43,16 +44,19 @@ const UserNavbar = ({ setIsMobileMenuOpen }) => {
           <Menu size={20} />
         </button>
 
-        <div className="flex items-center space-x-2 text-sm">
-          <span className="text-zinc-400 font-medium">User Panel</span>
-          <ChevronRight size={14} className="text-zinc-300" />
-          <span className="font-semibold text-zinc-900">
+        <div className="flex items-center gap-2 text-sm min-w-0">
+          {/* "User Panel >" is hidden on phones to leave room for the page title */}
+          <span className="hidden sm:inline text-zinc-400 font-medium whitespace-nowrap">
+            User Panel
+          </span>
+          <ChevronRight size={14} className="hidden sm:block text-zinc-300" />
+          <span className="font-semibold text-zinc-900 truncate">
             {getCurrentPageTitle()}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center space-x-4 sm:space-x-6">
+      <div className="flex items-center space-x-4 sm:space-x-6 shrink-0">
         <Link
           to="/dashboard/user/wishlist"
           className="relative p-2 text-zinc-500 hover:text-zinc-900 transition-colors hidden sm:block"
