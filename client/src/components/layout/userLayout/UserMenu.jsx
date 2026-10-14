@@ -104,7 +104,7 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
       {/* Desktop Sidebar */}
       <aside className="w-64 bg-white border-r border-zinc-200 fixed h-screen overflow-y-auto hidden md:flex flex-col justify-between z-20">
         <div>
-          <div className="p-8 border-b border-zinc-100 flex items-center justify-between">
+          <div className="p-6 lg:p-8 border-b border-zinc-100 flex items-center justify-between">
             <Link
               to="/"
               className="text-2xl font-serif font-bold tracking-tighter"
@@ -197,19 +197,22 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 md:hidden"
             />
+            {/* max-w keeps a strip of backdrop visible on very narrow phones, overflow-y-auto
+                keeps the footer reachable on short screens (e.g. landscape), and the
+                percentage offsets slide the drawer fully off-screen at any width. */}
             <motion.aside
-              initial={{ x: -280 }}
+              initial={{ x: "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: -280 }}
+              exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 left-0 w-72 bg-white border-r border-zinc-200 z-50 flex flex-col justify-between md:hidden shadow-2xl"
+              className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white border-r border-zinc-200 z-50 flex flex-col justify-between overflow-y-auto md:hidden shadow-2xl"
             >
               <div>
-                <div className="p-6 border-b border-zinc-100 flex items-center justify-between">
+                <div className="p-4 sm:p-6 border-b border-zinc-100 flex items-center justify-between">
                   <Link
                     to="/"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-2xl font-serif font-bold tracking-tighter"
+                    className="text-xl sm:text-2xl font-serif font-bold tracking-tighter"
                   >
                     LUXE<span className="text-zinc-400">.</span>
                   </Link>
@@ -221,8 +224,8 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                   </button>
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center space-x-3 mb-6 p-3 bg-zinc-50 rounded-xl">
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center space-x-3 mb-4 sm:mb-6 p-3 bg-zinc-50 rounded-xl">
                     <img
                       src={profile.avatar}
                       alt={profile.name}
@@ -279,7 +282,7 @@ const UserMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                 </div>
               </div>
 
-              <div className="p-6 border-t border-zinc-100 space-y-2">
+              <div className="p-4 sm:p-6 border-t border-zinc-100 space-y-2">
                 <Link
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
