@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -22,7 +22,7 @@ import { useCart } from "../../context/CartContext";
 const FILTERS = ["All", "Processing", "In Transit", "Delivered", "Cancelled"];
 
 const UserOrders = () => {
-  // Local order state 
+  // Local order state
   const [orders, setOrders] = useState(userOrder);
   const { addToCart } = useCart();
 
@@ -105,13 +105,15 @@ const UserOrders = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif mb-2">My Orders & History</h1>
-          <p className="text-zinc-500 text-sm">
+          <h1 className="text-2xl sm:text-3xl font-serif mb-2">
+            My Orders & History
+          </h1>
+          <p className="text-zinc-500 text-xs sm:text-sm">
             Track active shipments, view invoices, and manage past purchases.
           </p>
         </div>
@@ -127,10 +129,10 @@ const UserOrders = () => {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold uppercase tracking-wider flex items-center justify-between"
+          className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold uppercase tracking-wider flex flex-wrap items-center justify-between gap-3"
         >
           <div className="flex items-center space-x-2">
-            <CheckCircle2 size={16} className="text-emerald-600" />
+            <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
             <span>Items from this order were added to your shopping bag!</span>
           </div>
           <Link
@@ -142,9 +144,13 @@ const UserOrders = () => {
         </motion.div>
       )}
 
-      {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-xl border border-zinc-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center space-x-1 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+      {/* Filter and Search Bar — side by side from xl, because the dashboard
+          sidebar leaves too little width for both before that */}
+      <div className="bg-white p-4 rounded-xl border border-zinc-100 shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        {/* Below xl the pills wrap onto extra lines instead of sitting in one nowrap
+            row. A single row of pills is ~480px wide and can force the whole page
+            wider than a phone screen. From xl it's one scrollable row, as before. */}
+        <div className="flex flex-wrap xl:flex-nowrap items-center gap-1 xl:overflow-x-auto scrollbar-none">
           {FILTERS.map((tab) => (
             <button
               key={tab}
@@ -160,7 +166,7 @@ const UserOrders = () => {
           ))}
         </div>
 
-        <div className="relative w-full md:w-72">
+        <div className="relative w-full xl:w-72">
           <Search
             size={16}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -177,9 +183,12 @@ const UserOrders = () => {
 
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
-        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-16 text-center">
-          <ShoppingBag size={48} className="mx-auto text-zinc-300 mb-4" />
-          <h3 className="text-lg font-serif mb-2 text-zinc-900">
+        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6 sm:p-10 lg:p-16 text-center">
+          <ShoppingBag
+            size={48}
+            className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-zinc-300 mb-4"
+          />
+          <h3 className="text-base sm:text-lg font-serif mb-2 text-zinc-900">
             No Orders Found
           </h3>
           <p className="text-xs text-zinc-500 max-w-sm mx-auto mb-6">
@@ -194,15 +203,15 @@ const UserOrders = () => {
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {filteredOrders.map((order) => (
             <div
               key={order.id}
               className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden transition-all hover:border-zinc-200 hover:shadow-md"
             >
               {/* Card Header */}
-              <div className="bg-zinc-50/80 p-5 sm:px-6 border-b border-zinc-100 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <div className="bg-zinc-50/80 p-4 sm:px-6 sm:py-5 border-b border-zinc-100 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 block">
                       Order Placed
@@ -229,7 +238,7 @@ const UserOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap items-center gap-3">
                   {getStatusBadge(order.status)}
                   <button
                     onClick={() => setSelectedOrder(order)}
@@ -241,7 +250,7 @@ const UserOrders = () => {
               </div>
 
               {/* Items */}
-              <div className="p-6 divide-y divide-zinc-100">
+              <div className="p-4 sm:p-6 divide-y divide-zinc-100">
                 {order.items.map((item, idx) => (
                   <div
                     key={idx}
@@ -272,7 +281,7 @@ const UserOrders = () => {
 
                     <div className="flex items-center space-x-3 self-end sm:self-auto">
                       <Link
-                        to={`/product/${item.id}`}
+                        // to={`/products/${item.slug}`}
                         className="text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 transition-colors"
                       >
                         View Product
@@ -283,7 +292,7 @@ const UserOrders = () => {
               </div>
 
               {/* Footer Actions */}
-              <div className="px-6 py-3.5 bg-zinc-50/50 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="px-4 sm:px-6 py-3.5 bg-zinc-50/50 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="text-zinc-500 flex items-center">
                   {order.trackingNumber ? (
                     <>
@@ -339,12 +348,12 @@ const UserOrders = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-white rounded-xl border border-zinc-100 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-2xl bg-white rounded-xl border border-zinc-100 shadow-2xl z-10 max-h-[90dvh] overflow-y-auto"
             >
-              <div className="p-6 border-b border-zinc-100 flex items-center justify-between sticky top-0 bg-white z-10">
+              <div className="p-4 sm:p-6 border-b border-zinc-100 flex items-center justify-between gap-3 sticky top-0 bg-white z-10">
                 <div>
-                  <div className="flex items-center space-x-2">
-                    <h2 className="text-xl font-serif text-zinc-900">
+                  <div className="flex flex-wrap items-center gap-x-2">
+                    <h2 className="text-lg sm:text-xl font-serif text-zinc-900">
                       Order Details
                     </h2>
                     <span className="font-mono text-xs font-bold text-zinc-500">
@@ -357,23 +366,23 @@ const UserOrders = () => {
                 </div>
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="p-2 text-zinc-400 hover:text-zinc-900 rounded-full transition-colors"
+                  className="p-2 text-zinc-400 hover:text-zinc-900 rounded-full transition-colors shrink-0"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="p-6 space-y-8">
+              <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
                 {/* Progress Tracker */}
-                <div className="bg-zinc-50 p-6 rounded-lg border border-zinc-100">
-                  <div className="flex items-center justify-between mb-6">
+                <div className="bg-zinc-50 p-4 sm:p-6 rounded-lg border border-zinc-100">
+                  <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
                     <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-900">
                       Shipment Status
                     </h3>
                     {getStatusBadge(selectedOrder.status)}
                   </div>
 
-                  <div className="grid grid-cols-4 gap-2 text-center text-[10px] uppercase font-bold tracking-wider text-zinc-400">
+                  <div className="grid grid-cols-4 gap-2 text-center text-[9px] sm:text-[10px] uppercase font-bold tracking-normal sm:tracking-wider text-zinc-400">
                     <div className="space-y-2">
                       <div className="w-6 h-6 mx-auto rounded-full bg-emerald-600 text-white flex items-center justify-center">
                         <CheckCircle2 size={14} />
@@ -445,7 +454,7 @@ const UserOrders = () => {
                   </div>
 
                   {selectedOrder.trackingNumber && (
-                    <div className="mt-6 pt-4 border-t border-zinc-200/60 flex flex-wrap items-center justify-between text-xs">
+                    <div className="mt-4 sm:mt-6 pt-4 border-t border-zinc-200/60 flex flex-wrap items-center justify-between gap-2 text-xs">
                       <div>
                         <span className="text-zinc-400 font-medium">
                           Carrier:{" "}
@@ -475,16 +484,16 @@ const UserOrders = () => {
                     {selectedOrder.items.map((item, i) => (
                       <div
                         key={i}
-                        className="py-4 flex items-center justify-between"
+                        className="py-4 flex items-center justify-between gap-3"
                       >
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4 min-w-0">
                           <img
                             src={item.image}
                             alt={item.name}
-                            className="w-14 h-16 object-cover rounded-lg border border-zinc-100"
+                            className="w-14 h-16 object-cover rounded-lg border border-zinc-100 shrink-0"
                             referrerPolicy="no-referrer"
                           />
-                          <div>
+                          <div className="min-w-0">
                             <p className="text-sm font-semibold text-zinc-900">
                               {item.name}
                             </p>
@@ -493,7 +502,7 @@ const UserOrders = () => {
                             </p>
                           </div>
                         </div>
-                        <p className="text-sm font-serif font-bold text-zinc-900">
+                        <p className="text-sm font-serif font-bold text-zinc-900 shrink-0">
                           ₹{(item.priceValue * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -502,7 +511,7 @@ const UserOrders = () => {
                 </div>
 
                 {/* Summary */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-zinc-50 rounded-lg p-6 border border-zinc-100 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-zinc-50 rounded-lg p-4 sm:p-6 border border-zinc-100 text-xs">
                   <div>
                     <h4 className="font-bold uppercase tracking-wider text-zinc-400 mb-2 flex items-center">
                       <MapPin size={14} className="mr-1.5" />
@@ -524,7 +533,7 @@ const UserOrders = () => {
                     </p>
                   </div>
 
-                  <div className="space-y-2 sm:border-l sm:border-zinc-200 sm:pl-6">
+                  <div className="space-y-2 pt-4 border-t border-zinc-200 sm:pt-0 sm:border-t-0 sm:border-l sm:border-zinc-200 sm:pl-6">
                     <div className="flex justify-between text-zinc-500">
                       <span>Subtotal</span>
                       <span className="text-zinc-900 font-medium">
@@ -553,7 +562,7 @@ const UserOrders = () => {
                 </div>
               </div>
 
-              <div className="p-6 border-t border-zinc-100 bg-zinc-50 flex items-center justify-between">
+              <div className="p-4 sm:p-6 border-t border-zinc-100 bg-zinc-50 flex flex-wrap items-center justify-between gap-3">
                 <button
                   onClick={() => window.print()}
                   className="flex items-center text-xs font-bold uppercase tracking-wider text-zinc-600 hover:text-zinc-900"
