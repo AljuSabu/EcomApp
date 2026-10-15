@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight, Menu } from "lucide-react";
 import AuthContext from "../../../context/AuthContext";
@@ -32,8 +32,9 @@ const AdminNavbar = ({ setIsMobileMenuOpen }) => {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-zinc-200 sticky top-0 z-10 px-6 sm:px-8 flex items-center justify-between">
-      <div className="flex items-center space-x-3">
+    <header className="h-16 bg-white border-b border-zinc-200 sticky top-0 z-10 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+      {/* min-w-0 lets the page title shrink and truncate instead of pushing the avatar off-screen */}
+      <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={() => setIsMobileMenuOpen(true)}
           className="p-2 -ml-2 text-zinc-600 hover:text-zinc-900 md:hidden"
@@ -42,16 +43,19 @@ const AdminNavbar = ({ setIsMobileMenuOpen }) => {
           <Menu size={20} />
         </button>
 
-        <div className="flex items-center space-x-2 text-sm">
-          <span className="text-zinc-400 font-medium">Admin Panel</span>
-          <ChevronRight size={14} className="text-zinc-300" />
-          <span className="font-semibold text-zinc-900">
+        <div className="flex items-center gap-2 text-sm min-w-0">
+          {/* "Admin Panel ›" is hidden on phones to leave room for the page title */}
+          <span className="hidden sm:inline text-zinc-400 font-medium whitespace-nowrap">
+            Admin Panel
+          </span>
+          <ChevronRight size={14} className="hidden sm:block text-zinc-300" />
+          <span className="font-semibold text-zinc-900 truncate">
             {getCurrentPageTitle()}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center space-x-4 sm:space-x-6">
+      <div className="flex items-center space-x-4 sm:space-x-6 shrink-0">
         <Link
           to="/dashboard/admin/profile"
           className="flex items-center space-x-3 group"
