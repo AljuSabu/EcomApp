@@ -14,16 +14,13 @@ import {
   XCircle,
   ArrowUpRight,
 } from "lucide-react";
-import AuthContext from "../../context/AuthContext"; // adjust path
-import { userOrder } from "../../data/data"; // adjust path
+import AuthContext from "../../context/AuthContext";
+import { userOrder } from "../../data/data";
 
 const AdminDashboard = () => {
   const { auth } = useContext(AuthContext);
   const firstName = auth?.user?.name?.split(" ")[0] || "Admin";
 
-  // TEMP: stat values + "Active Users" count are placeholders until a real
-  // admin stats endpoint exists. Orders/revenue below are derived from real
-  // mock order data (userOrder), so at least those stay in sync with it.
   const totalRevenue = userOrder.reduce((sum, o) => sum + o.total, 0);
 
   const stats = [
@@ -87,23 +84,24 @@ const AdminDashboard = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
       <div>
-        <h1 className="text-3xl font-serif mb-2">Welcome back, {firstName}</h1>
-        <p className="text-zinc-500 text-sm">
+        <h1 className="text-2xl sm:text-3xl font-serif mb-2">
+          Welcome back, {firstName}
+        </h1>
+        <p className="text-zinc-500 text-xs sm:text-sm">
           Here's what's happening with your store today.
         </p>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white p-6 rounded-xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-zinc-200 transition-all"
+            className="bg-white p-4 sm:p-5 lg:p-6 rounded-xl border border-zinc-100 shadow-sm hover:shadow-xl hover:border-zinc-200 transition-all"
           >
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex justify-between items-start mb-3 sm:mb-4">
               <div className="p-2.5 bg-zinc-50 rounded-lg text-zinc-900">
                 <stat.icon size={20} />
               </div>
@@ -111,15 +109,18 @@ const AdminDashboard = () => {
             <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-1">
               {stat.name}
             </h3>
-            <p className="text-2xl font-serif text-zinc-900">{stat.value}</p>
+            <p className="text-xl sm:text-2xl font-serif text-zinc-900">
+              {stat.value}
+            </p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Orders + Quick Actions side by side from xl for the same reason */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8">
         {/* Recent Orders */}
-        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
-          <div className="flex items-center justify-between mb-5 pb-4 border-b border-zinc-100">
+        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-4 sm:mb-5 pb-4 border-b border-zinc-100">
             <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">
               Recent Orders
             </h3>
@@ -139,7 +140,7 @@ const AdminDashboard = () => {
               return (
                 <div
                   key={order.id}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-zinc-50 transition-colors"
+                  className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg hover:bg-zinc-50 transition-colors"
                 >
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">
@@ -147,7 +148,7 @@ const AdminDashboard = () => {
                     </p>
                     <p className="text-xs text-zinc-400">{order.date}</p>
                   </div>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                     <span className="text-sm font-serif font-bold text-zinc-900">
                       ₹{order.total.toFixed(2)}
                     </span>
@@ -165,8 +166,8 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-5 pb-4 border-b border-zinc-100">
+        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 mb-4 sm:mb-5 pb-4 border-b border-zinc-100">
             Quick Actions
           </h3>
           <div className="space-y-3">
@@ -174,13 +175,13 @@ const AdminDashboard = () => {
               <Link
                 key={action.name}
                 to={action.path}
-                className="flex items-center justify-between p-4 rounded-lg border border-zinc-100 hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
+                className="flex items-center justify-between gap-3 p-4 rounded-lg border border-zinc-100 hover:border-zinc-300 hover:bg-zinc-50 transition-all group"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-zinc-900 text-white rounded-lg group-hover:scale-105 transition-transform">
+                <div className="flex items-center space-x-3 min-w-0">
+                  <div className="p-2 bg-zinc-900 text-white rounded-lg group-hover:scale-105 transition-transform shrink-0">
                     <action.icon size={18} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm font-semibold text-zinc-900">
                       {action.name}
                     </p>
@@ -189,7 +190,7 @@ const AdminDashboard = () => {
                 </div>
                 <ArrowUpRight
                   size={16}
-                  className="text-zinc-300 group-hover:text-zinc-600 transition-colors"
+                  className="text-zinc-300 group-hover:text-zinc-600 transition-colors shrink-0"
                 />
               </Link>
             ))}
