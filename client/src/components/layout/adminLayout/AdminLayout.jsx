@@ -4,12 +4,12 @@ import AdminMenu from "./AdminMenu";
 import AdminNavbar from "./AdminNavbar";
 
 const AdminLayout = () => {
-  const [isMObileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-zinc-50">
       <AdminMenu
-        isMObileMenuOpen={isMObileMenuOpen}
+        isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
