@@ -51,7 +51,7 @@ const WishlistCard = ({ item }) => {
           alt={item.name}
           loading="lazy"
           onLoad={() => setLoaded(true)}
-          className={`w-full h-90 object-cover transition-all duration-500 group-hover:scale-105 ${
+          className={`w-full h-72 md:h-80 xl:h-90 object-cover transition-all duration-500 group-hover:scale-105 ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -59,7 +59,7 @@ const WishlistCard = ({ item }) => {
         <button
           onClick={() => removeFromWishlist(item._id)}
           aria-label="Remove from wishlist"
-          className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur shadow-sm hover:bg-white hover:scale-110 transition"
+          className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur shadow-sm hover:bg-white hover:scale-110 transition"
           title="Remove from Wishlist"
         >
           <Heart size={18} className="fill-rose-500 text-rose-500" />
@@ -77,18 +77,20 @@ const WishlistCard = ({ item }) => {
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-4 xl:p-5 flex flex-col flex-1">
         {item.collection?.name && (
-          <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
+          <p className="text-xs uppercase tracking-wider sm:tracking-widest text-zinc-400 mb-1">
             {item.collection.name}
           </p>
         )}
 
-        <h2 className="text-lg font-semibold text-zinc-900 truncate">
+        <h2 className="text-base sm:text-lg font-semibold text-zinc-900 truncate">
           {item.name}
         </h2>
 
-        <p className="text-md font-medium text-zinc-700 mt-1">₹{item.price}</p>
+        <p className="text-sm sm:text-base font-medium text-zinc-700 mt-1">
+          ₹{item.price}
+        </p>
 
         {item.description && (
           <p className="text-sm text-zinc-500 mt-2 line-clamp-2">
@@ -96,11 +98,11 @@ const WishlistCard = ({ item }) => {
           </p>
         )}
 
-        <div className="flex gap-3 pt-5 mt-auto">
+        <div className="flex gap-2 sm:gap-3 pt-4 xl:pt-5 mt-auto">
           <button
             onClick={handleAddToCart}
             disabled={isInCart}
-            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 hover:bg-zinc-800 transition disabled:bg-zinc-300 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-2 text-sm sm:text-base hover:bg-zinc-800 transition disabled:bg-zinc-300 disabled:cursor-not-allowed"
           >
             <ShoppingCart size={16} />
             {isInCart ? "In Cart" : "Add"}
@@ -142,25 +144,27 @@ const UserWishlist = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-3 mb-1">
-            <h1 className="text-4xl font-serif">Saved Wishlist</h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif">
+              Saved Wishlist
+            </h1>
             <span className="px-2.5 py-0.5 bg-rose-50 text-rose-600 border border-rose-200/60 rounded-full text-xs font-bold font-mono">
               {wishlist.length}
             </span>
           </div>
-          <p className="text-zinc-500 mt-3 text-sm">
+          <p className="text-zinc-500 mt-2 sm:mt-3 text-xs sm:text-sm">
             Curate and save your coveted luxury pieces for later or move them
             directly to your cart.
           </p>
         </div>
 
         {wishlist.length > 0 && (
-          <div className="flex items-center space-x-3 self-start sm:self-auto">
+          <div className="flex flex-wrap items-center gap-3 self-start sm:self-auto">
             <button
               onClick={clearWishlist}
               className="px-4 py-2.5 border border-zinc-200 rounded-lg text-xs font-bold uppercase tracking-wider text-zinc-600 hover:bg-zinc-100 transition-colors"
@@ -185,10 +189,10 @@ const UserWishlist = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold uppercase tracking-wider flex items-center justify-between shadow-xs"
+            className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold uppercase tracking-wider flex flex-wrap items-center justify-between gap-3 shadow-xs"
           >
             <div className="flex items-center space-x-2">
-              <CheckCircle2 size={16} className="text-emerald-600" />
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
               <span>{toastMessage}</span>
             </div>
             <Link
@@ -201,29 +205,30 @@ const UserWishlist = () => {
         )}
       </AnimatePresence>
 
-      {/* Grid */}
+      {/* Grid — 3 across from xl (not lg), because the dashboard sidebar takes
+          256px of width from md up and 3 columns would be too narrow before that */}
       {wishlist.length === 0 ? (
-        <div className="bg-white border border-zinc-100 rounded-xl p-16 text-center shadow-sm">
-          <div className="w-16 h-16 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-4 text-rose-400">
-            <Heart size={32} />
+        <div className="bg-white border border-zinc-100 rounded-xl p-6 sm:p-10 lg:p-16 text-center shadow-sm">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-4 text-rose-400">
+            <Heart size={32} className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          <h2 className="text-3xl font-serif text-zinc-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-serif text-zinc-900 mb-2">
             Your wishlist is empty
           </h2>
-          <p className="text-zinc-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+          <p className="text-zinc-500 text-xs sm:text-sm max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
             You haven't saved any items to your wishlist yet. Browse our catalog
             to save items you love.
           </p>
           <Link
             to="/products"
-            className="inline-flex items-center px-8 py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-lg"
+            className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-lg"
           >
             Explore Catalog
             <ArrowRight size={14} className="ml-2" />
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           <AnimatePresence>
             {wishlist.map((item) => (
               <WishlistCard key={item._id} item={item} />
