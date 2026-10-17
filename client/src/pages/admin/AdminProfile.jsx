@@ -77,8 +77,8 @@ const AdminProfile = () => {
       className="space-y-8"
     >
       <div>
-        <h1 className="text-3xl font-serif mb-2">Admin Profile</h1>
-        <p className="text-zinc-500 text-sm">
+        <h1 className="text-2xl sm:text-3xl font-serif mb-2">Admin Profile</h1>
+        <p className="text-zinc-500 text-xs sm:text-sm">
           Manage your personal information and security.
         </p>
       </div>
