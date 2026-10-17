@@ -181,7 +181,7 @@ const UserDashboard = () => {
       </div>
 
       {/* 4 Stat Cards — 4 across from xl (2 across before that) for the same reason */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat) => (
           <Link
             key={stat.name}
