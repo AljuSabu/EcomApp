@@ -39,17 +39,17 @@ const team = [
   {
     name: "Ava Lindqvist",
     role: "Founder & Creative Director",
-    image: "https://picsum.photos/seed/ava/400/500",
+    image: "/Ava.jpg",
   },
   {
     name: "Noah Berg",
     role: "Head of Production",
-    image: "https://picsum.photos/seed/noah/400/500",
+    image: "/Noah.jpg",
   },
   {
     name: "Mei Tanaka",
     role: "Lead Pattern Maker",
-    image: "https://picsum.photos/seed/mei/400/500",
+    image: "/Mei.jpg",
   },
 ];
 
