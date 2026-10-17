@@ -52,7 +52,7 @@ const PaymentSuccessPage = () => {
   };
 
   return (
-    <div className="pt-15 pb-24 bg-zinc-50 min-h-screen">
+    <div className="pt-8 sm:pt-12 lg:pt-15 pb-12 sm:pb-16 lg:pb-24 bg-zinc-50 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -61,7 +61,7 @@ const PaymentSuccessPage = () => {
         >
           {/* Banner */}
           <div
-            className={`${isPaymentSuccess ? "bg-zinc-900" : "bg-rose-900"} text-white p-12 text-center relative overflow-hidden`}
+            className={`${isPaymentSuccess ? "bg-zinc-900" : "bg-rose-900"} text-white p-6 sm:p-8 lg:p-12 text-center relative overflow-hidden`}
           >
             <motion.div
               initial={{ y: 20, opacity: 0 }}
@@ -69,19 +69,25 @@ const PaymentSuccessPage = () => {
               transition={{ delay: 0.2 }}
               className="relative z-10"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 rounded-full mb-6 backdrop-blur-sm border border-white/20">
+              <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-full mb-4 sm:mb-6 backdrop-blur-sm border border-white/20">
                 {isPaymentSuccess ? (
-                  <CheckCircle2 size={40} className="text-white" />
+                  <CheckCircle2
+                    size={40}
+                    className="w-8 h-8 sm:w-10 sm:h-10 text-white"
+                  />
                 ) : (
-                  <XCircle size={40} className="text-white" />
+                  <XCircle
+                    size={40}
+                    className="w-8 h-8 sm:w-10 sm:h-10 text-white"
+                  />
                 )}
               </div>
-              <h1 className="text-4xl font-serif mb-2">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif mb-2">
                 {isPaymentSuccess
                   ? "Thank you for your order"
                   : "Payment Unsuccessful"}
               </h1>
-              <p className="text-zinc-300 max-w-md mx-auto">
+              <p className="text-sm sm:text-base text-zinc-300 max-w-md mx-auto">
                 {isPaymentSuccess
                   ? "Your order has been placed successfully and is being processed."
                   : "Something went wrong processing your payment. Your cart has been kept so you can try again."}
@@ -100,17 +106,17 @@ const PaymentSuccessPage = () => {
             </div>
           </div>
 
-          <div className="p-8 sm:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+          <div className="p-5 sm:p-8 lg:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12">
               {/* Order Info */}
-              <div className="space-y-10">
+              <div className="space-y-8 lg:space-y-10">
                 <div>
                   <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center">
                     <ShieldCheck size={14} className="mr-2" />
                     Security & Verification
                   </h3>
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between items-center gap-3 text-sm">
                       <span className="text-zinc-500">Order Status</span>
                       <span
                         className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border ${
@@ -122,15 +128,16 @@ const PaymentSuccessPage = () => {
                         {isPaymentSuccess ? "Paid" : "Unsuccessful"}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-zinc-500">Payment ID</span>
-                      <span className="font-mono text-zinc-900 font-medium">
+                    {/* break-all lets long payment/order IDs wrap instead of running off the screen */}
+                    <div className="flex justify-between items-center gap-3 text-sm">
+                      <span className="text-zinc-500 shrink-0">Payment ID</span>
+                      <span className="font-mono text-zinc-900 font-medium text-right break-all">
                         {paymentData?.paymentId || "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-zinc-500">Order ID</span>
-                      <span className="font-mono text-zinc-900 font-medium">
+                    <div className="flex justify-between items-center gap-3 text-sm">
+                      <span className="text-zinc-500 shrink-0">Order ID</span>
+                      <span className="font-mono text-zinc-900 font-medium text-right break-all">
                         {paymentData?.orderId || "—"}
                       </span>
                     </div>
@@ -143,21 +150,21 @@ const PaymentSuccessPage = () => {
                     Transaction Details
                   </h3>
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between items-center gap-3 text-sm">
                       <span className="text-zinc-500">Date</span>
-                      <span className="text-zinc-900 font-medium">
+                      <span className="text-zinc-900 font-medium text-right">
                         {paymentData?.date || "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between items-center gap-3 text-sm">
                       <span className="text-zinc-500">Payment Method</span>
-                      <span className="text-zinc-900 font-medium">
+                      <span className="text-zinc-900 font-medium text-right">
                         {paymentData?.method || "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between items-center gap-3 text-sm">
                       <span className="text-zinc-500">Total Amount</span>
-                      <span className="text-lg font-serif font-bold text-zinc-900">
+                      <span className="text-base sm:text-lg font-serif font-bold text-zinc-900 text-right">
                         {paymentData?.currency} {paymentData?.amount}
                       </span>
                     </div>
@@ -166,31 +173,37 @@ const PaymentSuccessPage = () => {
               </div>
 
               {/* Customer Info */}
-              <div className="space-y-8">
+              <div className="space-y-6 lg:space-y-8">
                 <div>
                   <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center">
                     <Mail size={14} className="mr-2" />
                     Contact Information
                   </h3>
-                  <div className="bg-zinc-50 rounded-lg p-6 border border-zinc-100 space-y-6">
+                  <div className="bg-zinc-50 rounded-lg p-4 sm:p-6 border border-zinc-100 space-y-5 sm:space-y-6">
                     <div className="flex items-start">
-                      <Mail size={16} className="text-zinc-400 mr-3 mt-0.5" />
-                      <div>
+                      <Mail
+                        size={16}
+                        className="text-zinc-400 mr-3 mt-0.5 shrink-0"
+                      />
+                      <div className="min-w-0">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                           Email
                         </p>
-                        <p className="text-sm text-zinc-900 font-medium">
+                        <p className="text-sm text-zinc-900 font-medium wrap-break-word">
                           {paymentData?.email || "—"}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <Phone size={16} className="text-zinc-400 mr-3 mt-0.5" />
-                      <div>
+                      <Phone
+                        size={16}
+                        className="text-zinc-400 mr-3 mt-0.5 shrink-0"
+                      />
+                      <div className="min-w-0">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                           Phone
                         </p>
-                        <p className="text-sm text-zinc-900 font-medium">
+                        <p className="text-sm text-zinc-900 font-medium wrap-break-word">
                           {paymentData?.contact || "—"}
                         </p>
                       </div>
@@ -198,7 +211,7 @@ const PaymentSuccessPage = () => {
                   </div>
                 </div>
 
-                <div className="p-6 rounded-lg border border-zinc-100 bg-white shadow-sm flex items-center justify-between">
+                <div className="p-4 sm:p-6 rounded-lg border border-zinc-100 bg-white shadow-sm flex flex-wrap items-center justify-between gap-3">
                   <p className="text-xs text-zinc-500 italic">
                     Need help with your order?
                   </p>
@@ -209,10 +222,10 @@ const PaymentSuccessPage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 border-t border-zinc-100 pt-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 border-t border-zinc-100 pt-8 lg:pt-12">
               <button
                 onClick={() => window.print()}
-                className="flex-1 flex items-center justify-center px-8 py-4 border border-zinc-200 rounded-lg text-xs font-bold uppercase tracking-widest text-zinc-600 hover:bg-zinc-100 transition-colors"
+                className="flex-1 flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 border border-zinc-200 rounded-lg text-xs font-bold uppercase tracking-widest text-zinc-600 hover:bg-zinc-100 transition-colors"
               >
                 <Printer size={16} className="mr-2" />
                 Print Receipt
@@ -220,7 +233,7 @@ const PaymentSuccessPage = () => {
               <Link
                 to="/products"
                 onClick={handleContinueShopping}
-                className="flex-2 flex items-center justify-center px-8 py-4 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
+                className="flex-2 flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-sm"
               >
                 <ShoppingBag size={16} className="mr-2" />
                 Continue Shopping
