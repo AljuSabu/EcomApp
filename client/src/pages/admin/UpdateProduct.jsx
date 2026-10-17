@@ -125,8 +125,8 @@ const UpdateProduct = () => {
             <ArrowLeft size={14} className="mr-1.5" />
             Back to Products
           </Link>
-          <h1 className="text-3xl font-serif mb-2">Update Product</h1>
-          <p className="text-zinc-500 text-sm">
+          <h1 className="text-2xl sm:text-3xl font-serif mb-2">Update Product</h1>
+          <p className="text-zinc-500 text-xs sm:text-sm">
             Editing <span className="font-medium text-zinc-700">{name}</span>
           </p>
         </div>

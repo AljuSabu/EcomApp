@@ -104,8 +104,8 @@ const ManageCollection = () => {
     <>
       <div className="max-w-6xl flex flex-col gap-8">
         <div>
-          <h1 className="text-3xl font-serif mb-2">Manage Collections</h1>
-          <p className="text-zinc-500 text-sm">
+          <h1 className="text-2xl sm:text-3xl font-serif mb-2">Manage Collections</h1>
+          <p className="text-zinc-500 text-xs sm:text-sm">
             Organize and curate your product series.
           </p>
         </div>

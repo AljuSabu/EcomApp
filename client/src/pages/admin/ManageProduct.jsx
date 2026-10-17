@@ -164,18 +164,20 @@ const ManageProduct = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-between sm:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-serif mb-2">Manage Products</h1>
-          <p className="text-zinc-500 text-sm">
+          <h1 className="text-2xl sm:text-3xl font-serif mb-2">
+            Manage Products
+          </h1>
+          <p className="text-zinc-500 text-xs sm:text-sm">
             Add, edit, and manage your inventory.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {editingProduct && (
             <button
               onClick={resetForm}
@@ -194,11 +196,12 @@ const ManageProduct = () => {
         </div>
       </div>
 
-      {/* Main Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl">
+      {/* Main Layout — form and image side by side from xl, because the admin
+          sidebar takes 256px of width from md up */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 max-w-6xl">
         {/* LEFT: FORM */}
-        <div className="md:col-span-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
-          <div className="p-6 space-y-6">
+        <div className="xl:col-span-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+          <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
             <div>
               <label className="text-xs uppercase text-zinc-500 mb-2 block font-medium">
                 Collection
@@ -281,10 +284,10 @@ const ManageProduct = () => {
         </div>
 
         {/* RIGHT: IMAGE PANEL */}
-        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-6">
+        <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-4 sm:p-6">
           <label
             htmlFor="upload"
-            className="flex flex-col items-center justify-center border border-dashed rounded-lg border-zinc-300 hover:border-zinc-900 p-6 cursor-pointer hover:bg-zinc-50 transition-colors"
+            className="flex flex-col items-center justify-center border border-dashed rounded-lg border-zinc-300 hover:border-zinc-900 p-4 sm:p-6 cursor-pointer hover:bg-zinc-50 transition-colors"
           >
             <Upload className="text-zinc-400 mb-2" size={20} />
             <span className="text-sm text-zinc-500 text-center">
@@ -301,7 +304,7 @@ const ManageProduct = () => {
           </label>
 
           {(photo || editingProduct) && (
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <img
                 src={
                   photo
@@ -309,7 +312,7 @@ const ManageProduct = () => {
                     : `${API_URL}/product/product-photo/${editingProduct?._id}`
                 }
                 alt="preview"
-                className="w-full object-cover rounded-lg border border-zinc-200"
+                className="w-full max-h-72 sm:max-h-80 xl:max-h-none object-cover rounded-lg border border-zinc-200"
               />
             </div>
           )}
@@ -318,8 +321,8 @@ const ManageProduct = () => {
 
       {/* Products Table */}
       <div className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="relative w-full md:w-96">
+        <div className="p-4 border-b border-zinc-100 flex flex-col lg:flex-row justify-between items-center gap-4">
+          <div className="relative w-full lg:w-96">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
               size={16}
@@ -339,7 +342,7 @@ const ManageProduct = () => {
         </div>
 
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-16">
+          <div className="text-center py-10 sm:py-16">
             <PackageSearch size={36} className="mx-auto text-zinc-300 mb-3" />
             <p className="text-sm font-medium text-zinc-700">
               {products.length === 0 ? "No products yet" : "No products found"}
@@ -351,23 +354,25 @@ const ManageProduct = () => {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          // w-0 + min-w-full: the table scrolls sideways inside its card on small
+          // screens instead of its full width stretching the whole page.
+          <div className="w-0 min-w-full overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-zinc-50 border-b border-zinc-100">
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
                     Product
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
                     Collection
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
                     Price
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
                     Stock
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-right">
+                  <th className="px-4 sm:px-6 py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-right">
                     Actions
                   </th>
                 </tr>
@@ -378,7 +383,7 @@ const ManageProduct = () => {
                     key={product._id}
                     className="hover:bg-zinc-50 transition-colors group"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-4 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 bg-zinc-100 overflow-hidden rounded-lg border border-zinc-200 shrink-0">
                           <img
@@ -398,13 +403,13 @@ const ManageProduct = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-600">
+                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-zinc-600">
                       {product.collection?.name || "—"}
                     </td>
-                    <td className="px-6 py-4 text-sm font-semibold text-zinc-900">
+                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold text-zinc-900">
                       ₹{product.price}
                     </td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm">
                       {product.stock > 0 ? (
                         <span className="text-zinc-600">{product.stock}</span>
                       ) : (
@@ -414,7 +419,7 @@ const ManageProduct = () => {
                       )}
                     </td>
 
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
                       <div className="flex items-center justify-end space-x-1">
                         <button
                           onClick={() => handleEdit(product)}
