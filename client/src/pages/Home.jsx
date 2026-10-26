@@ -11,7 +11,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { Checkbox, Radio } from "antd";
 import { price } from "../data/data";
 
-// Debounce helper — waits 300ms before firing
+// Debounce helper: waits before firing
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -20,6 +20,53 @@ const useDebounce = (value, delay) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(value), delay]);
   return debouncedValue;
+};
+
+// Skeleton placeholder for a product card
+const CardSkeleton = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="bg-zinc-200 aspect-3/4 rounded-2xl" />
+    <div className="space-y-2">
+      <div className="h-4 bg-zinc-200 rounded w-3/4" />
+      <div className="h-4 bg-zinc-200 rounded w-1/2" />
+    </div>
+  </div>
+);
+
+// Renders the skeleton until the card is near the viewport, then mounts the real card
+const LazyProductCard = ({ item, rootMargin = "200px" }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || visible) return;
+
+    if (!("IntersectionObserver" in window)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [visible, rootMargin]);
+
+  return (
+    <div ref={ref}>
+      {visible ? <ProductCard item={item} /> : <CardSkeleton />}
+    </div>
+  );
 };
 
 const Home = () => {
@@ -31,6 +78,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [filtering, setFiltering] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(true); // true on first render
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const isFirstRender = useRef(true);
@@ -40,6 +88,7 @@ const Home = () => {
 
   const isFiltering = checked.length > 0 || radio.length > 0;
   const activeFilterCount = checked.length + (radio.length > 0 ? 1 : 0);
+  const showSkeleton = productsLoading || filtering;
 
   const getCollections = async () => {
     try {
@@ -53,6 +102,7 @@ const Home = () => {
 
   const getProducts = async () => {
     try {
+      setProductsLoading(true);
       const { data } = await axios.get(`/product/product-list/1`);
       if (data?.success) {
         setProducts(data.products);
@@ -62,6 +112,8 @@ const Home = () => {
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong while fetching products");
+    } finally {
+      setProductsLoading(false);
     }
   };
 
@@ -281,13 +333,10 @@ const Home = () => {
 
             {/* Products Section */}
             <div className="flex-1">
-              {filtering ? (
+              {showSkeleton ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
                   {[...Array(6)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-zinc-200 rounded-2xl aspect-3/4 animate-pulse"
-                    />
+                    <CardSkeleton key={i} />
                   ))}
                 </div>
               ) : products.length === 0 ? (
@@ -308,12 +357,12 @@ const Home = () => {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
                   {products.map((item) => (
-                    <ProductCard key={item._id} item={item} />
+                    <LazyProductCard key={item._id} item={item} />
                   ))}
                 </div>
               )}
 
-              {!isFiltering && products && products.length < total && (
+              {!showSkeleton && !isFiltering && products.length < total && (
                 <div className="flex justify-center mt-8 sm:mt-10 lg:mt-14">
                   <button
                     className="px-8 py-3 bg-zinc-900 text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-zinc-700 transition rounded-full disabled:opacity-60 disabled:cursor-not-allowed"
